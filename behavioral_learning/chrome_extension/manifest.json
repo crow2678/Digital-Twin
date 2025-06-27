@@ -1,0 +1,65 @@
+{
+  "manifest_version": 3,
+  "name": "Digital Twin Enterprise Suite",
+  "version": "2.0.0",
+  "description": "Enterprise-grade behavioral learning and productivity tracking for your digital twin",
+  
+  "icons": {
+    "16": "popup/icons/icon16.png",
+    "48": "popup/icons/icon48.png",
+    "128": "popup/icons/icon128.png"
+  },
+  
+  "permissions": [
+    "activeTab", 
+    "storage", 
+    "scripting",
+    "tabs"
+  ],
+  
+  "host_permissions": [
+    "*://*.salesforce.com/*",
+    "*://*.lightning.force.com/*", 
+    "*://*.outlook.com/*",
+    "*://*.office.com/*",
+    "*://*.linkedin.com/*",
+    "*://*.zoominfo.com/*",
+    "*://*.apollo.io/*"
+  ],
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["*://*.salesforce.com/*", "*://*.lightning.force.com/*"],
+      "js": ["content_scripts/salesforce_tracker.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.outlook.com/*", "*://*.office.com/*"],
+      "js": ["content_scripts/outlook_tracker.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.linkedin.com/*", "*://*.zoominfo.com/*", "*://*.apollo.io/*"],
+      "js": ["content_scripts/research_tracker.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content_scripts/general_tracker.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  
+  "action": {
+    "default_popup": "popup/popup_enterprise.html",
+    "default_title": "Digital Twin Enterprise"
+  },
+  
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  }
+}

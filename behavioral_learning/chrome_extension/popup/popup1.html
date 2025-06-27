@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="tracker-popup">
+    <div class="header">
+      <h3>🎯 Sales Hunter Tracker</h3>
+      <div class="status-indicator"></div>
+    </div>
+    
+    <div class="quick-stats">
+      <div class="stat-item">
+        <span class="stat-value" id="salesforce-time">0m</span>
+        <span class="stat-label">Salesforce</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="emails-sent">0</span>
+        <span class="stat-label">Emails</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="research-sessions">0</span>
+        <span class="stat-label">Research</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="total-events">0</span>
+        <span class="stat-label">Events</span>
+      </div>
+    </div>
+    
+    <div class="live-activity">
+      <h4>🔴 Live Activity</h4>
+      <div id="live-feed">
+        <p class="activity-item">Waiting for activity...</p>
+      </div>
+    </div>
+    
+    <div class="quick-inputs">
+      <h4>Quick Log</h4>
+      
+      <div class="input-row">
+        <label>Meeting Title:</label>
+        <input type="text" id="meeting-title" placeholder="e.g., Discovery Call with Acme Corp" maxlength="60">
+      </div>
+      
+      <div class="input-row">
+        <label>Meeting Result:</label>
+        <select id="meeting-outcome">
+          <option value="">Select...</option>
+          <option value="discovery-successful">Discovery - Successful</option>
+          <option value="discovery-needs-followup">Discovery - Needs Follow-up</option>
+          <option value="demo-scheduled">Demo Scheduled</option>
+          <option value="demo-successful">Demo - Successful</option>
+          <option value="proposal-requested">Proposal Requested</option>
+          <option value="deal-advanced">Deal Advanced</option>
+          <option value="deal-stalled">Deal Stalled</option>
+          <option value="no-show">No Show</option>
+        </select>
+      </div>
+      
+      <div class="input-row">
+        <label>Meeting Notes:</label>
+        <textarea id="meeting-notes" placeholder="Key takeaways, next steps, decisions... (280 chars max)" maxlength="280" rows="3"></textarea>
+        <small class="char-counter"><span id="notes-count">0</span>/280</small>
+      </div>
+      
+      <div class="input-row">
+        <label>Energy Level:</label>
+        <div class="energy-buttons">
+          <button class="energy-btn" data-level="1">😴</button>
+          <button class="energy-btn" data-level="2">😐</button>
+          <button class="energy-btn" data-level="3">😊</button>
+          <button class="energy-btn" data-level="4">💪</button>
+          <button class="energy-btn" data-level="5">🚀</button>
+        </div>
+      </div>
+      
+      <div class="input-row">
+        <label>Quick Note:</label>
+        <input type="text" id="quick-note" placeholder="Quick insight or reminder..." maxlength="140">
+        <small class="char-counter"><span id="note-count">0</span>/140</small>
+      </div>
+      
+      <button id="log-input" class="primary-btn">Log Activity</button>
+    </div>
+
+    <div class="insights">
+      <h4>Today's Insights</h4>
+      <div id="insights-content">
+        <p class="insight">📊 Loading behavioral insights...</p>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <button id="view-analytics">📈 View Analytics</button>
+      <button id="sync-twin">🔄 Sync with Twin</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

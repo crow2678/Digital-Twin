@@ -1,0 +1,12 @@
+{
+  "session_id": "8b6d963e-6d40-44ae-a761-e5df55a7fbe9",
+  "user_id": "test_user",
+  "session_start": "2025-06-21T14:28:26.611353",
+  "last_updated": "2025-06-21T14:28:59.582340",
+  "conversation_history": [
+    {
+      "test": "data",
+      "timestamp": "2024-01-01"
+    }
+  ]
+}

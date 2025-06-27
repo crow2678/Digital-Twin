@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Intelligence Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .voice-test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .voice-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            font-size: 48px;
+            box-shadow: 0 8px 25px rgba(0,123,255,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .voice-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0,123,255,0.4);
+        }
+        
+        .voice-button.recording {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(220, 53, 69, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+        }
+        
+        .status-panel {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .transcription-result {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .error-message {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            color: #c62828;
+        }
+        
+        .log-output {
+            background: #263238;
+            color: #4caf50;
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="voice-test-container">
+        <div class="text-center mb-4">
+            <h1><i class="fas fa-microphone-alt text-primary me-3"></i>Voice Intelligence Test</h1>
+            <p class="text-muted">Click the microphone to start voice recording and transcription</p>
+        </div>
+        
+        <div class="text-center mb-4">
+            <button id="voiceButton" class="voice-button" onclick="toggleRecording()">
+                <i id="voiceIcon" class="fas fa-microphone"></i>
+            </button>
+        </div>
+        
+        <div class="status-panel">
+            <h5><i class="fas fa-info-circle me-2"></i>System Status</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Browser Support:</strong>
+                    <span id="browserSupport" class="badge bg-secondary">Checking...</span>
+                </div>
+                <div class="col-md-6">
+                    <strong>Recording State:</strong>
+                    <span id="recordingState" class="badge bg-secondary">Stopped</span>
+                </div>
+                <div class="col-md-6 mt-2">
+                    <strong>Microphone Access:</strong>
+                    <span id="microphoneAccess" class="badge bg-secondary">Not requested</span>
+                </div>
+                <div class="col-md-6 mt-2">
+                    <strong>API Status:</strong>
+                    <span id="apiStatus" class="badge bg-secondary">Not tested</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <h5><i class="fas fa-comments me-2"></i>Transcription Results</h5>
+            <div id="transcriptionResults">
+                <p class="text-muted">No transcriptions yet. Click the microphone to start recording.</p>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <h5><i class="fas fa-bug me-2"></i>Debug Log</h5>
+            <div id="debugLog" class="log-output">
+                <div>Voice Intelligence Test initialized...</div>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <button class="btn btn-outline-primary me-2" onclick="checkBrowserSupport()">
+                <i class="fas fa-check-circle me-1"></i>Check Browser Support
+            </button>
+            <button class="btn btn-outline-success me-2" onclick="testMicrophone()">
+                <i class="fas fa-microphone me-1"></i>Test Microphone
+            </button>
+            <button class="btn btn-outline-info me-2" onclick="testAPI()">
+                <i class="fas fa-cloud me-1"></i>Test API
+            </button>
+            <button class="btn btn-outline-secondary" onclick="clearLog()">
+                <i class="fas fa-trash me-1"></i>Clear Log
+            </button>
+        </div>
+    </div>
+    
+    <script src="/static/voice_processor.js"></script>
+    <script>
+        let voiceProcessor = null;
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 Voice Intelligence Test Page Loaded');
+            checkBrowserSupport();
+            
+            // Initialize voice processor
+            try {
+                voiceProcessor = new VoiceProcessor('http://localhost:8001');
+                log('✅ VoiceProcessor initialized');
+                
+                // Set up event listeners
+                window.addEventListener('voiceRecordingStatus', (event) => {
+                    updateRecordingState(event.detail.isRecording);
+                });
+                
+                window.addEventListener('voiceError', (event) => {
+                    showError(event.detail.error);
+                });
+                
+            } catch (error) {
+                log('❌ Failed to initialize VoiceProcessor: ' + error.message);
+                showError('Failed to initialize voice system: ' + error.message);
+            }
+        });
+        
+        function log(message) {
+            const logElement = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            logElement.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        function showError(message) {
+            const resultsContainer = document.getElementById('transcriptionResults');
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.innerHTML = `<strong>Error:</strong> ${message}`;
+            resultsContainer.appendChild(errorDiv);
+            
+            log('❌ ERROR: ' + message);
+        }
+        
+        function showTranscription(result) {
+            const resultsContainer = document.getElementById('transcriptionResults');
+            
+            // Clear "no transcriptions" message
+            if (resultsContainer.querySelector('.text-muted')) {
+                resultsContainer.innerHTML = '';
+            }
+            
+            const transcriptionDiv = document.createElement('div');
+            transcriptionDiv.className = 'transcription-result';
+            transcriptionDiv.innerHTML = `
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>Transcription:</strong> ${result.text}<br>
+                        <small class="text-muted">
+                            Confidence: ${Math.round((result.confidence || 0.5) * 100)}%
+                            ${result.source ? ` | Source: ${result.source}` : ''}
+                        </small>
+                    </div>
+                    <small class="text-muted">${new Date().toLocaleTimeString()}</small>
+                </div>
+            `;
+            
+            resultsContainer.appendChild(transcriptionDiv);
+            
+            log(`✅ Transcription: "${result.text}" (${Math.round((result.confidence || 0.5) * 100)}% confidence)`);
+        }
+        
+        function checkBrowserSupport() {
+            log('🔍 Checking browser support...');
+            
+            const support = {
+                mediaDevices: !!navigator.mediaDevices,
+                getUserMedia: !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia),
+                mediaRecorder: !!window.MediaRecorder,
+                webSpeech: !!(window.SpeechRecognition || window.webkitSpeechRecognition)
+            };
+            
+            const supportElement = document.getElementById('browserSupport');
+            
+            if (support.mediaDevices && support.getUserMedia && support.mediaRecorder) {
+                supportElement.className = 'badge bg-success';
+                supportElement.textContent = 'Fully Supported';
+                log('✅ Browser fully supports voice recording');
+            } else {
+                supportElement.className = 'badge bg-warning';
+                supportElement.textContent = 'Partial Support';
+                log('⚠️ Browser has limited voice support');
+            }
+            
+            log(`📊 Support details: MediaDevices=${support.mediaDevices}, getUserMedia=${support.getUserMedia}, MediaRecorder=${support.mediaRecorder}, WebSpeech=${support.webSpeech}`);
+        }
+        
+        async function testMicrophone() {
+            log('🎤 Testing microphone access...');
+            
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                document.getElementById('microphoneAccess').className = 'badge bg-success';
+                document.getElementById('microphoneAccess').textContent = 'Granted';
+                
+                log('✅ Microphone access granted');
+                
+                // Stop the test stream
+                stream.getTracks().forEach(track => track.stop());
+                
+            } catch (error) {
+                document.getElementById('microphoneAccess').className = 'badge bg-danger';
+                document.getElementById('microphoneAccess').textContent = 'Denied';
+                
+                log('❌ Microphone access denied: ' + error.message);
+                showError('Microphone access denied. Please check browser permissions.');
+            }
+        }
+        
+        async function testAPI() {
+            log('🌐 Testing Whisper API connection...');
+            
+            try {
+                const response = await fetch('http://localhost:8001/health');
+                
+                if (response.ok) {
+                    const health = await response.json();
+                    document.getElementById('apiStatus').className = 'badge bg-success';
+                    document.getElementById('apiStatus').textContent = 'Connected';
+                    log('✅ Whisper API is healthy: ' + JSON.stringify(health));
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+            } catch (error) {
+                document.getElementById('apiStatus').className = 'badge bg-warning';
+                document.getElementById('apiStatus').textContent = 'Fallback Mode';
+                log('⚠️ Whisper API not available, will use Web Speech API: ' + error.message);
+            }
+        }
+        
+        function updateRecordingState(isRecording) {
+            const stateElement = document.getElementById('recordingState');
+            const button = document.getElementById('voiceButton');
+            const icon = document.getElementById('voiceIcon');
+            
+            if (isRecording) {
+                stateElement.className = 'badge bg-danger';
+                stateElement.textContent = 'Recording';
+                button.classList.add('recording');
+                icon.className = 'fas fa-stop';
+                log('🔴 Recording started');
+            } else {
+                stateElement.className = 'badge bg-secondary';
+                stateElement.textContent = 'Stopped';
+                button.classList.remove('recording');
+                icon.className = 'fas fa-microphone';
+                log('⚫ Recording stopped');
+            }
+        }
+        
+        async function toggleRecording() {
+            if (!voiceProcessor) {
+                showError('Voice processor not initialized');
+                return;
+            }
+            
+            log('🎛️ Toggle recording clicked');
+            
+            try {
+                if (!voiceProcessor.isRecording) {
+                    log('▶️ Starting recording...');
+                    await voiceProcessor.startRecording();
+                    
+                    // Override the display function to show results in our test page
+                    const originalDisplay = voiceProcessor.displayTranscription;
+                    voiceProcessor.displayTranscription = function(result) {
+                        originalDisplay.call(this, result);
+                        showTranscription(result);
+                    };
+                    
+                } else {
+                    log('⏹️ Stopping recording...');
+                    voiceProcessor.stopRecording();
+                }
+            } catch (error) {
+                log('❌ Toggle error: ' + error.message);
+                showError('Failed to toggle recording: ' + error.message);
+            }
+        }
+        
+        function clearLog() {
+            document.getElementById('debugLog').innerHTML = '<div>Debug log cleared...</div>';
+            document.getElementById('transcriptionResults').innerHTML = '<p class="text-muted">No transcriptions yet. Click the microphone to start recording.</p>';
+        }
+    </script>
+</body>
+</html>

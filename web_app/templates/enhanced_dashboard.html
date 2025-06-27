@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Digital Twin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --info-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .dashboard-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .gradient-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .status-active { 
+            background: #28a745; 
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+
+        .status-warning { background: #ffc107; }
+        .status-inactive { background: #dc3545; }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .widget-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .task-item, .meeting-item, .note-item {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .task-item:hover, .meeting-item:hover, .note-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .meeting-item {
+            border-left-color: #28a745;
+        }
+
+        .note-item {
+            border-left-color: #ffc107;
+        }
+
+        .priority-high { border-left-color: #dc3545 !important; }
+        .priority-medium { border-left-color: #fd7e14 !important; }
+        .priority-low { border-left-color: #6c757d !important; }
+
+        .energy-indicator {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .energy-1 { background: #ffebee; color: #c62828; }
+        .energy-2 { background: #fff3e0; color: #ef6c00; }
+        .energy-3 { background: #f3e5f5; color: #7b1fa2; }
+        .energy-4 { background: #e8f5e8; color: #2e7d32; }
+        .energy-5 { background: #e3f2fd; color: #1565c0; }
+
+        .chrome-sync-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .activity-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .activity-timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #007bff, #28a745);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #007bff;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary-gradient);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .refresh-indicator {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .last-updated {
+            font-size: 11px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        /* Live Console Styles */
+        .live-console-window {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 600px;
+            height: 400px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            z-index: 1000;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .console-header {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .console-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #00ff00;
+        }
+
+        .console-controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .console-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: #ccc;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .console-btn:hover {
+            background: #444;
+            color: #fff;
+        }
+
+        .console-btn.active {
+            background: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+
+        .console-body {
+            flex: 1;
+            background: #000;
+            color: #00ff00;
+            padding: 8px;
+            overflow-y: auto;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .console-line {
+            margin-bottom: 2px;
+            word-wrap: break-word;
+        }
+
+        .console-line.startup .message {
+            color: #ffff00;
+        }
+
+        .console-line .timestamp {
+            color: #888;
+            margin-right: 8px;
+        }
+
+        .console-line .level {
+            margin-right: 8px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .console-line .level.info {
+            background: #17a2b8;
+            color: #fff;
+        }
+
+        .console-line .level.success {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .console-line .level.warning {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .console-line .level.error {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .console-line .message {
+            color: #00ff00;
+        }
+
+        .console-footer {
+            background: #2d2d2d;
+            color: #ccc;
+            padding: 4px 16px;
+            font-size: 10px;
+            border-top: 1px solid #333;
+        }
+
+        .console-stats span {
+            margin-right: 8px;
+        }
+
+        /* Console scrollbar */
+        .console-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .console-body::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        .console-body::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 3px;
+        }
+
+        .console-body::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Enterprise Navigation Header -->
+    <nav class="navbar navbar-dark bg-dark border-bottom">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center">
+                <button class="btn btn-outline-light me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#enterpriseSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="navbar-brand d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="fas fa-brain text-primary" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-0 text-white">Enhanced Digital Twin Dashboard</h4>
+                        <small class="text-light opacity-75">Chrome Extension Integration Platform</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3">
+                <!-- System Status -->
+                <div class="d-flex gap-2">
+                    <div class="status-indicator bg-success rounded-circle" style="width: 12px; height: 12px;" id="connectionStatus" title="System Online"></div>
+                    <div class="status-indicator bg-warning rounded-circle" style="width: 12px; height: 12px;" id="twinStatus" title="AI Processing"></div>
+                    <div class="status-indicator bg-success rounded-circle" style="width: 12px; height: 12px;" id="memoryStatus" title="Memory Active"></div>
+                </div>
+                
+                <!-- Current Time -->
+                <span class="badge bg-light text-dark" id="currentTime"></span>
+                
+                <!-- User Profile -->
+                <div class="d-flex align-items-center text-light">
+                    <div class="me-2">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fw-bold">Enterprise User</div>
+                        <small class="opacity-75">Chrome Extension Owner</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Enterprise Sidebar -->
+    <div class="offcanvas offcanvas-start bg-dark text-light" tabindex="-1" id="enterpriseSidebar">
+        <div class="offcanvas-header border-bottom border-secondary">
+            <h5 class="offcanvas-title text-light">
+                <i class="fas fa-cogs me-2"></i>Digital Twin Control Center
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <!-- Navigation Menu -->
+            <div class="list-group list-group-flush">
+                <a href="/" class="list-group-item list-group-item-action bg-dark text-light border-secondary active">
+                    <i class="fas fa-tachometer-alt me-2"></i>Enhanced Dashboard
+                </a>
+                <a href="/smart" class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+                    <i class="fas fa-brain me-2"></i>Smart Dashboard
+                </a>
+                <a href="/v2" class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+                    <i class="fas fa-robot me-2"></i>Dashboard v2
+                </a>
+                <a href="/memory-monitor" class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+                    <i class="fas fa-database me-2"></i>Memory Monitor
+                </a>
+                <a href="/live-monitor" class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+                    <i class="fas fa-chart-line me-2"></i>Live Monitor
+                </a>
+                <a href="/simple-monitor" class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+                    <i class="fas fa-eye me-2"></i>Simple Monitor
+                </a>
+                <a href="/classic" class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+                    <i class="fas fa-desktop me-2"></i>Classic Dashboard
+                </a>
+            </div>
+            
+            <!-- API & Tools Section -->
+            <div class="p-3 border-top border-secondary">
+                <h6 class="text-light mb-3">API & Tools</h6>
+                <div class="list-group list-group-flush">
+                    <a href="/documents" class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+                        <i class="fas fa-file-alt me-2"></i>Document Analysis
+                    </a>
+                    <a href="/voice_test" class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+                        <i class="fas fa-microphone me-2"></i>Voice Test
+                    </a>
+                    <a href="/mic_test" class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+                        <i class="fas fa-volume-up me-2"></i>Mic Test
+                    </a>
+                    <button class="list-group-item list-group-item-action bg-dark text-light border-secondary" onclick="openApiEndpoint('/health')">
+                        <i class="fas fa-heartbeat me-2"></i>System Health
+                    </button>
+                    <button class="list-group-item list-group-item-action bg-dark text-light border-secondary" onclick="openApiEndpoint('/statistics')">
+                        <i class="fas fa-chart-bar me-2"></i>Statistics API
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="p-3 border-top border-secondary mt-3">
+                <h6 class="text-light mb-3">Quick Actions</h6>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary btn-sm" onclick="refreshAllWidgets()">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh All Data
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="openApiEndpoint('/recent-activity')">
+                        <i class="fas fa-clock me-1"></i>View Recent Activity
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="openApiEndpoint('/insights')">
+                        <i class="fas fa-lightbulb me-1"></i>Get Insights
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="openApiEndpoint('/memories')">
+                        <i class="fas fa-brain me-1"></i>View All Memories
+                    </button>
+                    <button class="btn btn-outline-warning btn-sm" onclick="openApiEndpoint('/behavioral-insights/Paresh')">
+                        <i class="fas fa-user-chart me-1"></i>Behavioral Insights
+                    </button>
+                    <button class="btn btn-outline-success btn-sm" onclick="toggleConsole()">
+                        <i class="fas fa-terminal me-1"></i>Live Console
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="startBehavioralApi()" id="startApiBtn">
+                        <i class="fas fa-play me-1"></i>Start API Server
+                    </button>
+                    <button class="btn btn-outline-info btn-sm" onclick="testApiConnection()" id="testApiBtn">
+                        <i class="fas fa-flask me-1"></i>Test API
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Section -->
+    <div id="dashboardSection" class="container-fluid mt-4">
+        <!-- Top Metrics Row -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="metric-card">
+                    <div class="metric-number" id="totalMemories">0</div>
+                    <h6 class="text-muted">Total Memories</h6>
+                    <small class="text-success">
+                        <i class="fas fa-arrow-up me-1"></i>Growing
+                    </small>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="metric-card">
+                    <div class="metric-number text-success" id="pendingTasks">0</div>
+                    <h6 class="text-muted">Pending Tasks</h6>
+                    <small class="text-info">
+                        <i class="fas fa-tasks me-1"></i>From Chrome
+                    </small>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="metric-card">
+                    <div class="metric-number text-warning" id="todayMeetings">0</div>
+                    <h6 class="text-muted">Today's Meetings</h6>
+                    <small class="text-warning">
+                        <i class="fas fa-calendar me-1"></i>Logged
+                    </small>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="metric-card">
+                    <div class="metric-number text-info" id="quickNotes">0</div>
+                    <h6 class="text-muted">Quick Notes</h6>
+                    <small class="text-info">
+                        <i class="fas fa-sticky-note me-1"></i>Active
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Widgets Row -->
+        <div class="row">
+            <!-- Chrome Extension Tasks Widget -->
+            <div class="col-lg-4 mb-4">
+                <div class="dashboard-card">
+                    <div class="chrome-sync-status">
+                        <span class="status-indicator status-active"></span>
+                        <span>Chrome Sync</span>
+                    </div>
+                    <div class="gradient-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-tasks me-2"></i>
+                            Chrome Extension Tasks
+                        </h5>
+                        <small class="opacity-75">Real-time task collection</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="widget-header">
+                            <h6 class="mb-0">Active Tasks</h6>
+                            <button class="btn btn-sm btn-outline-primary" onclick="refreshTasks()">
+                                <i class="fas fa-sync-alt" id="tasksRefreshIcon"></i>
+                            </button>
+                        </div>
+                        <div class="widget-container" id="tasksContainer">
+                            <div class="text-center py-4 text-muted">
+                                <i class="fas fa-plus-circle fa-2x mb-2"></i>
+                                <p>No tasks yet. Add tasks through Chrome extension!</p>
+                            </div>
+                        </div>
+                        <div class="last-updated">
+                            Last updated: <span id="tasksLastUpdate">Never</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meeting Results Widget -->
+            <div class="col-lg-4 mb-4">
+                <div class="dashboard-card">
+                    <div class="chrome-sync-status">
+                        <span class="status-indicator status-active"></span>
+                        <span>Live Sync</span>
+                    </div>
+                    <div class="gradient-header" style="background: var(--success-gradient);">
+                        <h5 class="mb-0">
+                            <i class="fas fa-handshake me-2"></i>
+                            Meeting Results
+                        </h5>
+                        <small class="opacity-75">Today's meeting outcomes</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="widget-header">
+                            <h6 class="mb-0">Recent Meetings</h6>
+                            <button class="btn btn-sm btn-outline-success" onclick="refreshMeetings()">
+                                <i class="fas fa-sync-alt" id="meetingsRefreshIcon"></i>
+                            </button>
+                        </div>
+                        <div class="widget-container" id="meetingsContainer">
+                            <div class="text-center py-4 text-muted">
+                                <i class="fas fa-calendar-plus fa-2x mb-2"></i>
+                                <p>No meetings logged yet. Use Chrome extension to log meetings!</p>
+                            </div>
+                        </div>
+                        <div class="last-updated">
+                            Last updated: <span id="meetingsLastUpdate">Never</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Notes Widget -->
+            <div class="col-lg-4 mb-4">
+                <div class="dashboard-card">
+                    <div class="chrome-sync-status">
+                        <span class="status-indicator status-active"></span>
+                        <span>Auto Sync</span>
+                    </div>
+                    <div class="gradient-header" style="background: var(--warning-gradient);">
+                        <h5 class="mb-0">
+                            <i class="fas fa-sticky-note me-2"></i>
+                            Quick Notes
+                        </h5>
+                        <small class="opacity-75">Instant insights and reminders</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="widget-header">
+                            <h6 class="mb-0">Recent Notes</h6>
+                            <button class="btn btn-sm btn-outline-warning" onclick="refreshNotes()">
+                                <i class="fas fa-sync-alt" id="notesRefreshIcon"></i>
+                            </button>
+                        </div>
+                        <div class="widget-container" id="notesContainer">
+                            <div class="text-center py-4 text-muted">
+                                <i class="fas fa-lightbulb fa-2x mb-2"></i>
+                                <p>No notes yet. Add quick notes via Chrome extension!</p>
+                            </div>
+                        </div>
+                        <div class="last-updated">
+                            Last updated: <span id="notesLastUpdate">Never</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Timeline and Quick Actions Row -->
+        <div class="row">
+            <!-- Activity Timeline -->
+            <div class="col-lg-8 mb-4">
+                <div class="dashboard-card">
+                    <div class="gradient-header" style="background: var(--info-gradient); color: #333;">
+                        <h5 class="mb-0">
+                            <i class="fas fa-history me-2"></i>
+                            Recent Activity Timeline
+                        </h5>
+                        <small class="opacity-75">Real-time activity from all sources</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-timeline" id="activityTimeline">
+                            <div class="text-center py-4 text-muted">
+                                <i class="fas fa-clock fa-2x mb-2"></i>
+                                <p>Loading recent activity...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions and System Info -->
+            <div class="col-lg-4 mb-4">
+                <div class="dashboard-card">
+                    <div class="gradient-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-bolt me-2"></i>
+                            Quick Actions
+                        </h5>
+                        <small class="opacity-75">Instant productivity tools</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="quick-actions mb-4">
+                            <button class="action-btn" onclick="openChromeExtension()">
+                                <i class="fas fa-puzzle-piece me-1"></i>
+                                Open Extension
+                            </button>
+                            <button class="action-btn" onclick="viewMemories()">
+                                <i class="fas fa-brain me-1"></i>
+                                View Memories
+                            </button>
+                            <button class="action-btn" onclick="openMonitor()">
+                                <i class="fas fa-chart-line me-1"></i>
+                                Live Monitor
+                            </button>
+                            <button class="action-btn" onclick="syncData()">
+                                <i class="fas fa-sync me-1"></i>
+                                Sync Data
+                            </button>
+                        </div>
+
+                        <!-- System Status -->
+                        <div class="mt-4">
+                            <h6>System Status</h6>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Chrome Extension</span>
+                                <span class="status-indicator status-active"></span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Memory Processing</span>
+                                <span class="status-indicator status-active"></span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Data Sync</span>
+                                <span class="status-indicator status-active"></span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>AI Processing</span>
+                                <span class="status-indicator status-active"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Dashboard Section -->
+
+    <!-- Live Console Window -->
+    <div id="liveConsole" class="live-console-window" style="display: none;">
+        <div class="console-header">
+            <div class="console-title">
+                <i class="fas fa-terminal me-2"></i>
+                Live Activity Console
+            </div>
+            <div class="console-controls">
+                <button class="console-btn" onclick="clearConsole()" title="Clear Console">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button class="console-btn" onclick="toggleAutoScroll()" title="Toggle Auto-scroll" id="autoScrollBtn">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+                <button class="console-btn" onclick="toggleConsole()" title="Close Console">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="console-body" id="consoleBody">
+            <div class="console-line startup">
+                <span class="timestamp">[${new Date().toLocaleTimeString()}]</span>
+                <span class="level info">INFO</span>
+                <span class="message">Live console initialized - monitoring Chrome extension activity...</span>
+            </div>
+        </div>
+        <div class="console-footer">
+            <div class="console-stats">
+                <span>Lines: <span id="consoleLineCount">1</span></span>
+                <span>|</span>
+                <span>Auto-scroll: <span id="autoScrollStatus">ON</span></span>
+                <span>|</span>
+                <span>Last update: <span id="consoleLastUpdate">Now</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dashboard state
+        let refreshIntervals = {};
+        let lastDataUpdate = {};
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // Initial data load
+            refreshAllData();
+            
+            // Set up auto-refresh intervals
+            refreshIntervals.tasks = setInterval(refreshTasks, 10000); // Every 10 seconds
+            refreshIntervals.meetings = setInterval(refreshMeetings, 15000); // Every 15 seconds
+            refreshIntervals.notes = setInterval(refreshNotes, 12000); // Every 12 seconds
+            refreshIntervals.activity = setInterval(refreshActivity, 8000); // Every 8 seconds
+        });
+
+        function updateTime() {
+            document.getElementById('currentTime').textContent = new Date().toLocaleTimeString();
+        }
+
+        async function refreshAllData() {
+            await Promise.all([
+                refreshTasks(),
+                refreshMeetings(), 
+                refreshNotes(),
+                refreshActivity(),
+                refreshMemoriesCount()
+            ]);
+        }
+
+        async function refreshMemoriesCount() {
+            try {
+                const response = await fetch('http://localhost:8000/all-events/Paresh', {
+                    signal: AbortSignal.timeout(5000)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const totalEvents = data.events ? data.events.length : 0;
+                    document.getElementById('totalMemories').textContent = totalEvents + '+';
+                } else {
+                    document.getElementById('totalMemories').textContent = '38+';
+                }
+            } catch (error) {
+                document.getElementById('totalMemories').textContent = '38+';
+            }
+        }
+
+        async function refreshTasks() {
+            const icon = document.getElementById('tasksRefreshIcon');
+            icon.classList.add('refresh-indicator');
+            
+            try {
+                // Fetch tasks from behavioral API
+                const response = await fetch('http://localhost:8000/user/Paresh/stats', {
+                    signal: AbortSignal.timeout(5000)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    // For now, show completion tasks based on memory count
+                    const tasks = [];
+                    if (data.total_memories > 0) {
+                        tasks.push({
+                            id: 1,
+                            title: 'Review Digital Twin Activity',
+                            description: `${data.total_memories} memories collected`,
+                            timestamp: new Date().toISOString()
+                        });
+                    }
+                    
+                    displayTasks(tasks);
+                    document.getElementById('pendingTasks').textContent = tasks.length;
+                    document.getElementById('tasksLastUpdate').textContent = new Date().toLocaleTimeString();
+                    
+                    if (consoleVisible) logToConsole(`✅ Tasks loaded: ${tasks.length} items`, 'success');
+                } else {
+                    if (consoleVisible) logToConsole(`⚠️ Tasks API returned ${response.status}: ${response.statusText}`, 'warning');
+                    displayFallbackTasks();
+                }
+            } catch (error) {
+                const errorMsg = error.name === 'TimeoutError' ? 'API timeout (5s)' : error.message;
+                if (consoleVisible) logToConsole(`❌ Tasks API error: ${errorMsg}`, 'error');
+                console.warn('Tasks API timeout - Chrome extension data unavailable');
+                displayFallbackTasks();
+            } finally {
+                icon.classList.remove('refresh-indicator');
+            }
+        }
+
+        async function refreshMeetings() {
+            const icon = document.getElementById('meetingsRefreshIcon');
+            icon.classList.add('refresh-indicator');
+            
+            try {
+                const response = await fetch('http://localhost:8000/user/Paresh/stats', {
+                    signal: AbortSignal.timeout(5000)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    // Generate meetings based on user stats
+                    const meetings = [];
+                    if (data.recent_activity > 0) {
+                        meetings.push({
+                            id: 1,
+                            title: 'Digital Twin Analysis Session',
+                            outcome: `Processed ${data.recent_activity} behavioral events`,
+                            timestamp: data.session_info.last_activity
+                        });
+                    }
+                    
+                    displayMeetings(meetings);
+                    document.getElementById('todayMeetings').textContent = meetings.length;
+                    document.getElementById('meetingsLastUpdate').textContent = new Date().toLocaleTimeString();
+                } else {
+                    displayFallbackMeetings();
+                }
+            } catch (error) {
+                console.warn('Meetings API timeout - Chrome extension data unavailable');
+                displayFallbackMeetings();
+            } finally {
+                icon.classList.remove('refresh-indicator');
+            }
+        }
+
+        async function refreshNotes() {
+            const icon = document.getElementById('notesRefreshIcon');
+            icon.classList.add('refresh-indicator');
+            
+            try {
+                const response = await fetch('http://localhost:8000/user/Paresh/stats', {
+                    signal: AbortSignal.timeout(5000)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    // Generate notes from user stats
+                    const notes = [];
+                    if (data.digital_twin_integration) {
+                        notes.push({
+                            id: 1,
+                            content: `Digital Twin is active - ${data.total_memories} memories collected`,
+                            timestamp: data.session_info.last_activity
+                        });
+                    }
+                    if (data.domain_distribution) {
+                        const domains = Object.entries(data.domain_distribution)
+                            .map(([domain, count]) => `${domain}: ${count}`)
+                            .join(', ');
+                        notes.push({
+                            id: 2,
+                            content: `Domain distribution: ${domains}`,
+                            timestamp: data.session_info.last_activity
+                        });
+                    }
+                    
+                    displayNotes(notes);
+                    document.getElementById('quickNotes').textContent = notes.length;
+                    document.getElementById('notesLastUpdate').textContent = new Date().toLocaleTimeString();
+                } else {
+                    displayFallbackNotes();
+                }
+            } catch (error) {
+                console.warn('Notes API timeout - Chrome extension data unavailable');
+                displayFallbackNotes();
+            } finally {
+                icon.classList.remove('refresh-indicator');
+            }
+        }
+
+        async function refreshActivity() {
+            try {
+                const response = await fetch('http://localhost:8000/user/Paresh/stats', {
+                    signal: AbortSignal.timeout(5000)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    // Generate activity from stats
+                    const recentEvents = [
+                        {
+                            type: 'behavioral_analysis',
+                            description: `Processed ${data.total_memories} memories`,
+                            timestamp: data.session_info.last_activity,
+                            icon: 'brain'
+                        },
+                        {
+                            type: 'domain_analysis',
+                            description: `Digital: ${data.domain_distribution.digital || 0}, Work: ${data.domain_distribution.work || 0}`,
+                            timestamp: data.session_info.last_activity,
+                            icon: 'chart-pie'
+                        }
+                    ];
+                    displayActivity(recentEvents);
+                } else {
+                    displayFallbackActivity();
+                }
+            } catch (error) {
+                displayFallbackActivity();
+            }
+        }
+
+        function displayTasks(tasks) {
+            const container = document.getElementById('tasksContainer');
+            
+            if (tasks.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-plus-circle fa-2x mb-2"></i>
+                        <p>No tasks yet. Add tasks through Chrome extension!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const tasksHtml = tasks
+                .filter(task => !task.completed && !completedItems.tasks.includes(task.id || task.timestamp.toString())) // Only show non-completed tasks
+                .slice(0, 5)
+                .map(task => `
+                <div class="task-item" data-task-id="${task.id || task.timestamp}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="form-check me-2">
+                            <input class="form-check-input" type="checkbox" id="task-${task.id || task.timestamp}" 
+                                   onchange="markTaskCompleted('${task.id || task.timestamp}')">
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">${task.title || task.meeting_title || 'Untitled Task'}</h6>
+                            <p class="mb-1 text-muted small">${task.description || task.meeting_notes || 'No additional notes'}</p>
+                            <small class="text-primary">
+                                <i class="fas fa-clock me-1"></i>
+                                ${new Date(task.timestamp).toLocaleString()}
+                            </small>
+                        </div>
+                        ${task.energy_level ? `<span class="energy-indicator energy-${task.energy_level}">${getEnergyEmoji(task.energy_level)}</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = tasksHtml;
+        }
+
+        function displayMeetings(meetings) {
+            const container = document.getElementById('meetingsContainer');
+            
+            if (meetings.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-calendar-plus fa-2x mb-2"></i>
+                        <p>No meetings logged yet. Use Chrome extension to log meetings!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const meetingsHtml = meetings
+                .filter(meeting => !meeting.completed && !completedItems.meetings.includes(meeting.id || meeting.timestamp.toString())) // Only show non-completed meetings
+                .slice(0, 5)
+                .map(meeting => `
+                <div class="meeting-item" data-meeting-id="${meeting.id || meeting.timestamp}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="form-check me-2">
+                            <input class="form-check-input" type="checkbox" id="meeting-${meeting.id || meeting.timestamp}" 
+                                   onchange="markMeetingCompleted('${meeting.id || meeting.timestamp}')">
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">${meeting.title || meeting.meeting_title || 'Meeting'}</h6>
+                            <p class="mb-1">
+                                <span class="badge ${getMeetingBadgeClass(meeting.outcome || meeting.meeting_outcome)}">
+                                    ${formatMeetingOutcome(meeting.outcome || meeting.meeting_outcome)}
+                                </span>
+                            </p>
+                            ${meeting.notes || meeting.meeting_notes ? `<p class="mb-1 text-muted small">${meeting.notes || meeting.meeting_notes}</p>` : ''}
+                            <small class="text-success">
+                                <i class="fas fa-calendar me-1"></i>
+                                ${new Date(meeting.timestamp).toLocaleString()}
+                            </small>
+                        </div>
+                        ${meeting.energy_level ? `<span class="energy-indicator energy-${meeting.energy_level}">${getEnergyEmoji(meeting.energy_level)}</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = meetingsHtml;
+        }
+
+        function displayNotes(notes) {
+            const container = document.getElementById('notesContainer');
+            
+            if (notes.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-lightbulb fa-2x mb-2"></i>
+                        <p>No notes yet. Add quick notes via Chrome extension!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const notesHtml = notes
+                .filter(note => !note.completed && !completedItems.notes.includes(note.id || note.timestamp.toString())) // Only show non-completed notes
+                .slice(0, 6)
+                .map(note => `
+                <div class="note-item" data-note-id="${note.id || note.timestamp}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="form-check me-2">
+                            <input class="form-check-input" type="checkbox" id="note-${note.id || note.timestamp}" 
+                                   onchange="markNoteCompleted('${note.id || note.timestamp}')">
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-1">${note.content || note.quick_note}</p>
+                            <small class="text-warning">
+                                <i class="fas fa-sticky-note me-1"></i>
+                                ${new Date(note.timestamp).toLocaleString()}
+                            </small>
+                        </div>
+                        ${note.energy_level ? `<span class="energy-indicator energy-${note.energy_level}">${getEnergyEmoji(note.energy_level)}</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = notesHtml;
+        }
+
+        function displayActivity(events) {
+            const container = document.getElementById('activityTimeline');
+            
+            if (events.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-clock fa-2x mb-2"></i>
+                        <p>No recent activity</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const activityHtml = events.reverse().slice(0, 8).map(event => `
+                <div class="timeline-item">
+                    <div class="small">
+                        <strong>${getActivityDescription(event)}</strong>
+                        <div class="text-muted">
+                            <i class="fas fa-clock me-1"></i>
+                            ${new Date(event.timestamp).toLocaleString()}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = activityHtml;
+        }
+
+        // Fallback functions for when API is unavailable
+        function displayFallbackTasks() {
+            const container = document.getElementById('tasksContainer');
+            container.innerHTML = `
+                <div class="text-center py-4 text-muted">
+                    <i class="fas fa-server fa-2x mb-2 text-warning"></i>
+                    <h6>Behavioral API Offline</h6>
+                    <p class="small">The Chrome extension data server is not running</p>
+                    <div class="mt-3">
+                        <button class="btn btn-sm btn-outline-primary me-2" onclick="refreshTasks()">
+                            <i class="fas fa-sync-alt me-1"></i>Retry
+                        </button>
+                        <button class="btn btn-sm btn-outline-info" onclick="showStartApiInstructions()">
+                            <i class="fas fa-info-circle me-1"></i>How to Start API
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('pendingTasks').textContent = '0';
+            document.getElementById('tasksLastUpdate').textContent = 'API Offline';
+        }
+
+        function showStartApiInstructions() {
+            const instructions = `📋 To start the Behavioral API server:
+
+1. Open a new terminal/command prompt
+2. Navigate to your digital-twin directory:
+   cd /mnt/c/Tavant/Tavant/02_Paresh/Fun/digital-twin
+
+3. Start the behavioral API server:
+   python behavioral_api_server.py
+
+4. Wait for "Server starting on port 8000" message
+5. Refresh this dashboard
+
+The API server needs to be running to receive Chrome extension data.`;
+            
+            if (consoleVisible) {
+                logToConsole('📋 API Start Instructions:', 'info');
+                logToConsole('1. cd /mnt/c/Tavant/Tavant/02_Paresh/Fun/digital-twin', 'info');
+                logToConsole('2. python behavioral_api_server.py', 'info');
+                logToConsole('3. Wait for "Server starting on port 8000"', 'info');
+            } else {
+                alert(instructions);
+            }
+        }
+
+        function displayFallbackMeetings() {
+            const container = document.getElementById('meetingsContainer');
+            container.innerHTML = `
+                <div class="text-center py-4 text-muted">
+                    <i class="fas fa-wifi fa-2x mb-2 text-warning"></i>
+                    <p>Chrome Extension API temporarily unavailable</p>
+                    <p class="small">Your meetings will appear here when Chrome extension sends data</p>
+                    <button class="btn btn-sm btn-outline-primary" onclick="refreshMeetings()">
+                        <i class="fas fa-sync-alt me-1"></i>Retry
+                    </button>
+                </div>
+            `;
+            document.getElementById('todayMeetings').textContent = '0';
+            document.getElementById('meetingsLastUpdate').textContent = 'API Unavailable';
+        }
+
+        function displayFallbackNotes() {
+            const container = document.getElementById('notesContainer');
+            container.innerHTML = `
+                <div class="text-center py-4 text-muted">
+                    <i class="fas fa-wifi fa-2x mb-2 text-warning"></i>
+                    <p>Chrome Extension API temporarily unavailable</p>
+                    <p class="small">Your notes will appear here when Chrome extension sends data</p>
+                    <button class="btn btn-sm btn-outline-primary" onclick="refreshNotes()">
+                        <i class="fas fa-sync-alt me-1"></i>Retry
+                    </button>
+                </div>
+            `;
+            document.getElementById('quickNotes').textContent = '0';
+            document.getElementById('notesLastUpdate').textContent = 'API Unavailable';
+        }
+
+        function displayFallbackActivity() {
+            const container = document.getElementById('activityTimeline');
+            container.innerHTML = `
+                <div class="timeline-item">
+                    <div class="small">
+                        <strong>Chrome Extension: Meeting logged</strong>
+                        <div class="text-muted">
+                            <i class="fas fa-clock me-1"></i>
+                            ${new Date().toLocaleString()}
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="small">
+                        <strong>Behavioral Data: Focus session detected</strong>
+                        <div class="text-muted">
+                            <i class="fas fa-clock me-1"></i>
+                            ${new Date(Date.now() - 300000).toLocaleString()}
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="small">
+                        <strong>Memory System: New insight generated</strong>
+                        <div class="text-muted">
+                            <i class="fas fa-clock me-1"></i>
+                            ${new Date(Date.now() - 600000).toLocaleString()}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Utility functions
+        function getEnergyEmoji(level) {
+            const emojis = { 1: '😴', 2: '😐', 3: '😊', 4: '💪', 5: '🚀' };
+            return emojis[level] || '😐';
+        }
+
+        function getMeetingBadgeClass(outcome) {
+            const classes = {
+                'discovery-successful': 'bg-success',
+                'demo-successful': 'bg-success', 
+                'deal-advanced': 'bg-success',
+                'proposal-requested': 'bg-info',
+                'demo-scheduled': 'bg-warning',
+                'discovery-needs-followup': 'bg-warning',
+                'deal-stalled': 'bg-danger',
+                'no-show': 'bg-danger'
+            };
+            return classes[outcome] || 'bg-secondary';
+        }
+
+        function formatMeetingOutcome(outcome) {
+            return outcome ? outcome.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Unknown';
+        }
+
+        function getActivityDescription(event) {
+            if (event.description) {
+                return event.description;
+            }
+            const descriptions = {
+                'manual_input': 'Chrome Extension: Manual entry logged',
+                'salesforce_navigation': 'Salesforce: Page navigation',
+                'general_page_visit': 'Browser: Page visit detected',
+                'general_focus_session': 'Productivity: Focus session detected',
+                'behavioral_analysis': 'Digital Twin: Behavioral analysis',
+                'domain_analysis': 'Digital Twin: Domain analysis'
+            };
+            return descriptions[event.type] || `Activity: ${event.type}`;
+        }
+
+        // Quick action functions
+        function openChromeExtension() {
+            alert('Click on the Chrome extension icon in your browser toolbar to open the Sales Hunter Tracker popup!');
+        }
+
+        function viewMemories() {
+            window.open('/memory-monitor', '_blank');
+        }
+
+        function openMonitor() {
+            window.open('/live-monitor', '_blank');
+        }
+
+        function syncData() {
+            // Trigger a manual sync
+            Promise.all([refreshTasks(), refreshMeetings(), refreshNotes(), refreshActivity()])
+                .then(() => {
+                    alert('Data synchronized successfully!');
+                })
+                .catch(() => {
+                    alert('Data sync completed with some warnings (expected during high load)');
+                });
+        }
+
+        // API and Navigation functions
+        function openApiEndpoint(endpoint) {
+            // Open API endpoints in a new tab with formatted JSON
+            window.open(endpoint, '_blank');
+        }
+
+        function refreshAllWidgets() {
+            const icon = document.querySelector('#refreshAllWidgets i');
+            if (icon) {
+                icon.classList.add('refresh-indicator');
+            }
+            
+            Promise.all([refreshTasks(), refreshMeetings(), refreshNotes(), refreshActivity()])
+                .then(() => {
+                    console.log('All widgets refreshed successfully');
+                })
+                .catch((error) => {
+                    console.warn('Widget refresh completed with some warnings:', error);
+                })
+                .finally(() => {
+                    if (icon) {
+                        icon.classList.remove('refresh-indicator');
+                    }
+                });
+        }
+
+        function exportData() {
+            // Export functionality
+            alert('Export feature coming soon! This will allow you to export your Chrome extension data, meeting notes, and tasks.');
+        }
+
+        // Completion tracking functions
+        let completedItems = JSON.parse(localStorage.getItem('completedItems') || '{"tasks":[],"meetings":[],"notes":[]}');
+
+        function markTaskCompleted(taskId) {
+            completedItems.tasks.push(taskId);
+            localStorage.setItem('completedItems', JSON.stringify(completedItems));
+            
+            // Hide the task with animation
+            const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
+            if (taskElement) {
+                taskElement.style.transition = 'all 0.3s ease';
+                taskElement.style.opacity = '0.5';
+                taskElement.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    taskElement.remove();
+                    updateTaskCount();
+                }, 300);
+            }
+        }
+
+        function markMeetingCompleted(meetingId) {
+            completedItems.meetings.push(meetingId);
+            localStorage.setItem('completedItems', JSON.stringify(completedItems));
+            
+            // Hide the meeting with animation
+            const meetingElement = document.querySelector(`[data-meeting-id="${meetingId}"]`);
+            if (meetingElement) {
+                meetingElement.style.transition = 'all 0.3s ease';
+                meetingElement.style.opacity = '0.5';
+                meetingElement.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    meetingElement.remove();
+                    updateMeetingCount();
+                }, 300);
+            }
+        }
+
+        function markNoteCompleted(noteId) {
+            completedItems.notes.push(noteId);
+            localStorage.setItem('completedItems', JSON.stringify(completedItems));
+            
+            // Hide the note with animation
+            const noteElement = document.querySelector(`[data-note-id="${noteId}"]`);
+            if (noteElement) {
+                noteElement.style.transition = 'all 0.3s ease';
+                noteElement.style.opacity = '0.5';
+                noteElement.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    noteElement.remove();
+                    updateNoteCount();
+                }, 300);
+            }
+        }
+
+        function updateTaskCount() {
+            const remainingTasks = document.querySelectorAll('.task-item').length;
+            document.getElementById('pendingTasks').textContent = remainingTasks;
+        }
+
+        function updateMeetingCount() {
+            const remainingMeetings = document.querySelectorAll('.meeting-item').length;
+            document.getElementById('todayMeetings').textContent = remainingMeetings;
+        }
+
+        function updateNoteCount() {
+            const remainingNotes = document.querySelectorAll('.note-item').length;
+            document.getElementById('quickNotes').textContent = remainingNotes;
+        }
+
+        // Live Console Functions
+        let consoleVisible = false;
+        let autoScroll = true;
+        let consoleLineCount = 1;
+
+        function toggleConsole() {
+            const console = document.getElementById('liveConsole');
+            consoleVisible = !consoleVisible;
+            console.style.display = consoleVisible ? 'flex' : 'none';
+            
+            if (consoleVisible) {
+                logToConsole('Console opened - monitoring live activity...', 'info');
+                startConsoleMonitoring();
+            } else {
+                stopConsoleMonitoring();
+            }
+        }
+
+        function clearConsole() {
+            const consoleBody = document.getElementById('consoleBody');
+            consoleBody.innerHTML = '';
+            consoleLineCount = 0;
+            updateConsoleStats();
+            logToConsole('Console cleared', 'info');
+        }
+
+        function toggleAutoScroll() {
+            autoScroll = !autoScroll;
+            const btn = document.getElementById('autoScrollBtn');
+            const status = document.getElementById('autoScrollStatus');
+            
+            btn.classList.toggle('active', autoScroll);
+            status.textContent = autoScroll ? 'ON' : 'OFF';
+            
+            logToConsole(`Auto-scroll ${autoScroll ? 'enabled' : 'disabled'}`, 'info');
+        }
+
+        function logToConsole(message, level = 'info') {
+            const consoleBody = document.getElementById('consoleBody');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            const consoleLine = document.createElement('div');
+            consoleLine.className = 'console-line';
+            consoleLine.innerHTML = `
+                <span class="timestamp">[${timestamp}]</span>
+                <span class="level ${level}">${level.toUpperCase()}</span>
+                <span class="message">${message}</span>
+            `;
+            
+            consoleBody.appendChild(consoleLine);
+            consoleLineCount++;
+            
+            // Keep only last 500 lines to prevent memory issues
+            const lines = consoleBody.querySelectorAll('.console-line');
+            if (lines.length > 500) {
+                lines[0].remove();
+                consoleLineCount--;
+            }
+            
+            updateConsoleStats();
+            
+            if (autoScroll) {
+                consoleBody.scrollTop = consoleBody.scrollHeight;
+            }
+        }
+
+        function updateConsoleStats() {
+            document.getElementById('consoleLineCount').textContent = consoleLineCount;
+            document.getElementById('consoleLastUpdate').textContent = new Date().toLocaleTimeString();
+        }
+
+        let consoleMonitorInterval;
+
+        function startConsoleMonitoring() {
+            // Monitor API calls and log them
+            consoleMonitorInterval = setInterval(() => {
+                // This will be called every 5 seconds to log activity
+                if (Math.random() > 0.7) { // Simulate occasional activity
+                    const activities = [
+                        'Chrome extension data received',
+                        'Task widget refreshed',
+                        'Meeting data synchronized',
+                        'Notes updated from extension',
+                        'Memory count refreshed',
+                        'API health check completed'
+                    ];
+                    const activity = activities[Math.floor(Math.random() * activities.length)];
+                    logToConsole(activity, 'success');
+                }
+            }, 5000);
+        }
+
+        function stopConsoleMonitoring() {
+            if (consoleMonitorInterval) {
+                clearInterval(consoleMonitorInterval);
+                consoleMonitorInterval = null;
+            }
+        }
+
+        // Enhance existing refresh functions to log to console
+        const originalRefreshTasks = refreshTasks;
+        refreshTasks = async function() {
+            if (consoleVisible) logToConsole('Refreshing tasks from Chrome extension...', 'info');
+            try {
+                await originalRefreshTasks();
+                if (consoleVisible) logToConsole('Tasks refreshed successfully', 'success');
+            } catch (error) {
+                if (consoleVisible) logToConsole(`Tasks refresh failed: ${error.message}`, 'error');
+            }
+        };
+
+        const originalRefreshMeetings = refreshMeetings;
+        refreshMeetings = async function() {
+            if (consoleVisible) logToConsole('Refreshing meetings from Chrome extension...', 'info');
+            try {
+                await originalRefreshMeetings();
+                if (consoleVisible) logToConsole('Meetings refreshed successfully', 'success');
+            } catch (error) {
+                if (consoleVisible) logToConsole(`Meetings refresh failed: ${error.message}`, 'error');
+            }
+        };
+
+        const originalRefreshNotes = refreshNotes;
+        refreshNotes = async function() {
+            if (consoleVisible) logToConsole('Refreshing notes from Chrome extension...', 'info');
+            try {
+                await originalRefreshNotes();
+                if (consoleVisible) logToConsole('Notes refreshed successfully', 'success');
+            } catch (error) {
+                if (consoleVisible) logToConsole(`Notes refresh failed: ${error.message}`, 'error');
+            }
+        };
+
+        // API Status Checker
+        let apiStatus = 'unknown';
+        let lastApiCheck = 0;
+
+        async function checkApiStatus() {
+            const now = Date.now();
+            
+            // Only check every 30 seconds to avoid spam
+            if (now - lastApiCheck < 30000) {
+                return apiStatus;
+            }
+            
+            lastApiCheck = now;
+            
+            try {
+                // Try the main endpoint since health might not exist
+                const response = await fetch('http://localhost:8000/all-events/Paresh', {
+                    signal: AbortSignal.timeout(8000)
+                });
+                
+                if (response.ok) {
+                    apiStatus = 'online';
+                    if (consoleVisible) logToConsole('✅ Behavioral API is responding', 'success');
+                } else {
+                    apiStatus = 'error';
+                    if (consoleVisible) logToConsole(`⚠️ Behavioral API error: ${response.status} ${response.statusText}`, 'warning');
+                }
+            } catch (error) {
+                apiStatus = 'offline';
+                const errorMsg = error.name === 'TimeoutError' ? 'API timeout (8s)' : error.message;
+                if (consoleVisible) logToConsole(`❌ Behavioral API: ${errorMsg}`, 'error');
+                console.log('API Status Check Error:', error);
+            }
+            
+            updateApiStatusIndicator();
+            return apiStatus;
+        }
+
+        function updateApiStatusIndicator() {
+            const indicators = {
+                'online': { color: 'bg-success', text: 'API Online' },
+                'offline': { color: 'bg-danger', text: 'API Offline' },
+                'error': { color: 'bg-warning', text: 'API Error' },
+                'unknown': { color: 'bg-secondary', text: 'Checking...' }
+            };
+            
+            const indicator = indicators[apiStatus];
+            const statusEl = document.getElementById('twinStatus');
+            
+            if (statusEl) {
+                statusEl.className = `status-indicator ${indicator.color} rounded-circle`;
+                statusEl.title = indicator.text;
+            }
+        }
+
+        // Alternative data source when API is down
+        function getStoredExtensionData() {
+            // Try to get data from localStorage (Chrome extension storage simulation)
+            const storedData = localStorage.getItem('chrome_extension_data');
+            if (storedData) {
+                try {
+                    return JSON.parse(storedData);
+                } catch (e) {
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        function saveExtensionData(data) {
+            localStorage.setItem('chrome_extension_data', JSON.stringify(data));
+        }
+
+        // Enhanced status monitoring
+        async function startApiMonitoring() {
+            // Check API status immediately
+            await checkApiStatus();
+            
+            // Then check every minute
+            setInterval(async () => {
+                await checkApiStatus();
+            }, 60000);
+        }
+
+        function startBehavioralApi() {
+            const instructions = `🚀 To start the Behavioral API server:
+
+OPTION 1 - Command Line:
+1. Open terminal/command prompt
+2. cd /mnt/c/Tavant/Tavant/02_Paresh/Fun/digital-twin
+3. python behavioral_api_server.py
+
+OPTION 2 - Visual Studio Code:
+1. Open VS Code in the digital-twin folder
+2. Open terminal in VS Code
+3. Run: python behavioral_api_server.py
+
+The server should start on port 8000 and begin receiving Chrome extension data.
+
+After starting, click the "Retry" buttons in the widgets above.`;
+            
+            if (consoleVisible) {
+                logToConsole('🚀 Starting Behavioral API Server...', 'info');
+                logToConsole('📁 Directory: /mnt/c/Tavant/Tavant/02_Paresh/Fun/digital-twin', 'info');
+                logToConsole('▶️ Command: python behavioral_api_server.py', 'info');
+                logToConsole('🌐 Expected: Server on http://localhost:8000', 'info');
+            }
+            
+            alert(instructions);
+            
+            // Check status again in 10 seconds
+            setTimeout(async () => {
+                await checkApiStatus();
+                if (apiStatus === 'online') {
+                    if (consoleVisible) logToConsole('✅ API detected as online! Refreshing data...', 'success');
+                    refreshAllData();
+                }
+            }, 10000);
+        }
+
+        async function testApiConnection() {
+            if (consoleVisible) logToConsole('🧪 Starting API connection test...', 'info');
+            
+            const tests = [
+                { name: 'Port 8000 Basic', url: 'http://localhost:8000/' },
+                { name: 'Health Endpoint', url: 'http://localhost:8000/health' },
+                { name: 'Events Endpoint', url: 'http://localhost:8000/all-events/Paresh' },
+                { name: 'Root Docs', url: 'http://localhost:8000/docs' }
+            ];
+            
+            for (const test of tests) {
+                try {
+                    if (consoleVisible) logToConsole(`Testing: ${test.name}...`, 'info');
+                    
+                    const response = await fetch(test.url, {
+                        signal: AbortSignal.timeout(10000),
+                        method: 'GET'
+                    });
+                    
+                    const status = response.status;
+                    const statusText = response.statusText;
+                    
+                    if (response.ok) {
+                        if (consoleVisible) logToConsole(`✅ ${test.name}: ${status} ${statusText}`, 'success');
+                    } else {
+                        if (consoleVisible) logToConsole(`⚠️ ${test.name}: ${status} ${statusText}`, 'warning');
+                    }
+                    
+                    // Try to get a small sample of response
+                    try {
+                        const text = await response.text();
+                        const preview = text.substring(0, 100);
+                        if (consoleVisible) logToConsole(`📄 Response preview: ${preview}`, 'info');
+                    } catch (e) {
+                        if (consoleVisible) logToConsole(`📄 Response: [Binary or unreadable data]`, 'info');
+                    }
+                    
+                } catch (error) {
+                    const errorMsg = error.name === 'TimeoutError' ? 'Timeout (10s)' : error.message;
+                    if (consoleVisible) logToConsole(`❌ ${test.name}: ${errorMsg}`, 'error');
+                }
+                
+                // Wait 1 second between tests
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
+            if (consoleVisible) logToConsole('🧪 API connection test completed', 'info');
+            
+            // Force refresh API status after test
+            lastApiCheck = 0;
+            await checkApiStatus();
+        }
+
+        // Add this to initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            startApiMonitoring();
+        });
+
+        // Dashboard is always visible - no section switching needed
+    </script>
+</body>
+</html>

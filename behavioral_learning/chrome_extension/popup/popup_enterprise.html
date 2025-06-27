@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup_enterprise.css">
+</head>
+<body>
+  <div class="enterprise-popup">
+    <!-- Header -->
+    <div class="header">
+      <div class="brand">
+        <div class="logo">
+          🧠
+        </div>
+        <div class="brand-text">
+          <h3>Digital Twin</h3>
+          <small>Enterprise Productivity Suite</small>
+        </div>
+      </div>
+      <div class="status-panel">
+        <div class="connection-status" id="connectionStatus">
+          <div class="status-dot status-active"></div>
+          <span>Connected</span>
+        </div>
+        <div class="sync-indicator" id="syncStatus">
+          🔄
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" data-tab="capture">
+        ➕
+        <span>Capture</span>
+      </button>
+      <button class="tab-btn" data-tab="dashboard">
+        📊
+        <span>Dashboard</span>
+      </button>
+      <button class="tab-btn" data-tab="insights">
+        💡
+        <span>Insights</span>
+      </button>
+    </div>
+
+    <!-- Capture Tab -->
+    <div id="captureTab" class="tab-content active">
+      <!-- Meeting Information -->
+      <div class="section">
+        <div class="section-header">
+          <h4>📅 Meeting Information</h4>
+        </div>
+        <div class="form-group">
+          <label>Meeting Title *</label>
+          <input type="text" id="meeting-title" placeholder="e.g., Q4 Strategy Review with Leadership Team" maxlength="100">
+          <div class="char-counter"><span id="title-count">0</span>/100</div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Meeting Type</label>
+            <select id="meeting-type">
+              <option value="">Select...</option>
+              <option value="discovery">Discovery Call</option>
+              <option value="demo">Product Demo</option>
+              <option value="negotiation">Negotiation</option>
+              <option value="follow-up">Follow-up</option>
+              <option value="internal">Internal Meeting</option>
+              <option value="training">Training Session</option>
+            </select>
+          </div>
+          <div class="form-group half">
+            <label>Outcome</label>
+            <select id="meeting-outcome">
+              <option value="">Select...</option>
+              <option value="successful">✅ Successful</option>
+              <option value="promising">🎯 Promising</option>
+              <option value="needs-followup">📞 Needs Follow-up</option>
+              <option value="on-hold">⏸️ On Hold</option>
+              <option value="closed-won">🏆 Closed Won</option>
+              <option value="closed-lost">❌ Closed Lost</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meeting Notes -->
+      <div class="section">
+        <div class="section-header">
+          <h4>📝 Notes & Outcomes</h4>
+        </div>
+        <div class="form-group">
+          <label>Detailed Notes</label>
+          <textarea id="meeting-notes" placeholder="Key takeaways, decisions made, next steps, attendee feedback..." maxlength="500" rows="4"></textarea>
+          <div class="char-counter"><span id="notes-count">0</span>/500</div>
+        </div>
+        
+        <div class="form-group">
+          <label>Action Items</label>
+          <textarea id="action-items" placeholder="- Follow up with technical requirements&#10;- Send proposal by Friday&#10;- Schedule demo for next week" maxlength="300" rows="3"></textarea>
+          <div class="char-counter"><span id="actions-count">0</span>/300</div>
+        </div>
+      </div>
+
+      <!-- Quick Insights -->
+      <div class="section">
+        <div class="section-header">
+          <h4>🧠 Quick Insights</h4>
+        </div>
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Energy Level</label>
+            <div class="energy-selector">
+              <button class="energy-btn" data-level="1" title="Low Energy">😴</button>
+              <button class="energy-btn" data-level="2" title="Below Average">😐</button>
+              <button class="energy-btn" data-level="3" title="Good">😊</button>
+              <button class="energy-btn" data-level="4" title="High Energy">💪</button>
+              <button class="energy-btn" data-level="5" title="Peak Performance">🚀</button>
+            </div>
+          </div>
+          <div class="form-group half">
+            <label>Priority Level</label>
+            <select id="priority-level">
+              <option value="low">🟢 Low</option>
+              <option value="medium" selected>🟡 Medium</option>
+              <option value="high">🔴 High</option>
+              <option value="urgent">⚡ Urgent</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Quick Note</label>
+          <input type="text" id="quick-note" placeholder="Brief insight or reminder..." maxlength="200">
+          <div class="char-counter"><span id="note-count">0</span>/200</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-section">
+        <button id="log-activity" class="primary-btn">
+          💾
+          Save to Digital Twin
+        </button>
+        <button id="clear-form" class="secondary-btn">
+          🗑️
+          Clear Form
+        </button>
+      </div>
+    </div>
+
+    <!-- Dashboard Tab -->
+    <div id="dashboardTab" class="tab-content">
+      <div class="dashboard-summary">
+        <h4>📊 Today's Performance</h4>
+        
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-value" id="meetings-today">0</div>
+            <div class="metric-label">Meetings</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="tasks-completed">0</div>
+            <div class="metric-label">Tasks</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="focus-time">0h</div>
+            <div class="metric-label">Focus Time</div>
+          </div>
+        </div>
+
+        <div class="recent-activity">
+          <h5>Recent Activity</h5>
+          <div id="activity-feed" class="activity-list">
+            <div class="activity-item">
+              🕐
+              <span>Loading recent activity...</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <button class="action-btn" id="openDashboardBtn">
+            🔗
+            Open Full Dashboard
+          </button>
+          <button class="action-btn" id="syncDataBtn">
+            🔄
+            Sync Data
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insights Tab -->
+    <div id="insightsTab" class="tab-content">
+      <div class="insights-panel">
+        <h4>💡 AI Insights</h4>
+        
+        <div class="insight-cards" id="insights-container">
+          <div class="insight-card">
+            <div class="insight-icon">🎯</div>
+            <div class="insight-content">
+              <h6>Productivity Pattern</h6>
+              <p>Your peak performance hours are 9-11 AM. Schedule important meetings during this time.</p>
+            </div>
+          </div>
+          
+          <div class="insight-card">
+            <div class="insight-icon">📈</div>
+            <div class="insight-content">
+              <h6>Meeting Effectiveness</h6>
+              <p>Your successful meeting rate increased by 23% this week. Keep up the great preparation!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="suggestions">
+          <h5>Smart Suggestions</h5>
+          <div id="suggestions-list" class="suggestion-items">
+            <div class="suggestion-item">
+              📅
+              <span>Schedule follow-up for ABC Corp demo</span>
+              <button class="suggestion-action">Do It</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <div class="status-left">
+        <span class="status-text" id="status-message">Ready to capture</span>
+      </div>
+      <div class="status-right">
+        <span class="last-sync" id="last-sync">Never</span>
+        <div class="data-indicator" id="data-status" title="Data Status">
+          ⚫
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup_enterprise.js"></script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Hunter Extension Test Page</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .status-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .status-card.success { border-left-color: #28a745; }
+        .status-card.warning { border-left-color: #ffc107; }
+        .status-card.error { border-left-color: #dc3545; }
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover { background: #0056b3; }
+        .btn.success { background: #28a745; }
+        .btn.warning { background: #ffc107; color: black; }
+        .btn.danger { background: #dc3545; }
+        #log {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .metric {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 5px 10px;
+            margin: 2px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Sales Hunter Extension Test Dashboard</h1>
+        <p>This page tests the Chrome extension functionality without CSP restrictions.</p>
+        
+        <div class="status-grid">
+            <div class="status-card" id="extension-status">
+                <h3>🔌 Extension Status</h3>
+                <p id="extension-info">Checking...</p>
+            </div>
+            
+            <div class="status-card" id="api-status">
+                <h3>📡 API Connection</h3>
+                <p id="api-info">Checking...</p>
+            </div>
+            
+            <div class="status-card" id="storage-status">
+                <h3>💾 Data Storage</h3>
+                <p id="storage-info">Checking...</p>
+            </div>
+            
+            <div class="status-card" id="tracking-status">
+                <h3>📊 Tracking Status</h3>
+                <p id="tracking-info">Checking...</p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 Test Controls</h3>
+            <button class="btn" onclick="runFullTest()">🔄 Run Full Test</button>
+            <button class="btn success" onclick="testAPIConnection()">📡 Test API</button>
+            <button class="btn warning" onclick="testExtensionStorage()">💾 Test Storage</button>
+            <button class="btn" onclick="simulateActivity()">🎬 Simulate Activity</button>
+            <button class="btn danger" onclick="clearLog()">🗑️ Clear Log</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📈 Live Metrics</h3>
+            <div id="metrics-display">
+                <span class="metric" id="events-count">Events: 0</span>
+                <span class="metric" id="api-calls">API Calls: 0</span>
+                <span class="metric" id="last-sync">Last Sync: Never</span>
+                <span class="metric" id="session-time">Session: 0s</span>
+            </div>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script>
+        // Test Dashboard JavaScript
+        let testStats = {
+            events: 0,
+            apiCalls: 0,
+            lastSync: null,
+            sessionStart: Date.now()
+        };
+
+        function log(message, type = 'info') {
+            const logEl = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const colorMap = {
+                'info': '#00ff00',
+                'success': '#00ff88',
+                'warning': '#ffaa00',
+                'error': '#ff4444'
+            };
+            
+            logEl.innerHTML += `<div style="color: ${colorMap[type]};">[${timestamp}] ${message}</div>`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function updateMetrics() {
+            document.getElementById('events-count').textContent = `Events: ${testStats.events}`;
+            document.getElementById('api-calls').textContent = `API Calls: ${testStats.apiCalls}`;
+            document.getElementById('last-sync').textContent = `Last Sync: ${testStats.lastSync || 'Never'}`;
+            document.getElementById('session-time').textContent = `Session: ${Math.floor((Date.now() - testStats.sessionStart) / 1000)}s`;
+        }
+
+        function updateStatusCard(cardId, className, message) {
+            const card = document.getElementById(cardId);
+            card.className = `status-card ${className}`;
+            card.querySelector('p').textContent = message;
+        }
+
+        async function testExtensionStatus() {
+            log('🔌 Testing extension status...');
+            
+            try {
+                if (typeof chrome !== 'undefined' && chrome.runtime) {
+                    log('✅ Chrome extension APIs available', 'success');
+                    
+                    if (chrome.runtime.id) {
+                        log(`✅ Extension ID: ${chrome.runtime.id}`, 'success');
+                        updateStatusCard('extension-status', 'success', `Extension loaded: ${chrome.runtime.id}`);
+                    }
+                    
+                    // Test storage
+                    if (chrome.storage && chrome.storage.local) {
+                        chrome.storage.local.get(['behavioralEvents'], (result) => {
+                            const events = result.behavioralEvents || [];
+                            testStats.events = events.length;
+                            log(`📊 Extension storage: ${events.length} events`, 'success');
+                            updateStatusCard('storage-status', 'success', `${events.length} events stored`);
+                            updateMetrics();
+                        });
+                    }
+                    
+                    return true;
+                } else {
+                    log('❌ Chrome extension APIs not available', 'error');
+                    updateStatusCard('extension-status', 'error', 'Extension not detected');
+                    return false;
+                }
+            } catch (error) {
+                log(`❌ Extension test error: ${error}`, 'error');
+                updateStatusCard('extension-status', 'error', 'Extension error');
+                return false;
+            }
+        }
+
+        async function testAPIConnection() {
+            log('📡 Testing API connection...');
+            
+            try {
+                const response = await fetch('http://localhost:8000/health');
+                const data = await response.json();
+                
+                testStats.apiCalls++;
+                updateMetrics();
+                
+                if (response.ok) {
+                    log('✅ API connection successful', 'success');
+                    log(`📊 API Status: ${data.status}`, 'info');
+                    updateStatusCard('api-status', 'success', `Connected: ${data.status}`);
+                    return true;
+                } else {
+                    log(`❌ API responded with ${response.status}`, 'error');
+                    updateStatusCard('api-status', 'error', `HTTP ${response.status}`);
+                    return false;
+                }
+            } catch (error) {
+                log(`❌ API connection failed: ${error}`, 'error');
+                updateStatusCard('api-status', 'error', 'API offline');
+                return false;
+            }
+        }
+
+        async function testExtensionStorage() {
+            log('💾 Testing extension storage...');
+            
+            if (!chrome.storage) {
+                log('❌ Chrome storage not available', 'error');
+                return false;
+            }
+            
+            try {
+                // Test write
+                const testData = {
+                    type: 'storage_test',
+                    timestamp: Date.now(),
+                    test: true
+                };
+                
+                chrome.storage.local.get(['behavioralEvents'], (result) => {
+                    const events = result.behavioralEvents || [];
+                    events.push(testData);
+                    
+                    chrome.storage.local.set({ behavioralEvents: events }, () => {
+                        if (chrome.runtime.lastError) {
+                            log('❌ Storage write failed', 'error');
+                        } else {
+                            log('✅ Storage write successful', 'success');
+                            testStats.events = events.length;
+                            updateMetrics();
+                        }
+                    });
+                });
+                
+                return true;
+            } catch (error) {
+                log(`❌ Storage test error: ${error}`, 'error');
+                return false;
+            }
+        }
+
+        async function simulateActivity() {
+            log('🎬 Simulating user activity...');
+            
+            // Simulate different types of events
+            const events = [
+                { type: 'page_visit', domain: window.location.hostname },
+                { type: 'click_event', element: 'test_button' },
+                { type: 'scroll_event', depth: Math.random() * 100 },
+                { type: 'focus_session', duration: Math.random() * 60000 }
+            ];
+            
+            for (let i = 0; i < events.length; i++) {
+                const event = {
+                    ...events[i],
+                    timestamp: Date.now(),
+                    user_id: 'Paresh',
+                    session_id: 'test_session',
+                    simulated: true
+                };
+                
+                // Try to send via extension
+                if (chrome.runtime && chrome.runtime.sendMessage) {
+                    chrome.runtime.sendMessage({
+                        source: 'test',
+                        data: event
+                    }, (response) => {
+                        if (chrome.runtime.lastError) {
+                            log(`⚠️ Extension message failed: ${chrome.runtime.lastError.message}`, 'warning');
+                        } else {
+                            log(`📨 Sent via extension: ${event.type}`, 'success');
+                        }
+                    });
+                }
+                
+                // Also try direct API
+                try {
+                    const apiEvent = {
+                        user_id: 'Paresh',
+                        event_data: event,
+                        timestamp: new Date().toISOString(),
+                        source: 'test_page'
+                    };
+                    
+                    const response = await fetch('http://localhost:8000/behavioral-data', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(apiEvent)
+                    });
+                    
+                    testStats.apiCalls++;
+                    
+                    if (response.ok) {
+                        log(`📡 API sent: ${event.type}`, 'success');
+                        testStats.lastSync = new Date().toLocaleTimeString();
+                    } else {
+                        log(`❌ API failed: ${response.status}`, 'error');
+                    }
+                } catch (error) {
+                    log(`❌ API error: ${error}`, 'error');
+                }
+                
+                updateMetrics();
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            log('✅ Activity simulation complete', 'success');
+        }
+
+        async function runFullTest() {
+            log('🧪 Running full extension test suite...');
+            
+            await testExtensionStatus();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await testAPIConnection();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await testExtensionStorage();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            updateStatusCard('tracking-status', 'success', 'Tests completed');
+            log('✅ Full test suite completed', 'success');
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+            log('🗑️ Log cleared');
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', async () => {
+            log('🎯 Sales Hunter Extension Test Dashboard loaded');
+            log('🔄 Running initial tests...');
+            
+            await runFullTest();
+            
+            // Set up periodic updates
+            setInterval(updateMetrics, 1000);
+            
+            // Test tracking
+            setInterval(async () => {
+                if (Math.random() < 0.1) { // 10% chance every interval
+                    log('📊 Periodic tracking simulation...', 'info');
+                    await simulateActivity();
+                }
+            }, 30000); // Every 30 seconds
+        });
+
+        // Make functions available globally for console testing
+        window.extensionTest = {
+            testExtensionStatus,
+            testAPIConnection,
+            testExtensionStorage,
+            simulateActivity,
+            runFullTest
+        };
+    </script>
+</body>
+</html>

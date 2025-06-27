@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Digital Twin Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/smart_style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Enterprise Navigation Header -->
+    <nav class="navbar navbar-dark bg-dark border-bottom">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center">
+                <button class="btn btn-outline-light me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#enterpriseSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="navbar-brand d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="fas fa-brain text-primary" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-0 text-white">Enterprise Digital Twin</h4>
+                        <small class="text-light opacity-75">Intelligent Productivity Platform</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3">
+                <!-- System Status -->
+                <div class="d-flex gap-2">
+                    <div class="status-indicator bg-secondary rounded-circle" style="width: 12px; height: 12px;" id="connectionStatus" title="System Online"></div>
+                    <div class="status-indicator bg-secondary rounded-circle" style="width: 12px; height: 12px;" id="twinStatus" title="AI Processing"></div>
+                    <div class="status-indicator bg-secondary rounded-circle" style="width: 12px; height: 12px;" id="memoryStatus" title="Memory Active"></div>
+                </div>
+                
+                <!-- User Profile -->
+                <div class="d-flex align-items-center text-light">
+                    <div class="me-2">
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="fw-bold">Enterprise User</div>
+                        <small class="opacity-75">Digital Twin Owner</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Enterprise Sidebar -->
+    <div class="offcanvas offcanvas-start bg-dark text-light" tabindex="-1" id="enterpriseSidebar">
+        <div class="offcanvas-header border-bottom border-secondary">
+            <h5 class="offcanvas-title text-light">
+                <i class="fas fa-cogs me-2"></i>Digital Twin Control Center
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <!-- Navigation Menu -->
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action bg-dark text-light border-secondary" onclick="showSection('dashboard')">
+                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                </a>
+                <a href="#" class="list-group-item list-group-item-action bg-dark text-light border-secondary" onclick="showSection('intelligence')">
+                    <i class="fas fa-brain me-2"></i>AI Intelligence
+                </a>
+                <a href="#" class="list-group-item list-group-item-action bg-dark text-light border-secondary" onclick="showSection('documents')">
+                    <i class="fas fa-file-alt me-2"></i>Document Analysis
+                </a>
+                <a href="#" class="list-group-item list-group-item-action bg-dark text-light border-secondary" onclick="showSection('collaboration')">
+                    <i class="fas fa-users me-2"></i>Collaboration Intelligence
+                </a>
+                <a href="#" class="list-group-item list-group-item-action bg-dark text-light border-secondary" onclick="showSection('memory')">
+                    <i class="fas fa-database me-2"></i>Memory System
+                </a>
+                <a href="#" class="list-group-item list-group-item-action bg-dark text-light border-secondary" onclick="showSection('analytics')">
+                    <i class="fas fa-chart-line me-2"></i>Analytics
+                </a>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="p-3 border-top border-secondary mt-3">
+                <h6 class="text-light mb-3">Quick Actions</h6>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary btn-sm" onclick="showDocumentUpload()">
+                        <i class="fas fa-upload me-1"></i>Analyze Document
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="window.twin.refreshAICoaching()">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh AI Insights
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="window.twin.integrateMemories()">
+                        <i class="fas fa-brain me-1"></i>Sync Intelligence
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container-fluid py-4" style="margin-top: 0;">
+        
+        <!-- AI Intelligence Section -->
+        <div id="intelligenceSection" class="section-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0">
+                            <i class="fas fa-robot text-primary me-2"></i>AI Intelligence Center
+                        </h2>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="window.twin.refreshAICoaching()">
+                                <i class="fas fa-sync-alt me-1"></i>Refresh
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="window.twin.integrateMemories()">
+                                <i class="fas fa-brain me-1"></i>Sync Intelligence
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- AI Productivity Coach -->
+                <div class="col-lg-8 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-user-tie me-2"></i>AI Productivity Coach
+                            </h5>
+                            <small class="opacity-75">Personalized insights based on your behavioral patterns</small>
+                        </div>
+                        <div class="card-body">
+                            <div id="aiCoaching" class="ai-coaching-container">
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="text-muted">Analyzing behavioral patterns for personalized coaching...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Smart Suggestions -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">
+                                <i class="fas fa-lightbulb me-2"></i>Smart Suggestions
+                            </h5>
+                            <small class="opacity-75">Real-time productivity recommendations</small>
+                        </div>
+                        <div class="card-body">
+                            <div id="proactiveSuggestions" class="proactive-suggestions-container">
+                                <div class="text-center py-4">
+                                    <div class="spinner-border text-warning mb-3" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="text-muted">Generating smart suggestions...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Document Analysis Section -->
+        <div id="documentsSection" class="section-content" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-0">
+                        <i class="fas fa-file-alt text-primary me-2"></i>Document Analysis Center
+                    </h2>
+                    <p class="text-muted mt-2">Upload and analyze documents with AI-powered insights</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Document Upload -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-cloud-upload-alt me-2"></i>Document Upload
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="upload-area border-2 border-dashed border-primary rounded p-4 text-center" 
+                                 ondrop="dropHandler(event)" ondragover="dragOverHandler(event)" ondragenter="dragEnterHandler(event)">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                                <h6>Drop files here or click to upload</h6>
+                                <p class="text-muted small mb-3">Supports PDF, DOCX, TXT files</p>
+                                <input type="file" id="fileInput" class="d-none" accept=".pdf,.docx,.txt" onchange="handleFileSelection(this.files)">
+                                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                                    <i class="fas fa-plus me-1"></i>Select Files
+                                </button>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <label for="actionSelect" class="form-label">Analysis Type</label>
+                                <select class="form-select" id="actionSelect">
+                                    <option value="document_analysis">Comprehensive Analysis</option>
+                                    <option value="meeting_processing">Meeting Transcript</option>
+                                    <option value="email_drafting">Email Analysis</option>
+                                    <option value="smart_questions">Generate Questions</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing Status -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-tasks me-2"></i>Processing Queue
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="processingQueue">
+                                <div class="text-center py-4">
+                                    <i class="fas fa-inbox fa-2x text-muted mb-3"></i>
+                                    <p class="text-muted">No documents in queue</p>
+                                    <small class="text-muted">Upload a document to start analysis</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Results -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-history me-2"></i>Recent Analysis
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="recentResults">
+                                <div class="text-center py-4">
+                                    <i class="fas fa-chart-line fa-2x text-muted mb-3"></i>
+                                    <p class="text-muted">No recent analysis</p>
+                                    <small class="text-muted">Results will appear here after processing</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Results -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-bar me-2"></i>Analysis Results
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="analysisResults">
+                                <div class="text-center py-5">
+                                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                    <h5 class="text-muted">No Analysis Available</h5>
+                                    <p class="text-muted">Upload and process a document to see detailed AI analysis here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collaboration Intelligence Section -->
+        <div id="collaborationSection" class="section-content" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-0">
+                        <i class="fas fa-users text-primary me-2"></i>Collaboration Intelligence
+                    </h2>
+                    <p class="text-muted mt-2">AI-powered insights from team communications</p>
+                </div>
+            </div>
+
+            <!-- Platform Status -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title">Platform Status</h6>
+                            <div class="platform-connections">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span><i class="fab fa-slack me-2"></i>Slack</span>
+                                    <span class="badge bg-success" id="slackConnectionStatus">Connected</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span><i class="fab fa-microsoft me-2"></i>Teams</span>
+                                    <span class="badge bg-success" id="teamsConnectionStatus">Connected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title">Quick Stats</h6>
+                            <div id="collaborationQuickStats">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="stat-number" id="totalMessages">-</div>
+                                        <div class="stat-label">Messages</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="stat-number" id="pendingSuggestions">-</div>
+                                        <div class="stat-label">Suggestions</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="stat-number" id="actionItems">-</div>
+                                        <div class="stat-label">Actions</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Panel -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-cog me-2"></i>Monitoring Configuration
+                                </h5>
+                                <button class="btn btn-sm btn-outline-light" onclick="window.twin.toggleCollaborationConfig()">
+                                    <i class="fas fa-edit me-1"></i>Edit
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="collaborationConfig" class="collaboration-config">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Monitor Channels:</label>
+                                        <select multiple class="form-select" id="channelSelector" size="4">
+                                            <option value="#general">#general</option>
+                                            <option value="#product-updates" selected>#product-updates</option>
+                                            <option value="#dev-team">#dev-team</option>
+                                            <option value="Product Planning" selected>Product Planning (Teams)</option>
+                                            <option value="Development Team">Development Team (Teams)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Key People:</label>
+                                        <input type="text" class="form-control mb-2" id="usersInput" placeholder="@username1, @username2..." value="sarah.johnson, mike.chen">
+                                        <label class="form-label">Keywords:</label>
+                                        <input type="text" class="form-control" id="keywordsInput" placeholder="deadline, urgent, action item..." value="deadline, urgent, action item">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Auto-Actions:</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="autoCreateTasks">
+                                            <label class="form-check-label">Auto-create tasks</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="autoScheduleMeetings">
+                                            <label class="form-check-label">Auto-schedule meetings</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="autoReminders">
+                                            <label class="form-check-label">Send follow-up reminders</label>
+                                        </div>
+                                        <button class="btn btn-primary btn-sm mt-2" onclick="window.twin.saveCollaborationConfig()">
+                                            <i class="fas fa-save me-1"></i>Save Config
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smart Suggestions -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">
+                                <i class="fas fa-lightbulb me-2"></i>Smart Suggestions
+                                <span class="badge bg-dark ms-2" id="suggestionsCount">0</span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="collaborationSuggestions">
+                                <div class="text-center py-4">
+                                    <i class="fas fa-comments fa-2x text-muted mb-2"></i>
+                                    <p class="text-muted">Loading collaboration insights...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity and Analytics -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-history me-2"></i>Recent Messages
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="recentMessages" class="recent-messages">
+                                <div class="text-center py-3">
+                                    <small class="text-muted">Loading recent activity...</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-bar me-2"></i>Analytics
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="collaborationAnalytics" class="collaboration-analytics">
+                                <div class="text-center py-3">
+                                    <small class="text-muted">Loading analytics...</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory System Section -->
+        <div id="memorySection" class="section-content" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-0">
+                        <i class="fas fa-database text-primary me-2"></i>Memory System
+                    </h2>
+                    <p class="text-muted mt-2">Explore your digital twin's knowledge and memories</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-brain me-2"></i>Memory Browser
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="memoryBrowser">
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="text-muted">Loading memory system...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-pie me-2"></i>Memory Statistics
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="memoryStats">
+                                <div class="text-center py-4">
+                                    <div class="spinner-border text-info mb-3" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="text-muted">Calculating statistics...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div id="analyticsSection" class="section-content" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-0">
+                        <i class="fas fa-chart-line text-primary me-2"></i>Analytics Dashboard
+                    </h2>
+                    <p class="text-muted mt-2">Behavioral patterns and productivity insights</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-analytics me-2"></i>Behavioral Analytics
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="behavioralAnalytics">
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-success mb-3" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="text-muted">Analyzing behavioral data...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-upload me-2"></i>Document Analysis
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="uploadContent">
+                        <!-- Upload content will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Intelligence Widget -->
+    <div id="voiceWidget" class="voice-widget position-fixed" 
+         style="z-index: 99999; pointer-events: none; bottom: 30px; right: 30px; width: 70px; height: 70px;">
+        <button id="voiceToggle" class="voice-toggle-btn btn btn-success rounded-circle" 
+                style="pointer-events: all; cursor: pointer; width: 70px; height: 70px; background: #28a745; border: 2px solid white; box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;" 
+                onclick="console.log('💬 Voice AI clicked!'); toggleVoiceRecording();"
+                onmousedown="console.log('💬 Mouse down on voice AI');"
+                onmouseup="console.log('💬 Mouse up on voice AI');"
+                onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 25px rgba(40, 167, 69, 0.6)';"
+                onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 6px 20px rgba(40, 167, 69, 0.4)';"
+                title="Click to start Voice AI - Smart conversation assistant">
+            <i class="fas fa-comments" id="voiceIcon" style="font-size: 22px; color: white; pointer-events: none;"></i>
+        </button>
+        
+        <!-- Position Control -->
+        <div class="position-controls" style="position: absolute; top: -50px; left: 0; display: none; background: white; padding: 5px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);" id="positionControls">
+            <button class="btn btn-sm btn-outline-secondary me-1" onclick="moveVoiceWidget('top-left')" title="Top Left">↖</button>
+            <button class="btn btn-sm btn-outline-secondary me-1" onclick="moveVoiceWidget('top-right')" title="Top Right">↗</button>
+            <button class="btn btn-sm btn-outline-secondary me-1" onclick="moveVoiceWidget('bottom-left')" title="Bottom Left">↙</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="moveVoiceWidget('bottom-right')" title="Bottom Right">↘</button>
+        </div>
+        
+        <!-- Widget Label -->
+        <div style="position: absolute; bottom: 80px; right: 0; background: rgba(40, 167, 69, 0.9); color: white; padding: 6px 10px; border-radius: 12px; font-size: 12px; white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+            💬 Voice AI
+        </div>
+        
+        <!-- Simple Two-Button Mode Toggle -->
+        <div id="twoButtonMode" style="position: absolute; top: 90px; left: 0; display: none;">
+            <button class="btn btn-success btn-sm me-1" onclick="startVoiceRecording()" style="width: 36px; height: 36px; border-radius: 50%;">
+                <i class="fas fa-play" style="font-size: 12px;"></i>
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="stopVoiceRecording()" style="width: 36px; height: 36px; border-radius: 50%;">
+                <i class="fas fa-stop" style="font-size: 12px;"></i>
+            </button>
+        </div>
+        
+        <!-- Live Transcription Display -->
+        <div id="liveTranscription" class="live-transcription-panel" style="display: none;">
+            <div class="transcription-header">
+                <h6><i class="fas fa-microphone-alt me-2"></i>Live Transcription</h6>
+                <button class="btn-close btn-close-white" onclick="hideLiveTranscription()"></button>
+            </div>
+            <div class="transcription-content">
+                <div class="voice-level-indicator-container">
+                    <div class="voice-level-indicator"></div>
+                </div>
+                <div class="live-transcription" id="liveTranscriptionContent">
+                    <div class="text-center py-3">
+                        <small class="text-muted">Start speaking to see transcription...</small>
+                    </div>
+                </div>
+            </div>
+            <div class="transcription-controls">
+                <button class="btn btn-sm btn-success" onclick="saveTranscription()">
+                    <i class="fas fa-save me-1"></i>Save
+                </button>
+                <button class="btn btn-sm btn-outline-light" onclick="clearTranscription()">
+                    <i class="fas fa-trash me-1"></i>Clear
+                </button>
+            </div>
+        </div>
+        
+        <!-- Voice Activity Indicator -->
+        <div class="voice-activity-ring" id="voiceActivityRing"></div>
+    </div>
+
+    <!-- Processing Status Toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
+        <div id="statusToast" class="toast" role="alert">
+            <div class="toast-header">
+                <strong class="me-auto">Digital Twin</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                <!-- Toast message will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/smart_dashboard.js"></script>
+    <script src="/static/voice_processor.js?v=4"></script>
+    <script>
+        // Initialize the enterprise digital twin
+        window.twin = new SmartDigitalTwin();
+        
+        // Define voice widget initialization function
+        window.initializeVoiceWidget = function() {
+            console.log('🎙️ Initializing voice widget...');
+            
+            // Check if VoiceProcessor is available
+            if (typeof VoiceProcessor === 'undefined') {
+                console.error('❌ VoiceProcessor class not found!');
+                return;
+            }
+            
+            try {
+                // Initialize the voice processor
+                window.voiceProcessor = new VoiceProcessor('http://localhost:8001');
+                console.log('✅ Voice processor initialized:', window.voiceProcessor);
+            } catch (error) {
+                console.error('❌ Failed to initialize VoiceProcessor:', error);
+                return;
+            }
+            
+            // Check if voice elements exist
+            const voiceToggle = document.getElementById('voiceToggle');
+            const voiceIcon = document.getElementById('voiceIcon');
+            
+            if (!voiceToggle) {
+                console.error('Voice toggle button not found!');
+                return;
+            }
+            
+            console.log('✅ Voice widget elements found');
+            
+            // Voice widget event listeners
+            voiceToggle.addEventListener('click', toggleVoiceRecording);
+            
+            // Voice activity event listeners
+            window.addEventListener('voiceActivity', (event) => {
+                const { active, volume } = event.detail;
+                const activityRing = document.getElementById('voiceActivityRing');
+                
+                if (active && volume > 0.02) {
+                    activityRing.classList.add('active');
+                } else {
+                    activityRing.classList.remove('active');
+                }
+            });
+            
+            // Transcription result event listener
+            window.addEventListener('transcriptionResult', (event) => {
+                const result = event.detail;
+                console.log('Transcription result:', result);
+                
+                // Show live transcription panel if not visible
+                const panel = document.getElementById('liveTranscription');
+                if (panel.style.display === 'none') {
+                    panel.style.display = 'block';
+                }
+            });
+            
+            // Transcription error event listener
+            window.addEventListener('transcriptionError', (event) => {
+                const { chunkId, error } = event.detail;
+                console.error('Transcription error:', error);
+                showNotification('error', `Transcription failed: ${error}`);
+            });
+        }
+        
+        // Voice widget functions
+        function toggleVoiceRecording() {
+            console.log('🎤 Toggle voice recording clicked');
+            
+            const toggleBtn = document.getElementById('voiceToggle');
+            const icon = document.getElementById('voiceIcon');
+            
+            if (!window.voiceProcessor) {
+                console.error('Voice processor not initialized');
+                showNotification('error', 'Voice system not ready');
+                return;
+            }
+            
+            console.log('Current recording state:', window.voiceProcessor.isRecording);
+            
+            if (!window.voiceProcessor.isRecording) {
+                // Start recording
+                console.log('🎙️ Starting recording...');
+                showNotification('info', 'Starting Voice AI conversation...');
+                
+                window.voiceProcessor.startRecording().then(() => {
+                    console.log('✅ Recording started successfully');
+                    toggleBtn.classList.add('recording');
+                    toggleBtn.style.background = '#dc3545';
+                    icon.className = 'fas fa-stop-circle';
+                    
+                    // Show live transcription panel
+                    const panel = document.getElementById('liveTranscription');
+                    if (panel) {
+                        panel.style.display = 'block';
+                    }
+                    
+                    showNotification('success', '💬 Voice AI listening...');
+                }).catch((error) => {
+                    console.error('❌ Failed to start recording:', error);
+                    showNotification('error', 'Failed to start voice recording. Please check microphone permissions.');
+                });
+            } else {
+                // Stop recording
+                console.log('🛑 Stopping recording...');
+                window.voiceProcessor.stopRecording();
+                toggleBtn.classList.remove('recording');
+                toggleBtn.style.background = '#28a745';
+                icon.className = 'fas fa-comments';
+                
+                showNotification('success', '✅ Voice AI conversation ended');
+            }
+        }
+        
+        function hideLiveTranscription() {
+            document.getElementById('liveTranscription').style.display = 'none';
+        }
+        
+        function saveTranscription() {
+            const transcriptionContent = document.getElementById('liveTranscriptionContent');
+            const chunks = transcriptionContent.querySelectorAll('.transcription-chunk .text');
+            
+            if (chunks.length === 0) {
+                showNotification('warning', 'No transcription to save');
+                return;
+            }
+            
+            // Combine all transcription text
+            const fullTranscript = Array.from(chunks).map(chunk => chunk.textContent).join(' ');
+            
+            // Send to collaboration intelligence for analysis
+            fetch('/api/collaboration/analyze-transcript', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    transcript: fullTranscript,
+                    timestamp: new Date().toISOString(),
+                    source: 'voice_widget'
+                })
+            }).then(response => response.json())
+              .then(result => {
+                  showNotification('success', 'Transcription saved and analyzed');
+                  console.log('Analysis result:', result);
+              })
+              .catch(error => {
+                  showNotification('error', 'Failed to save transcription');
+                  console.error('Save error:', error);
+              });
+        }
+        
+        function clearTranscription() {
+            const transcriptionContent = document.getElementById('liveTranscriptionContent');
+            transcriptionContent.innerHTML = '<div class="text-center py-3"><small class="text-muted">Start speaking to see transcription...</small></div>';
+            showNotification('info', 'Transcription cleared');
+        }
+        
+        // Voice widget positioning
+        function moveVoiceWidget(position) {
+            const widget = document.getElementById('voiceWidget');
+            const controls = document.getElementById('positionControls');
+            
+            // Reset all positions
+            widget.style.top = 'auto';
+            widget.style.bottom = 'auto';
+            widget.style.left = 'auto';
+            widget.style.right = 'auto';
+            
+            switch(position) {
+                case 'top-left':
+                    widget.style.top = '100px';
+                    widget.style.left = '30px';
+                    break;
+                case 'top-right':
+                    widget.style.top = '100px';
+                    widget.style.right = '30px';
+                    break;
+                case 'bottom-left':
+                    widget.style.bottom = '30px';
+                    widget.style.left = '30px';
+                    break;
+                case 'bottom-right':
+                    widget.style.bottom = '30px';
+                    widget.style.right = '30px';
+                    break;
+                default:
+                    widget.style.top = '100px';
+                    widget.style.left = '30px';
+                    break;
+            }
+            
+            // Hide position controls
+            controls.style.display = 'none';
+            showNotification('info', `Voice widget moved to ${position}`);
+            
+            // Save position preference
+            localStorage.setItem('voiceWidgetPosition', position);
+        }
+        
+        // Two-button mode functions
+        function startVoiceRecording() {
+            console.log('🎙️ Start button clicked');
+            if (window.voiceProcessor && !window.voiceProcessor.isRecording) {
+                window.voiceProcessor.startRecording();
+            }
+        }
+        
+        function stopVoiceRecording() {
+            console.log('🛑 Stop button clicked');
+            if (window.voiceProcessor && window.voiceProcessor.isRecording) {
+                window.voiceProcessor.stopRecording();
+            }
+        }
+        
+        function toggleButtonMode() {
+            const singleButton = document.getElementById('voiceToggle');
+            const twoButtonMode = document.getElementById('twoButtonMode');
+            const isTwo = twoButtonMode.style.display !== 'none';
+            
+            if (isTwo) {
+                // Switch to single button
+                singleButton.style.display = 'flex';
+                twoButtonMode.style.display = 'none';
+                showNotification('info', 'Switched to single toggle button');
+            } else {
+                // Switch to two buttons
+                singleButton.style.display = 'none';
+                twoButtonMode.style.display = 'block';
+                showNotification('info', 'Switched to separate start/stop buttons');
+            }
+            
+            localStorage.setItem('voiceButtonMode', isTwo ? 'single' : 'two');
+        }
+        
+        // Toggle position controls on double-click
+        document.addEventListener('DOMContentLoaded', function() {
+            const voiceToggle = document.getElementById('voiceToggle');
+            const positionControls = document.getElementById('positionControls');
+            
+            // Load saved position
+            const savedPosition = localStorage.getItem('voiceWidgetPosition');
+            if (savedPosition) {
+                moveVoiceWidget(savedPosition);
+            }
+            
+            // Load saved button mode
+            const savedMode = localStorage.getItem('voiceButtonMode');
+            if (savedMode === 'two') {
+                toggleButtonMode();
+            }
+            
+            // Double-click to show position controls
+            voiceToggle.addEventListener('dblclick', function(e) {
+                e.stopPropagation();
+                const isVisible = positionControls.style.display !== 'none';
+                positionControls.style.display = isVisible ? 'none' : 'block';
+                if (!isVisible) {
+                    showNotification('info', 'Use arrow buttons to move microphone | Right-click to switch button mode');
+                }
+            });
+            
+            // Right-click to toggle button mode
+            voiceToggle.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                toggleButtonMode();
+            });
+        });
+        
+        function showNotification(type, message) {
+            const toast = document.getElementById('statusToast');
+            const toastBody = toast.querySelector('.toast-body');
+            
+            // Set message and style
+            toastBody.textContent = message;
+            toast.className = `toast align-items-center text-white bg-${type === 'error' ? 'danger' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info'}`;
+            
+            // Show toast
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+        }
+        
+        // Section management
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            const targetSection = sectionName === 'dashboard' ? 'intelligenceSection' : sectionName + 'Section';
+            const section = document.getElementById(targetSection);
+            if (section) {
+                section.style.display = 'block';
+            }
+            
+            // Update navigation
+            document.querySelectorAll('.list-group-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        // Document upload functions
+        function showDocumentUpload() {
+            showSection('documents');
+        }
+        
+        function dragOverHandler(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.add('border-success');
+        }
+        
+        function dragEnterHandler(ev) {
+            ev.preventDefault();
+        }
+        
+        function dropHandler(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.remove('border-success');
+            
+            if (ev.dataTransfer.items) {
+                const files = Array.from(ev.dataTransfer.items)
+                    .filter(item => item.kind === 'file')
+                    .map(item => item.getAsFile());
+                handleFileSelection(files);
+            }
+        }
+        
+        function handleFileSelection(files) {
+            if (files.length > 0) {
+                const action = document.getElementById('actionSelect').value;
+                window.twin.uploadAndAnalyze(files[0], action);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- Background circle -->
+  <circle cx="24" cy="24" r="23" fill="#2196F3" stroke="#1565C0" stroke-width="1"/>
+  
+  <!-- Clock face -->
+  <circle cx="24" cy="24" r="19" fill="#FFFFFF" stroke="#1565C0" stroke-width="0.75"/>
+  
+  <!-- Hour marks -->
+  <line x1="24" y1="7" x2="24" y2="9" stroke="#555555" stroke-width="1.5"/>
+  <line x1="24" y1="39" x2="24" y2="41" stroke="#555555" stroke-width="1.5"/>
+  <line x1="7" y1="24" x2="9" y2="24" stroke="#555555" stroke-width="1.5"/>
+  <line x1="39" y1="24" x2="41" y2="24" stroke="#555555" stroke-width="1.5"/>
+  
+  <!-- Minute marks -->
+  <line x1="15" y1="9.5" x2="16" y2="11" stroke="#555555" stroke-width="1"/>
+  <line x1="9.5" y1="15" x2="11" y2="16" stroke="#555555" stroke-width="1"/>
+  <line x1="9.5" y1="33" x2="11" y2="32" stroke="#555555" stroke-width="1"/>
+  <line x1="15" y1="38.5" x2="16" y2="37" stroke="#555555" stroke-width="1"/>
+  <line x1="33" y1="38.5" x2="32" y2="37" stroke="#555555" stroke-width="1"/>
+  <line x1="38.5" y1="33" x2="37" y2="32" stroke="#555555" stroke-width="1"/>
+  <line x1="38.5" y1="15" x2="37" y2="16" stroke="#555555" stroke-width="1"/>
+  <line x1="33" y1="9.5" x2="32" y2="11" stroke="#555555" stroke-width="1"/>
+  
+  <!-- Clock hands -->
+  <line x1="24" y1="24" x2="24" y2="12" stroke="#1565C0" stroke-width="2" stroke-linecap="round"/>
+  <line x1="24" y1="24" x2="33" y2="30" stroke="#D32F2F" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Center dot -->
+  <circle cx="24" cy="24" r="1.5" fill="#1565C0"/>
+  
+  <!-- Check mark to indicate automatic -->
+  <path d="M36,14 L31,19 L28,16 L26,18 L31,23 L38,16 Z" fill="#4CAF50"/>
+</svg>

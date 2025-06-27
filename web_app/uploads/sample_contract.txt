@@ -1,0 +1,31 @@
+
+SERVICE AGREEMENT
+
+This agreement between TechCorp Inc. and DataSolutions LLC is effective January 1, 2024.
+
+SCOPE OF WORK:
+- Provide AI consulting services for digital transformation
+- Implement machine learning models for customer insights
+- Monthly progress reports and strategic recommendations
+
+DELIVERABLES:
+- Initial AI strategy document due February 15, 2024
+- Proof of concept delivery by March 15, 2024
+- Full implementation completed by June 30, 2024
+
+PAYMENT TERMS:
+- $75,000 setup fee due upon contract signing
+- $25,000 monthly recurring payments
+- Performance bonus of $50,000 upon successful completion
+
+KEY TERMS:
+- 60-day cancellation notice required
+- Liability cap at $200,000
+- Intellectual property rights shared 50/50
+- Service level agreement: 99.9% uptime
+- Data confidentiality and security compliance required
+
+POTENTIAL RISKS:
+- AI model performance may vary with different data sets
+- Integration challenges with legacy systems
+- Regulatory compliance requirements may change

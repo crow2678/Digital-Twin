@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microphone Button Test</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 50px;
+            font-family: Arial, sans-serif;
+        }
+        .test-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #007bff;
+            color: white;
+            border: 4px solid white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 20px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+        .test-button:active {
+            transform: scale(0.95);
+        }
+        .test-area {
+            background: #f0f0f0;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            font-family: monospace;
+            height: 200px;
+            overflow-y: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎤 Microphone Button Click Test</h1>
+    
+    <div class="test-area">
+        <h3>Test 1: Simple Button Click</h3>
+        <button class="test-button" onclick="logClick('Simple button clicked!')">
+            <i class="fas fa-microphone"></i>
+        </button>
+        
+        <h3>Test 2: With Multiple Event Handlers</h3>
+        <button class="test-button" 
+                onclick="logClick('Full event button clicked!')"
+                onmousedown="logClick('Mouse down')"
+                onmouseup="logClick('Mouse up')"
+                ondblclick="logClick('Double clicked!')">
+            <i class="fas fa-microphone-alt"></i>
+        </button>
+        
+        <h3>Test 3: As Div with Click Handler</h3>
+        <div class="test-button" onclick="logClick('Div button clicked!')">
+            <i class="fas fa-broadcast-tower"></i>
+        </div>
+    </div>
+    
+    <h3>Event Log:</h3>
+    <div id="log" class="log"></div>
+    
+    <div style="margin-top: 20px;">
+        <button onclick="clearLog()" style="padding: 10px 20px;">Clear Log</button>
+        <button onclick="testMicrophone()" style="padding: 10px 20px;">Test Microphone Access</button>
+    </div>
+    
+    <script>
+        function logClick(message) {
+            const log = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `[${timestamp}] ${message}\n`;
+            log.scrollTop = log.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        async function testMicrophone() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                logClick('✅ Microphone access granted!');
+                stream.getTracks().forEach(track => track.stop());
+            } catch (error) {
+                logClick('❌ Microphone access denied: ' + error.message);
+            }
+        }
+        
+        // Log page load
+        logClick('🚀 Microphone test page loaded');
+    </script>
+</body>
+</html>

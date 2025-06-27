@@ -1,0 +1,870 @@
+{
+  "session_id": "186c9e07-5fa2-4b48-8bbf-1896b8516a94",
+  "user_id": "Paresh",
+  "session_start": "2025-06-21T15:11:46.232399",
+  "last_updated": "2025-06-25T14:58:48.607467",
+  "conversation_history": [
+    {
+      "timestamp": "2025-06-21T15:16:25.110460",
+      "user": "Is knocking, so we should not. I mean, we should time ourselves that we should have something out within two weeks to be discussed with them. And there are certain timelines involved with a potential travel for Mossam to India. So by the time he travels there, we should be concluding on this. So Paresh.",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: To discuss timelines and travel plans related to work | Personal info: identity|work | Key concepts: deadline management, travel planning | Personal entities: Mossam, Paresh | Context: urgency: high, importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "5cabad8b-3cfe-45d5-b163-01943abf4882",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.7000000000000002,
+        "importance_score": 1.0,
+        "processing_time": 6.919453
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:16:32.503068",
+      "user": "If you may want to go over.",
+      "assistant": "I've learned and stored this information. I've noted this health-related information securely. In essence: Intent: The user might be suggesting a review or reconsideration of something. | Key concepts: review,  | Personal entities: Paresh This adds to the 39 memories I have about you.",
+      "memory_id": "4debf3db-a991-474c-88ae-e9009f9302d6",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "health",
+        "ai_confidence": 0.75,
+        "hybrid_confidence": 0.15,
+        "importance_score": 0.805,
+        "processing_time": 6.155823
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:16:36.897415",
+      "user": "",
+      "assistant": "I've learned and stored this information. In essence: Intent: No content provided for analysis. | Key concepts:  | Context: urgency: low, importance: low This adds to the 39 memories I have about you.",
+      "memory_id": "089d8a42-93ab-4ad8-a57c-40947b711455",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.0,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.16,
+        "processing_time": 3.011755
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:16:45.183872",
+      "user": "Paresh Deshpande   0:24",
+      "assistant": "I've learned and stored this information. In essence: Intent: To identify the individual named Paresh Deshpande | Personal info: identity | Personal concepts: identity | Personal entities: Paresh Deshpande | Context: urgency: low This adds to the 39 memories I have about you.",
+      "memory_id": "2f46af49-81b3-4779-b0ee-e2949baa1ed2",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.7899999999999999,
+        "processing_time": 6.373693
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:17:05.253801",
+      "user": "Sure. So let me give you the background and then come to the real story, right? So Brilio was one of the preferred partner.",
+      "assistant": "I don't have any information about Brilio being one of your preferred partners in your memories yet. If there's anything else you need help with, feel free to ask!",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-21T15:17:15.652735",
+      "user": "To get the BOT contract as compared to Wiseline, there was a lot of politics internally. Unfortunately, News Corp played the role and Wiseline won the BOT. So Brillio has to go back to their management and remove around 20 million from their projection.",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: communicate the outcome of a business contract competition | Personal info: work | Key concepts: internal politics, contract competition | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "3a9c687a-1a21-4ef6-bdd6-3b45ea66243c",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.8,
+        "importance_score": 1.0,
+        "processing_time": 6.962304
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:17:28.894856",
+      "user": "So that has not gone well and you know Brillio is a private investment. Lot of pressure they have when they remove numbers. From that aspect Brillio has been trying to displace the one they know they cannot touch Wise Line. So they are in touch with Chris Petalano who is the ex CTO of Realtor right now works for.",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: discuss corporate dynamics and networking | Personal info: work | Personal concepts: professional networking | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "ba038d25-5936-4503-b338-84d5c5be8085",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.3,
+        "importance_score": 1.0,
+        "processing_time": 9.15692
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:17:38.725776",
+      "user": "Zero.com and they convinced Chris to invite Mossum for in their own AI summit. It's like a fireside chat, 3 hours kind of thing.",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: Discuss an event involving AI and key participants | Personal info: work|interests|none | Key concepts: AI summit, invitation | Context: urgency: low This adds to the 39 memories I have about you.",
+      "memory_id": "c004cd75-6e58-49fe-b928-56cf4e85fc15",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.92,
+        "importance_score": 1.0,
+        "processing_time": 6.609065
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:17:47.055870",
+      "user": "The whole agenda of that fireside chat was 1 aspect, but other aspect. The executive Brillio presented Mahsam to displace Tavant completely, going back to the original concept of two vendor in the box.",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: discussing vendor strategy in a business setting | Personal info: work | Key concepts: vendor displacement, fireside chat | Personal entities: Paresh | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "20f81f9f-a9b4-4c87-ad51-8f75e5c9205e",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.5,
+        "importance_score": 1.0,
+        "processing_time": 6.647335
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:17:57.129719",
+      "user": "OK, and Chris, vouch for them in front of Brillio that why they should do it. Mossam being Mossam smart guy, he never committed anything, but he came back and started indirectly checking with Bobby Francisco.",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: to discuss professional endorsements and cautious communication | Personal info: work | Key concepts: vouching, indirect communication | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "2cbbd5c9-2ffd-45eb-9d9e-d526a45781c1",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.5,
+        "importance_score": 1.0,
+        "processing_time": 8.377925
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:18:04.695457",
+      "user": "Kaushik and everyone, everyone said no, no Brillio. We cannot displace Tavan right now. It cannot be possible. That doesn't mean the Brillio is going to stop again. They have not yet officially submitted any proposal.",
+      "assistant": "I've learned and stored this information. I've classified this under digital. In essence: Intent: discussion about organizational decisions and proposal submissions | Personal info: work|identity | Key concepts: proposal submission, displacement | Personal entities: Kaushik | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "24045412-0c2d-4ccf-89d9-24f7a678dc66",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "digital",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.19999999999999998,
+        "importance_score": 1.0,
+        "processing_time": 6.192639
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:18:12.831586",
+      "user": "OK, but if you look at the dimension here or dynamic out here, Wise Line has lot of support from News Corp. Not only they are in BOT for realtor, they open a dedicated shop for Dow Jones in Barcelona.",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: Discussing business operations and support networks. | Personal info: work | Key concepts: support, dedicated shop | Context: urgency: low This adds to the 39 memories I have about you.",
+      "memory_id": "8b368b1b-ee5f-4b11-a90e-db890907d8f6",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.24,
+        "importance_score": 1.0,
+        "processing_time": 6.673545
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:18:24.308426",
+      "user": "And that's also some politics are involved. So there are two aspects. One, either Wiseland can come back to realtor and say, hey, I don't like Prabanth, I don't like video, let me take the whole shop and here is a cost saving second.",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: expressing a decision-making scenario involving preferences and cost-saving | Personal info: preferences | Personal concepts: preference | Personal entities: Prabanth This adds to the 39 memories I have about you.",
+      "memory_id": "e25e38e0-d904-4782-bbb2-067aff8238c9",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 2.0300000000000002,
+        "importance_score": 1.0,
+        "processing_time": 7.959289
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:18:31.956515",
+      "user": "Prelio itself can go back and say here's my proposal of 10 million saving when I take over.",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: communicate a financial proposal | Key concepts: proposal, saving | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "3fd8cc92-2588-42be-a1a6-a6f9bdfe4f41",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.8,
+        "hybrid_confidence": 1.49,
+        "importance_score": 1.0,
+        "processing_time": 5.604842
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:18:41.098740",
+      "user": "OK. Now all this Intel Bobby started sharing during the A I summit what's happening. So it came out that we have to be the first to put a proposal in two sides. One is with all the A I tools, what is the productivity gain we have. So it's more like.",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: Discussing strategic actions related to AI and productivity | Personal info: work | Key concepts: AI Summit, productivity gain | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "be7a1461-0816-4443-9640-5d588be56211",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.6,
+        "importance_score": 1.0,
+        "processing_time": 5.885238
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:18:48.896437",
+      "user": "Shrink to grow. If you're doing a 12 million business with the tools, we can have a productivity gains of say 20%, just putting a number. So we're shrinking and that money is available for you to reinvest back plus strategic outsourcing of displacing Brillio, which will give you a dollar.",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: to discuss business strategies for growth through productivity and outsourcing | Personal info: work | Key concepts: productivity gains, strategic outsourcing | Personal entities: Paresh | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "be6ef206-6c2f-47a4-bb41-e164c9947010",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 2.6999999999999997,
+        "importance_score": 1.0,
+        "processing_time": 5.831493
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:18:54.909080",
+      "user": "The saving of X million.",
+      "assistant": "I've learned and stored this information. In essence: Intent: to communicate a significant financial saving | Key concepts: saving, X million | Context: urgency: low This adds to the 39 memories I have about you.",
+      "memory_id": "7dc6ed4a-1711-470c-8a95-ec46700b5b9f",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.69,
+        "processing_time": 4.315614
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:19:03.713459",
+      "user": "So when you put such offering in front of Kaushik, Masam and his team.",
+      "assistant": "I've learned and stored this information. I've classified this under digital. In essence: Intent: to describe an interaction involving a proposal or presentation | Personal info: identity|work | Key concepts: offering, team | Personal entities: Kaushik, Masam | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "3a62c584-39db-4fb9-a624-5bc97952319a",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "digital",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.19999999999999998,
+        "importance_score": 1.0,
+        "processing_time": 7.117818
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:19:11.808130",
+      "user": "And it is backed by engineering logic, productivity gains, governance and dollar saving.",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: highlighting benefits of engineering logic in work productivity | Personal info: work | Key concepts: engineering logic, productivity gains | Personal entities: Paresh | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "7def74bb-20df-40a9-84a5-cd7f727e2339",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.1,
+        "importance_score": 1.0,
+        "processing_time": 6.352249
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:19:20.373824",
+      "user": "It will actually push them to think hard that really they want to do it now or they want to hold on all everything. OK. Now on the other hand, if we don't do it and Brilio does it showing a $5 million, $10 million saving, there are there are high chances next year our business will start getting cannibalized by Brilio.",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: Evaluate the urgency of taking action to prevent business loss. | Personal info: work | Key concepts: decision-making, competitive threat | Context: urgency: high, importance: critical This adds to the 39 memories I have about you.",
+      "memory_id": "e9d032e8-cd31-4af5-9f93-1d585aa0cbab",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.1,
+        "importance_score": 1.0,
+        "processing_time": 6.659283
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:19:29.842042",
+      "user": "I'll take a pause. Any questions?",
+      "assistant": "I don't have that information in your memories yet. If you have any specific questions or need assistance with something else, feel free to let me know!",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-21T15:19:34.656913",
+      "user": "",
+      "assistant": "I've learned and stored this information. In essence: Intent: The user has not provided any content to analyze. | Key concepts:  | Context: urgency: low, importance: low This adds to the 39 memories I have about you.",
+      "memory_id": "d10aa895-0c0c-4005-bd4e-ab6221fa8148",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.0,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.16,
+        "processing_time": 3.055103
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:19:41.826529",
+      "user": "Ranjit Damodaran   4:15",
+      "assistant": "I've learned and stored this information. In essence: Intent: Communicate a person's name and a time reference | Personal info: identity | Personal concepts: identity | Personal entities: Ranjit Damodaran | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "9d23d433-d3c8-45a5-91d2-67406f072646",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.9400000000000001,
+        "processing_time": 5.478752
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:19:51.376892",
+      "user": "No, this, this number saying that 5 million, where does it come from? Is it a 10 percent, 5%, 20%? How would? OK, OK.",
+      "assistant": "I don't have that information in your memories yet. It seems like the specific details about the \"5 million\" or its percentage context aren't available in your current memories. If you have more context or details, I might be able to help further.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-21T15:19:55.551403",
+      "user": "",
+      "assistant": "I've learned and stored this information. In essence: Intent: none | Key concepts:  | Context: urgency: low, importance: low This adds to the 39 memories I have about you.",
+      "memory_id": "80b49e1e-4fcf-4e2e-b9e4-3d1dca8364b1",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.0,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.16,
+        "processing_time": 2.063364
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:20:03.231936",
+      "user": "Paresh Deshpande   4:20",
+      "assistant": "I've learned and stored this information. In essence: Intent: To identify or confirm the user's identity and possibly indicate a time-related event | Personal info: identity | Personal concepts: identity | Personal entities: Paresh Deshpande | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "267b3626-46b9-4f69-a313-89440cb6327b",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.9400000000000001,
+        "processing_time": 5.299634
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:20:08.516613",
+      "user": "No, no.",
+      "assistant": "I've learned and stored this information. In essence: Intent: The user is likely expressing disagreement or refusal. | Key concepts: rejection,  | Context: urgency: low This adds to the 39 memories I have about you.",
+      "memory_id": "43575076-c3ec-432a-91d4-eb5a1d6683ad",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.6,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.415,
+        "processing_time": 3.178139
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:20:18.452208",
+      "user": "I just put a number in it. We have done the not done calculation but it just a I'm just trying to put the story together that if if we take Brillo's 6070 people and showing them the aspect of how Taman has domain knowledge, how we can expand plus some of the tools.",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: to discuss the potential for expansion using domain knowledge and tools | Personal info: work | Key concepts: domain knowledge, expansion | Context: importance: high This adds to the 39 memories I have about you.",
+      "memory_id": "0ad63c7b-369a-4dc8-a411-13a9473f72fc",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.02,
+        "importance_score": 1.0,
+        "processing_time": 7.728277
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:20:23.024048",
+      "user": "",
+      "assistant": "I've learned and stored this information. In essence: Intent: The user is providing an empty content for analysis. | Key concepts:  | Context: urgency: low, importance: low This adds to the 39 memories I have about you.",
+      "memory_id": "99bda3e9-45ec-4ab6-a916-63757449508f",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.0,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.16,
+        "processing_time": 2.503203
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:20:30.864081",
+      "user": "Ranjit Damodaran   4:33",
+      "assistant": "I've learned and stored this information. In essence: Intent: to record or note a specific time associated with a person | Personal info: identity | Key concepts: time_record,  | Personal entities: Ranjit Damodaran | Context: urgency: low This adds to the 39 memories I have about you.",
+      "memory_id": "b7bc413b-5493-4fc9-98db-fdf5675a57ca",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.7899999999999999,
+        "processing_time": 6.218123
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:20:36.788474",
+      "user": "Mm-hmm.",
+      "assistant": "I've learned and stored this information. In essence: Intent: The user is likely acknowledging or agreeing with something. | Key concepts: acknowledgment,  | Context: urgency: low, importance: low This adds to the 39 memories I have about you.",
+      "memory_id": "d4a82ba1-f0d8-4aee-a332-39c95fbf2a4f",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.415,
+        "processing_time": 4.010379
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:20:41.597049",
+      "user": "",
+      "assistant": "I've learned and stored this information. In essence: Intent: No content provided for analysis | Key concepts:  | Context: urgency: low, importance: low This adds to the 40 memories I have about you.",
+      "memory_id": "5726efc6-51b2-4c34-8a2f-adfc6b3fd3e3",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.0,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.16,
+        "processing_time": 2.975741
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:20:49.098075",
+      "user": "Paresh Deshpande   4:41",
+      "assistant": "I've learned and stored this information. In essence: Intent: To identify the individual named Paresh Deshpande and associate with a specific time | Personal info: identity | Personal concepts: identity | Personal entities: Paresh Deshpande | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "584bf988-3949-4ec0-89e2-a12cc49f5000",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.7899999999999999,
+        "processing_time": 5.229248
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:20:58.219542",
+      "user": "And our outsourcing strategy, we can show you a direct saving of X million dollars. You remember how?",
+      "assistant": "I don't have that information in your memories yet. While there are mentions of strategic outsourcing and financial savings, the exact details of how the outsourcing strategy leads to a direct saving of X million dollars aren't specified in the memories provided. If you have more information or details, feel free to share, and I can help you further.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-21T15:21:02.410213",
+      "user": "",
+      "assistant": "I've learned and stored this information. In essence: Intent: No content provided for analysis | Key concepts:  | Context: urgency: low, importance: low This adds to the 40 memories I have about you.",
+      "memory_id": "c1839f8d-ee6f-4a59-9669-016c1729a1b6",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.0,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.16,
+        "processing_time": 2.242184
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:21:09.372540",
+      "user": "Vishal Kumar   4:46",
+      "assistant": "I've learned and stored this information. In essence: Intent: Identification of a person and associated time | Personal info: identity | Personal concepts: identity | Personal entities: Vishal Kumar | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "ded3a2c8-1775-4954-a595-d13d81382441",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.7899999999999999,
+        "processing_time": 5.11475
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:21:23.100269",
+      "user": "So Ranjit, I think the the way it needs to come across is Devante has 100 people, let's say that can that work can be done with 75 plus Brillio has ex ex people, let's say 70 that can be compressed to 50 and we can give you 75 + 50125 people.",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: communicate workforce optimization strategies | Personal info: work | Key concepts: workforce optimization, resource allocation | Personal entities: Ranjit | Context: importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "d2f872e0-3fff-46b0-aa2d-1e37c2fc78c9",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.6,
+        "importance_score": 1.0,
+        "processing_time": 7.503582
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:21:27.504269",
+      "user": "",
+      "assistant": "I've learned and stored this information. In essence: Intent: No content provided | Key concepts:  | Context: urgency: low, importance: low This adds to the 40 memories I have about you.",
+      "memory_id": "7fd883b3-4d53-40ad-9286-37e69624c45a",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.0,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.16,
+        "processing_time": 2.153884
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:21:35.105434",
+      "user": "Ranjit Damodaran   4:46",
+      "assistant": "I've learned and stored this information. In essence: Intent: To identify or reference a person and a specific time. | Personal info: identity | Personal concepts: identity | Personal entities: Ranjit Damodaran | Context: importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "28387013-31dc-40cc-953f-07cc618ff8a3",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.9400000000000001,
+        "processing_time": 5.224941
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:21:41.790054",
+      "user": "OK, tell me, yeah.",
+      "assistant": "Hey Paresh! From what I can gather, you work at Tavant, and your full name is Paresh Deshpande. There seems to be a discussion about timelines and potential travel plans for Mossam to India, which involves some deadlines that need to be met within two weeks. If you're looking for more specific details or something else, let me know, and I'll see if there's anything else in your memories. If it's not covered here, I might not have that information yet.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-21T15:21:49.897631",
+      "user": "Yes.",
+      "assistant": "I've learned and stored this information. In essence: Intent: Acknowledgment or agreement | Personal info: identity | Key concepts: affirmation,  | Personal entities: Paresh | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "402fa2f2-8bf9-4f86-aece-d923bcaa46d8",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.99,
+        "processing_time": 6.116304
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:21:57.219484",
+      "user": "",
+      "assistant": "I've learned and stored this information. In essence: Intent: No content provided for analysis. | Key concepts:  | Context: urgency: low, importance: low This adds to the 40 memories I have about you.",
+      "memory_id": "954fe510-b8d6-4236-8d27-c7f42c3a16c7",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.0,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.16,
+        "processing_time": 2.796052
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:22:04.805965",
+      "user": "Vishal Kumar   5:04",
+      "assistant": "I've learned and stored this information. In essence: Intent: Identify a person and a time reference | Personal info: identity | Personal concepts: identity | Personal entities: Vishal Kumar | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "4a33f12d-81f2-4183-9f11-c3ed52d98944",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.7899999999999999,
+        "processing_time": 5.549891
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:22:15.183489",
+      "user": "A thing and that translates to overall 25% or 30% saving for you and that way we get the pie for Brillio as well because the Brillio, I mean we have been told categorically Brillio is working on a very similar proposal right now and I think.",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: discussing potential savings and competitive proposals | Personal info: work | Key concepts: cost savings, proposal development | Context: importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "9d954887-1e0e-4dd0-9381-4685eb8a39e1",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.3,
+        "importance_score": 1.0,
+        "processing_time": 5.566903
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:22:24.905843",
+      "user": "The last proposal they they had given last year before the last two wise line that that those dollar numbers are available with us as well, right Paresh?",
+      "assistant": "I don't have that information in your memories yet. There are details about proposals and workforce optimization strategies involving Brillio and Wise Line, but specific dollar numbers related to the last proposal from last year aren't mentioned in the memories I have. If you have more details or another way to access that information, it might help in finding what you're looking for.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-21T15:22:29.134119",
+      "user": "",
+      "assistant": "I've learned and stored this information. In essence: Intent: No content provided to analyze. | Key concepts:  | Context: urgency: low, importance: low This adds to the 40 memories I have about you.",
+      "memory_id": "867ea219-0852-4386-819e-517ff5c02081",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.0,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.16,
+        "processing_time": 2.138895
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:22:36.800829",
+      "user": "Ranjit Damodaran   5:28",
+      "assistant": "I've learned and stored this information. In essence: Intent: To identify an individual and associate them with a specific time. | Personal info: identity | Personal concepts: identity | Personal entities: Ranjit Damodaran | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "65dbdf7a-7259-448b-abf8-5b8a396e947c",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.7899999999999999,
+        "processing_time": 5.941322
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:22:59.154327",
+      "user": "OK. But yeah, that's fine. You know, I know that is the solution part of it. But what I'm asking is that, you know, do we have Intel about how many number of people basically work for Brillio?",
+      "assistant": "I don't have that information in your memories yet about the number of people working for Brillio. If you have any other questions or need assistance with something else, feel free to ask!",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-21T15:23:04.023273",
+      "user": "",
+      "assistant": "I've learned and stored this information. In essence: Intent: No content provided to analyze. | Key concepts:  | Context: urgency: low, importance: low This adds to the 40 memories I have about you.",
+      "memory_id": "42889a9c-1242-4902-800c-3a4c33d55e90",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.0,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.16,
+        "processing_time": 3.012918
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:23:12.718652",
+      "user": "Paresh Deshpande   5:37",
+      "assistant": "I've learned and stored this information. In essence: Intent: To identify or reference the individual Paresh Deshpande and a specific time. | Personal info: identity | Personal concepts: identity | Personal entities: Paresh Deshpande | Context: importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "a7f421f7-56e1-465e-ba96-de32244afcbe",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.9400000000000001,
+        "processing_time": 5.948365
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:23:25.162672",
+      "user": "So Srinidhi and Sandeep will get all the details about number of people and at a high level what kind of project they are working on. So I think that will be a good ballpark to start with.",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: to communicate the task of gathering project information | Personal info: work | Key concepts: project details, communication | Context: importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "05061b8e-b173-4f49-b848-6377e0b69c5b",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 2.1,
+        "importance_score": 1.0,
+        "processing_time": 7.922314
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:35:35.647760",
+      "user": "profile",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: Identify user identity and session details | Personal info: identity | Personal concepts: identity | Personal entities: Paresh | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "60f0368e-f731-4633-a85e-345993816dae",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.8,
+        "importance_score": 1.0,
+        "processing_time": 6.071396
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:36:25.601155",
+      "user": "list the new memories created?",
+      "assistant": "I don't have that information in your memories yet.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-21T15:36:52.512089",
+      "user": "history",
+      "assistant": "I've learned and stored this information. In essence: Intent: explore historical information or context | Personal info: identity | Key concepts: history,  | Personal entities: Paresh | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "6a5b2312-47b6-4373-a07d-48f864bf8c54",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.89,
+        "processing_time": 6.598048
+      }
+    },
+    {
+      "timestamp": "2025-06-21T15:37:22.117268",
+      "user": "give me details about meeting",
+      "assistant": "I don't have specific details about a meeting in your memories yet. If you have more context or specific details about the meeting you're referring to, feel free to share, and I can help you better.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-21T15:37:41.781430",
+      "user": "search brillo",
+      "assistant": "I've learned and stored this information. In essence: Intent: The user is trying to find information about 'brillo' | Personal info: identity | Key concepts: search, brillo | Personal entities: Paresh This adds to the 40 memories I have about you.",
+      "memory_id": "62dfec1e-a1e4-43db-94cc-14bafbcd671c",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.8649999999999999,
+        "processing_time": 6.408879
+      }
+    },
+    {
+      "timestamp": "2025-06-24T11:50:30.629578",
+      "user": "What sports do i like?",
+      "assistant": "From your memories, I know that you like both Football and Cricket.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-24T12:12:59.775457",
+      "user": "can you tell about me?",
+      "assistant": "From the memories I have, I can tell you that your name is Paresh Deshpande, and you work at Tavant. There was a moment when you felt that your work session wasn't focused on productive sales activities. If there's anything else specific you'd like to know, feel free to ask!",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-24T12:14:50.058859",
+      "user": "do i have open tasks?",
+      "assistant": "I don't have specific information in your memories about any open tasks you currently have. There are mentions of activities related to your sales work, like window focus changes and tab switches, as well as managing and prioritizing your digital workspace and tasks. However, none of these memories detail specific open tasks. If you have more details or updates about your tasks, feel free to share them, and I can help you keep track of them.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-24T12:23:42.011366",
+      "user": "Along with football and cricket, i like to play badminton",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: expressing personal interests in sports | Personal info: preferences | Personal concepts: sports preferences | Personal entities: football, cricket | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "d0ef78c8-68dc-4fac-a368-83e682b18c72",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.46,
+        "importance_score": 1.0,
+        "processing_time": 11.472875
+      }
+    },
+    {
+      "timestamp": "2025-06-24T12:25:06.425346",
+      "user": "how many memories i have?",
+      "assistant": "I don't have that information in your memories yet.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-24T14:18:43.056517",
+      "user": "What sports do i like?",
+      "assistant": "Based on your memories, you like football, cricket, and badminton.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-24T14:20:31.596402",
+      "user": "list all actions",
+      "assistant": "I've learned and stored this information. In essence: Intent: to request a list of actions | Personal info: identity|work|none | Key concepts: action_listing,  | Personal entities: Paresh This adds to the 40 memories I have about you.",
+      "memory_id": "c4f05c56-c440-4311-9ac2-3f95342f5a66",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 1.0,
+        "processing_time": 8.88875
+      }
+    },
+    {
+      "timestamp": "2025-06-24T14:22:10.089640",
+      "user": "list all my open task?",
+      "assistant": "I don't have that information in your memories yet.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-24T14:22:38.093590",
+      "user": "profile",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: To provide a profile overview or identity verification | Personal info: identity | Personal concepts: identity | Personal entities: Paresh | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "96f0ec5f-70d4-4bb3-ad85-c9d5b8728ab3",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.8,
+        "importance_score": 1.0,
+        "processing_time": 7.969009
+      }
+    },
+    {
+      "timestamp": "2025-06-25T14:12:17.645577",
+      "user": "what sports i like",
+      "assistant": "Based on your memories, you like football, cricket, and badminton. These are the sports you have expressed an interest in.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    }
+  ]
+}
