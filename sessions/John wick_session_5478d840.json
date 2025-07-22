@@ -1,0 +1,15 @@
+{
+  "session_id": "5478d840-5d9f-437a-9da0-6d220f0e6c0e",
+  "user_id": "John wick",
+  "session_start": "2025-06-27T16:53:09.242603",
+  "last_updated": "2025-06-27T16:54:33.553743",
+  "conversation_history": [
+    {
+      "timestamp": "2025-06-27T16:53:38.848498",
+      "user": "tell me about john wick",
+      "assistant": "From your memories, John, I can tell you that you work within the Continental Hotel network and have excellent marksmanship skills. You are a professional assassin based in New York, and you have a love for dogs. If there's anything else specific you want to know, feel free to ask!",
+      "type": "llm_memory_retrieval",
+      "success": true
+    }
+  ]
+}

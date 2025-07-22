@@ -75,8 +75,8 @@ async def add_csp_header(request: Request, call_next):
     csp_policy = (
         "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'inline-speculation-rules' "
         "http://localhost:* http://127.0.0.1:* https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; "
-        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; "
-        "font-src 'self' https://cdnjs.cloudflare.com; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; "
+        "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; "
         "img-src 'self' data: https:; "
         "connect-src 'self' http://localhost:* http://127.0.0.1:*"
     )
@@ -87,10 +87,22 @@ async def add_csp_header(request: Request, call_next):
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+# Modern Dashboard Route
+@app.get("/modern", response_class=HTMLResponse)
+async def modern_dashboard(request: Request):
+    """Serve the modern sleek dashboard"""
+    return templates.TemplateResponse("modern_dashboard.html", {"request": request})
+
+@app.get("/cockpit", response_class=HTMLResponse)
+async def digital_cockpit(request: Request):
+    """Serve the digital cockpit dashboard"""
+    return templates.TemplateResponse("digital_cockpit.html", {"request": request})
+
 # Global variables for task tracking
 processing_tasks = {}
 twin_instance = None
 document_processor = None
+enhanced_twin_instance = None
 
 # Configuration
 BEHAVIORAL_API_URL = "http://localhost:8000"
@@ -1025,6 +1037,346 @@ async def twin_status():
         "productivity_mode": twin_instance.productivity_mode,
         "active_sessions": len(processing_tasks)
     }
+
+# Modern Dashboard API Routes
+@app.post("/api/chat")
+async def chat_endpoint(request: dict):
+    """Handle chat messages from the modern dashboard"""
+    try:
+        message = request.get('message', '')
+        user_id = request.get('user_id', 'default_user')
+        context = request.get('context', {})
+        
+        if not message:
+            raise HTTPException(status_code=400, detail="Message is required")
+        
+        # Use a global enhanced twin instance to maintain state
+        global enhanced_twin_instance
+        if enhanced_twin_instance is None:
+            try:
+                from productivity_enhanced_twin_llm_enhanced import LLMEnhancedProductivityTwin
+                enhanced_twin_instance = LLMEnhancedProductivityTwin()
+                logger.info("✅ Using LLM-Enhanced Productivity Twin for web chat")
+            except Exception as e:
+                logger.warning(f"❌ LLM-Enhanced twin not available: {e}")
+                enhanced_twin_instance = None
+        
+        if enhanced_twin_instance:
+            # Load current tasks for context
+            enhanced_twin_instance.current_user = user_id
+            enhanced_twin_instance._load_smart_tasks_from_session()
+            
+            # Build enriched context for better responses
+            tasks = getattr(enhanced_twin_instance, 'smart_tasks', [])
+            task_context = context.get('tasks', {})
+            user_profile = context.get('userProfile', {})
+            
+            # Create enhanced prompt with context
+            if task_context and (task_context.get('assignedToMe') or task_context.get('assignedToOthers')):
+                my_tasks = task_context.get('assignedToMe', [])
+                delegated_tasks = task_context.get('assignedToOthers', [])
+                completed_tasks = task_context.get('completed', [])
+                
+                context_prompt = f"""
+Context Information:
+- User: {user_profile.get('name', user_id)} ({user_profile.get('role', 'User')})
+- Tasks assigned to me: {len(my_tasks)} tasks
+- Tasks I've delegated: {len(delegated_tasks)} tasks  
+- Recently completed: {len(completed_tasks)} tasks
+
+Current Tasks Assigned to Me:
+{chr(10).join([f"- {task.get('title', 'Untitled')}: {task.get('description', 'No description')}" for task in my_tasks[:3]])}
+
+User Message: {message}
+
+Please provide helpful, actionable responses based on this context. If they ask about tasks, reference the specific tasks above. If they need help with a task, provide concrete next steps or offer to draft communications.
+"""
+                response = enhanced_twin_instance.process_user_input(context_prompt, user_id)
+            else:
+                response = enhanced_twin_instance.process_user_input(message, user_id)
+        else:
+            # Fallback to regular twin
+            if twin_instance is None:
+                await initialize_twin()
+            
+            if twin_instance is None:
+                return {"response": "Sorry, the digital twin is not available right now."}
+            
+            response = await twin_instance.process_user_input(message, user_id)
+        
+        return {"response": response, "status": "success"}
+        
+    except Exception as e:
+        logger.error(f"Chat error: {e}")
+        return {"response": "I encountered an error. Please try again.", "status": "error"}
+
+@app.post("/api/transcript/upload")
+async def upload_transcript(file: UploadFile = File(...)):
+    """Handle transcript file uploads"""
+    try:
+        # Read file content
+        content = await file.read()
+        
+        # Determine file type and extract text
+        if file.filename.endswith('.txt'):
+            transcript_text = content.decode('utf-8')
+        elif file.filename.endswith('.docx'):
+            # Handle DOCX files (would need python-docx library)
+            transcript_text = content.decode('utf-8', errors='ignore')
+        else:
+            raise HTTPException(status_code=400, detail="Unsupported file type")
+        
+        # Process the transcript  
+        result = await process_transcript_content(transcript_text, file.filename, "default_user")
+        
+        return {"status": "success", "result": result}
+        
+    except Exception as e:
+        logger.error(f"Transcript upload error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/transcript/process")
+async def process_transcript_text(request: dict):
+    """Handle transcript text processing"""
+    try:
+        transcript = request.get('transcript', '')
+        title = request.get('title', 'Untitled Meeting')
+        date = request.get('date', '')
+        
+        if not transcript:
+            raise HTTPException(status_code=400, detail="Transcript text is required")
+        
+        # Process the transcript
+        user_id = request.get('user_id', 'default_user')
+        result = await process_transcript_content(transcript, title, user_id)
+        
+        return {"status": "success", "result": result}
+        
+    except Exception as e:
+        logger.error(f"Transcript processing error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/transcripts")
+async def get_recent_transcripts(user_id: str = "default_user"):
+    """Get recent transcript processing results"""
+    try:
+        # Read transcripts from user-specific JSON file
+        transcripts_file = f"sessions/{user_id}_transcripts.json"
+        
+        if not os.path.exists(transcripts_file):
+            return {"transcripts": []}
+        
+        with open(transcripts_file, 'r') as f:
+            transcripts = json.load(f)
+        
+        # Format transcripts for display
+        formatted_transcripts = []
+        for transcript in transcripts:
+            # Truncate content for display
+            content = transcript.get("content", "")
+            display_content = content[:200] + "..." if len(content) > 200 else content
+            
+            formatted_transcripts.append({
+                "id": transcript.get("id", ""),
+                "title": transcript.get("title", "Meeting Transcript"),
+                "content": display_content,
+                "created_at": transcript.get("created_at", ""),
+                "type": "transcript",
+                "result": transcript.get("result", {})
+            })
+        
+        # Sort by creation time (newest first)
+        formatted_transcripts.sort(key=lambda x: x.get("created_at", ""), reverse=True)
+        
+        return {"transcripts": formatted_transcripts[:10]}  # Return latest 10
+        
+    except Exception as e:
+        logger.error(f"Recent transcripts error: {e}")
+        return {"transcripts": []}
+
+@app.post("/api/memory/search")
+async def search_memories(request: dict):
+    """Search through memories"""
+    try:
+        query = request.get('query', '')
+        if not query:
+            raise HTTPException(status_code=400, detail="Query is required")
+        
+        if twin_instance is None:
+            await initialize_twin()
+        
+        if twin_instance is None:
+            return {"memories": []}
+        
+        # Search memories using the twin's search capabilities
+        memories = await search_twin_memories(query)
+        
+        return {"memories": memories, "status": "success"}
+        
+    except Exception as e:
+        logger.error(f"Memory search error: {e}")
+        return {"memories": [], "status": "error"}
+
+# Old upload endpoint removed - using enhanced version below
+
+@app.get("/api/processing-status")
+async def get_processing_status():
+    """Get current processing task statuses"""
+    try:
+        current_tasks = []
+        for task_id, task in processing_tasks.items():
+            current_tasks.append({
+                "task_id": task_id,
+                "filename": task.filename,
+                "status": task.status,
+                "progress": task.progress,
+                "action": task.action,
+                "created_at": task.created_at.isoformat(),
+                "completed_at": task.completed_at.isoformat() if task.completed_at else None,
+                "error_message": task.error_message,
+                "result": task.result
+            })
+        
+        return {"tasks": current_tasks}
+        
+    except Exception as e:
+        logger.error(f"Processing status error: {e}")
+        return {"tasks": []}
+
+@app.get("/api/task/{task_id}")
+async def get_task_result(task_id: str):
+    """Get specific task result"""
+    try:
+        if task_id not in processing_tasks:
+            raise HTTPException(status_code=404, detail="Task not found")
+        
+        task = processing_tasks[task_id]
+        return {
+            "task_id": task_id,
+            "filename": task.filename,
+            "status": task.status,
+            "progress": task.progress,
+            "result": task.result,
+            "error_message": task.error_message,
+            "completed_at": task.completed_at.isoformat() if task.completed_at else None
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Task result error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/stats")
+async def get_dashboard_stats():
+    """Get dashboard statistics"""
+    try:
+        # Mock data for now - replace with actual statistics
+        stats = {
+            "total_memories": 150,
+            "documents_processed": 25,
+            "conversations": 89,
+            "avg_response_time": 1200
+        }
+        
+        return stats
+        
+    except Exception as e:
+        logger.error(f"Stats error: {e}")
+        return {"error": "Failed to load statistics"}
+
+async def process_transcript_content(content: str, title: str, user_id: str = "default_user"):
+    """Process transcript content and extract insights"""
+    try:
+        if twin_instance is None:
+            await initialize_twin()
+        
+        if twin_instance is None:
+            raise Exception("Digital twin not available")
+        
+        # Process the transcript using the twin's meeting processing capabilities
+        if hasattr(twin_instance, 'process_meeting_transcript'):
+            result = twin_instance.process_meeting_transcript(content, title)
+        else:
+            # Fallback: store as memory
+            await twin_instance.store_memory(
+                f"Meeting Transcript: {title}\n\n{content}",
+                user_id=user_id,
+                memory_type="meeting",
+                tags=["meeting", "transcript", title]
+            )
+            result = {"summary": "Transcript stored successfully", "action_items": []}
+        
+        # Store transcript in a simple JSON file for easy retrieval
+        transcript_data = {
+            "id": str(uuid.uuid4()),
+            "title": title,
+            "content": content,
+            "created_at": datetime.now().isoformat(),
+            "user_id": user_id,
+            "result": result,
+            "type": "transcript"
+        }
+        
+        # Save to user-specific transcripts file
+        transcripts_file = f"sessions/{user_id}_transcripts.json"
+        os.makedirs("sessions", exist_ok=True)
+        
+        # Load existing transcripts
+        transcripts = []
+        if os.path.exists(transcripts_file):
+            try:
+                with open(transcripts_file, 'r') as f:
+                    transcripts = json.load(f)
+            except:
+                transcripts = []
+        
+        # Add new transcript
+        transcripts.append(transcript_data)
+        
+        # Keep only last 50 transcripts
+        transcripts = transcripts[-50:]
+        
+        # Save back to file
+        with open(transcripts_file, 'w') as f:
+            json.dump(transcripts, f, indent=2)
+        
+        logger.info(f"Stored transcript '{title}' for user {user_id}")
+        
+        return result
+        
+    except Exception as e:
+        logger.error(f"Transcript processing error: {e}")
+        raise e
+
+async def search_twin_memories(query: str):
+    """Search through twin memories"""
+    try:
+        if twin_instance is None:
+            return []
+        
+        # Use the twin's search capabilities
+        if hasattr(twin_instance, 'search_memories'):
+            memories = twin_instance.search_memories(query)
+        else:
+            # Fallback: return empty list
+            memories = []
+        
+        # Format memories for the frontend
+        formatted_memories = []
+        for memory in memories[:10]:  # Limit to 10 results
+            formatted_memories.append({
+                "title": memory.get("title", "Memory"),
+                "content": memory.get("content", ""),
+                "timestamp": memory.get("timestamp", ""),
+                "category": memory.get("category", "general")
+            })
+        
+        return formatted_memories
+        
+    except Exception as e:
+        logger.error(f"Memory search error: {e}")
+        return []
 
 @app.get("/memory/status")
 async def memory_status():
@@ -2890,6 +3242,507 @@ async def get_pending_suggestions():
             "last_updated": datetime.now().isoformat(),
             "error": str(e)
         }
+
+# === SMART TASK MANAGEMENT API ===
+
+@app.get("/api/tasks")
+async def get_smart_tasks(user_id: str = "default_user"):
+    """Get all smart tasks for a user"""
+    try:
+        global enhanced_twin_instance
+        if not enhanced_twin_instance:
+            await initialize_enhanced_twin()
+        
+        if enhanced_twin_instance:
+            # Set current user
+            enhanced_twin_instance.current_user = user_id
+            enhanced_twin_instance._load_smart_tasks_from_session()
+            
+            tasks = getattr(enhanced_twin_instance, 'smart_tasks', [])
+            return {
+                "success": True,
+                "tasks": tasks,
+                "count": len(tasks)
+            }
+        else:
+            return {"success": False, "error": "Enhanced twin not available", "tasks": []}
+    except Exception as e:
+        logger.error(f"Error getting smart tasks: {e}")
+        return {"success": False, "error": str(e), "tasks": []}
+
+@app.post("/api/tasks/{task_id}/complete")
+async def complete_smart_task(task_id: str, user_id: str = "default_user"):
+    """Mark a smart task as completed"""
+    try:
+        global enhanced_twin_instance
+        if not enhanced_twin_instance:
+            await initialize_enhanced_twin()
+        
+        if enhanced_twin_instance:
+            # Set current user
+            enhanced_twin_instance.current_user = user_id
+            result = enhanced_twin_instance.complete_task(task_id)
+            return result
+        else:
+            return {"success": False, "error": "Enhanced twin not available"}
+    except Exception as e:
+        logger.error(f"Error completing task: {e}")
+        return {"success": False, "error": str(e)}
+
+@app.get("/api/smart-tasks/{user_id}")
+async def api_get_smart_tasks(user_id: str = "default_user"):
+    """API endpoint to get smart tasks for digital cockpit"""
+    return await get_smart_tasks(user_id)
+
+@app.post("/api/smart-tasks/{task_id}/complete")
+async def api_complete_smart_task(task_id: str, user_id: str = "default_user"):
+    """API endpoint to complete a smart task"""
+    return await complete_smart_task(task_id, user_id)
+
+@app.get("/api/smart-summary")
+async def get_smart_summary(user_id: str = "default_user"):
+    """Get intelligent summary of tasks and recommendations"""
+    try:
+        global enhanced_twin_instance
+        if not enhanced_twin_instance:
+            await initialize_enhanced_twin()
+        
+        if enhanced_twin_instance:
+            # Set current user
+            enhanced_twin_instance.current_user = user_id
+            summary = enhanced_twin_instance.get_smart_summary()
+            return {
+                "success": True,
+                "summary": summary
+            }
+        else:
+            return {"success": False, "error": "Enhanced twin not available"}
+    except Exception as e:
+        logger.error(f"Error getting smart summary: {e}")
+        return {"success": False, "error": str(e)}
+
+@app.post("/api/upload")
+async def upload_document_modern(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    user_id: str = Form(default="default_user")
+):
+    """Upload document for modern dashboard with enhanced task creation"""
+    try:
+        # Generate unique task ID
+        task_id = str(uuid.uuid4())
+        
+        # Save uploaded file
+        upload_dir = Path("uploads")
+        upload_dir.mkdir(exist_ok=True)
+        file_path = upload_dir / f"{task_id}_{file.filename}"
+        
+        content = await file.read()
+        with open(file_path, "wb") as f:
+            f.write(content)
+        
+        # Create processing task
+        task = ProcessingTask(
+            task_id=task_id,
+            status="pending",
+            action="document_analysis",
+            filename=file.filename,
+            progress=0,
+            created_at=datetime.now(),
+            original_filename=file.filename
+        )
+        
+        processing_tasks[task_id] = task
+        
+        # Start background processing with enhanced twin
+        background_tasks.add_task(process_document_enhanced, task_id, file_path, user_id)
+        
+        return {"task_id": task_id, "status": "uploaded", "message": "Processing started with smart task creation"}
+        
+    except Exception as e:
+        logger.error(f"Modern upload error: {e}")
+        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
+
+async def process_document_enhanced(task_id: str, file_path: Path, user_id: str):
+    """Enhanced document processing with smart task creation"""
+    global enhanced_twin_instance
+    
+    try:
+        # Initialize enhanced twin if needed
+        if not enhanced_twin_instance:
+            await initialize_enhanced_twin()
+        
+        if not enhanced_twin_instance:
+            processing_tasks[task_id].status = "error"
+            processing_tasks[task_id].error_message = "Enhanced twin not available"
+            return
+        
+        # Update status
+        processing_tasks[task_id].status = "processing"
+        processing_tasks[task_id].progress = 10
+        
+        # Set current user
+        enhanced_twin_instance.current_user = user_id
+        logger.info(f"🔧 Set enhanced twin current_user to: {user_id}")
+        
+        # Read file content
+        content = await read_file_content(file_path)
+        processing_tasks[task_id].progress = 30
+        
+        # Analyze document with enhanced twin
+        result = enhanced_twin_instance.analyze_document(content, file_path.name)
+        processing_tasks[task_id].progress = 80
+        
+        # Store result
+        processing_tasks[task_id].result = {
+            "type": "document_analysis",
+            "summary": result.get("summary", ""),
+            "key_points": result.get("key_points", []),
+            "action_items": result.get("action_items", []),
+            "questions": result.get("questions", []),
+            "analysis_type": result.get("analysis_type", "enhanced"),
+            "smart_tasks_created": len(result.get("action_items", []))
+        }
+        
+        # Complete processing
+        processing_tasks[task_id].status = "completed"
+        processing_tasks[task_id].progress = 100
+        processing_tasks[task_id].completed_at = datetime.now()
+        
+        logger.info(f"✅ Enhanced document processing completed for: {file_path.name}")
+        
+    except Exception as e:
+        logger.error(f"Enhanced processing error for task {task_id}: {e}")
+        processing_tasks[task_id].status = "error"
+        processing_tasks[task_id].error_message = str(e)
+
+@app.get("/api/debug/tasks")
+async def debug_tasks(user_id: str = "default_user"):
+    """Debug endpoint to check task files and enhanced twin state"""
+    try:
+        import os
+        import json
+        from pathlib import Path
+        
+        debug_info = {
+            "user_id": user_id,
+            "enhanced_twin_available": enhanced_twin_instance is not None,
+            "sessions_dir_exists": os.path.exists("sessions"),
+            "task_files": [],
+            "enhanced_twin_tasks": [],
+            "current_user_set": None
+        }
+        
+        # Check for task files
+        sessions_path = Path("sessions")
+        if sessions_path.exists():
+            for file in sessions_path.glob(f"{user_id}_smart_tasks.json"):
+                try:
+                    with open(file, 'r') as f:
+                        tasks = json.load(f)
+                        debug_info["task_files"].append({
+                            "file": str(file),
+                            "task_count": len(tasks),
+                            "tasks": tasks
+                        })
+                except Exception as e:
+                    debug_info["task_files"].append({
+                        "file": str(file),
+                        "error": str(e)
+                    })
+        
+        # Check enhanced twin state
+        if enhanced_twin_instance:
+            debug_info["current_user_set"] = getattr(enhanced_twin_instance, 'current_user', None)
+            debug_info["enhanced_twin_tasks"] = getattr(enhanced_twin_instance, 'smart_tasks', [])
+        
+        return debug_info
+        
+    except Exception as e:
+        return {"error": str(e)}
+
+async def initialize_enhanced_twin():
+    """Initialize the enhanced twin instance"""
+    global enhanced_twin_instance
+    
+    try:
+        if enhanced_twin_instance is None:
+            logger.info("🧠 Initializing enhanced twin...")
+            from productivity_enhanced_twin_llm_enhanced import LLMEnhancedProductivityTwin
+            enhanced_twin_instance = LLMEnhancedProductivityTwin()
+            logger.info("✅ Enhanced twin initialized successfully")
+    except Exception as e:
+        logger.error(f"❌ Failed to initialize enhanced twin: {e}")
+        enhanced_twin_instance = None
+
+# Digital Cockpit API Routes
+@app.get("/api/user-profile")
+async def get_user_profile():
+    """Get user profile for task assignment"""
+    # This would typically come from a database or user management system
+    return {
+        "name": "Paresh",
+        "email": "paresh@tavant.com",
+        "role": "Product Manager",
+        "department": "Technology",
+        "skills": ["AI/ML", "Product Strategy", "Team Leadership"],
+        "preferences": {
+            "taskAssignment": "smart",
+            "emailStyle": "professional",
+            "workingHours": "9-6 PST"
+        }
+    }
+
+@app.post("/api/llm/task-assignment")
+async def llm_task_assignment(request: dict):
+    """Use LLM to determine task assignment based on user profile"""
+    try:
+        task = request.get('task', {})
+        user_profile = request.get('userProfile', {})
+        
+        # Enhanced twin for LLM-based decision making
+        enhanced_twin = get_enhanced_twin_instance()
+        
+        prompt = f"""
+        Based on the user profile and task details, determine if this task should be assigned to the user or delegated to others.
+        
+        User Profile:
+        - Name: {user_profile.get('name')}
+        - Role: {user_profile.get('role')}
+        - Skills: {', '.join(user_profile.get('skills', []))}
+        
+        Task Details:
+        - Title: {task.get('title')}
+        - Description: {task.get('description')}
+        - Priority: {task.get('priority')}
+        
+        Consider:
+        1. Does this task require the user's specific skills/role?
+        2. Is this a strategic/decision-making task that needs the user's involvement?
+        3. Can this be delegated to team members?
+        
+        Respond with exactly "me" or "others" followed by a brief explanation.
+        """
+        
+        response = enhanced_twin.process_user_input(prompt, "default_user")
+        assignment = "me" if "me" in response.lower() else "others"
+        
+        return {
+            "assignment": assignment,
+            "reasoning": response
+        }
+        
+    except Exception as e:
+        logger.error(f"Error in task assignment: {e}")
+        # Fallback to simple keyword-based assignment
+        task_content = f"{task.get('title', '')} {task.get('description', '')}".lower()
+        
+        # Manager/strategic keywords suggest assignment to user
+        manager_keywords = ['review', 'approve', 'strategy', 'decision', 'plan', 'meeting', 'budget']
+        delegate_keywords = ['implement', 'code', 'test', 'deploy', 'design', 'develop']
+        
+        manager_score = sum(1 for word in manager_keywords if word in task_content)
+        delegate_score = sum(1 for word in delegate_keywords if word in task_content)
+        
+        assignment = "me" if manager_score >= delegate_score else "others"
+        
+        return {
+            "assignment": assignment,
+            "reasoning": "Fallback assignment based on keywords"
+        }
+
+@app.post("/api/llm/suggestions")
+async def llm_suggestions(request: dict):
+    """Generate AI suggestions based on current context"""
+    try:
+        user_profile = request.get('userProfile', {})
+        tasks = request.get('tasks', {})
+        documents = request.get('documents', {})
+        
+        enhanced_twin = get_enhanced_twin_instance()
+        
+        # Count overdue and high-priority tasks
+        my_tasks = tasks.get('assignedToMe', [])
+        overdue_count = len([t for t in my_tasks if t.get('status') == 'overdue'])
+        high_priority_count = len([t for t in my_tasks if t.get('priority') == 'high'])
+        
+        suggestions = []
+        
+        # Overdue task suggestion
+        if overdue_count > 0:
+            suggestions.append({
+                "title": "Action Needed",
+                "description": f"You have {overdue_count} overdue tasks. Would you like me to draft status update emails to stakeholders?",
+                "icon": "fa-exclamation-triangle",
+                "actions": [
+                    {"label": "Draft Updates", "icon": "fa-paper-plane", "handler": "draftStatusUpdate", "params": "overdue"},
+                    {"label": "View Tasks", "icon": "fa-list", "handler": "showOverdueTasks", "params": ""}
+                ]
+            })
+        
+        # High priority suggestion
+        if high_priority_count > 2:
+            suggestions.append({
+                "title": "Priority Focus",
+                "description": f"You have {high_priority_count} high-priority tasks. Consider scheduling focused time blocks to tackle these items.",
+                "icon": "fa-clock",
+                "actions": [
+                    {"label": "Schedule Time", "icon": "fa-calendar", "handler": "scheduleTimeBlock", "params": "high-priority"},
+                    {"label": "Delegate Some", "icon": "fa-users", "handler": "suggestDelegation", "params": ""}
+                ]
+            })
+        
+        # Recent document suggestion
+        recent_docs = documents.get('completed', [])
+        if recent_docs:
+            latest_doc = recent_docs[0]
+            suggestions.append({
+                "title": "Smart Suggestion",
+                "description": f"Based on your recent analysis of '{latest_doc.get('name', 'document')}', I recommend scheduling follow-up actions.",
+                "icon": "fa-lightbulb",
+                "actions": [
+                    {"label": "Draft Email", "icon": "fa-envelope", "handler": "draftEmail", "params": "follow-up-meeting"},
+                    {"label": "Add Task", "icon": "fa-plus", "handler": "addToTasks", "params": "Schedule follow-up meeting"}
+                ]
+            })
+        
+        return suggestions
+        
+    except Exception as e:
+        logger.error(f"Error generating suggestions: {e}")
+        return []
+
+@app.post("/api/llm/draft-email")
+async def llm_draft_email(request: dict):
+    """Generate email draft using LLM"""
+    try:
+        task = request.get('task', {})
+        user_profile = request.get('userProfile', {})
+        email_type = request.get('type', 'task_action')
+        
+        enhanced_twin = get_enhanced_twin_instance()
+        
+        prompt = f"""
+        Draft a professional email based on the following context:
+        
+        Email Type: {email_type}
+        Task: {task.get('title')}
+        Description: {task.get('description')}
+        Priority: {task.get('priority')}
+        Assigned to: {task.get('assigned_to')}
+        
+        User Profile:
+        - Name: {user_profile.get('name')}
+        - Role: {user_profile.get('role')}
+        - Email Style: {user_profile.get('preferences', {}).get('emailStyle', 'professional')}
+        
+        Generate a professional email with:
+        1. Appropriate subject line
+        2. Professional greeting
+        3. Clear context about the task
+        4. Specific request or information
+        5. Professional closing
+        
+        Format the response as:
+        Subject: [subject line]
+        
+        [email body]
+        """
+        
+        response = enhanced_twin.process_user_input(prompt, "default_user")
+        
+        # Parse the response to extract subject and body
+        lines = response.split('\n')
+        subject = ""
+        body = ""
+        
+        for i, line in enumerate(lines):
+            if line.startswith('Subject:'):
+                subject = line.replace('Subject:', '').strip()
+                body = '\n'.join(lines[i+2:]).strip()  # Skip empty line after subject
+                break
+        
+        if not subject:
+            subject = f"Regarding: {task.get('title')}"
+            body = response
+        
+        return {
+            "to": task.get('assigned_to', ''),
+            "subject": subject,
+            "body": body
+        }
+        
+    except Exception as e:
+        logger.error(f"Error drafting email: {e}")
+        return {
+            "to": task.get('assigned_to', ''),
+            "subject": f"Regarding: {task.get('title')}",
+            "body": f"Hi,\n\nI wanted to follow up on the task '{task.get('title')}'.\n\n{task.get('description')}\n\nPlease let me know if you need any clarification.\n\nBest regards,\n{user_profile.get('name', 'User')}"
+        }
+
+@app.get("/api/documents/status")
+async def get_documents_status():
+    """Get document processing status with persistent storage"""
+    try:
+        # Check for persistent document status file
+        status_file = Path("sessions/document_processing_status.json")
+        
+        if status_file.exists():
+            with open(status_file, 'r') as f:
+                return json.load(f)
+        else:
+            # Return empty status if no file exists
+            return {
+                "processing": [],
+                "completed": []
+            }
+            
+    except Exception as e:
+        logger.error(f"Error loading document status: {e}")
+        return {
+            "processing": [],
+            "completed": []
+        }
+
+@app.post("/api/documents/update-status")
+async def update_document_status(request: dict):
+    """Update document processing status with persistence"""
+    try:
+        status_file = Path("sessions/document_processing_status.json")
+        
+        # Load existing status
+        if status_file.exists():
+            with open(status_file, 'r') as f:
+                status = json.load(f)
+        else:
+            status = {"processing": [], "completed": []}
+        
+        # Update based on request
+        action = request.get('action')
+        document_data = request.get('document')
+        
+        if action == 'add_processing':
+            status['processing'].append(document_data)
+        elif action == 'move_to_completed':
+            # Remove from processing and add to completed
+            doc_id = document_data.get('id')
+            status['processing'] = [d for d in status['processing'] if d.get('id') != doc_id]
+            status['completed'].insert(0, document_data)  # Add to beginning of list
+            
+            # Keep only last 20 completed documents
+            if len(status['completed']) > 20:
+                status['completed'] = status['completed'][:20]
+        
+        # Save updated status
+        os.makedirs("sessions", exist_ok=True)
+        with open(status_file, 'w') as f:
+            json.dump(status, f, indent=2)
+        
+        return {"status": "success", "message": "Document status updated"}
+        
+    except Exception as e:
+        logger.error(f"Error updating document status: {e}")
+        return {"status": "error", "message": str(e)}
 
 if __name__ == "__main__":
     import uvicorn

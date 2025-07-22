@@ -2,7 +2,7 @@
   "session_id": "186c9e07-5fa2-4b48-8bbf-1896b8516a94",
   "user_id": "Paresh",
   "session_start": "2025-06-21T15:11:46.232399",
-  "last_updated": "2025-06-25T14:58:48.607467",
+  "last_updated": "2025-06-28T12:10:02.515952",
   "conversation_history": [
     {
       "timestamp": "2025-06-21T15:16:25.110460",
@@ -863,6 +863,362 @@
       "timestamp": "2025-06-25T14:12:17.645577",
       "user": "what sports i like",
       "assistant": "Based on your memories, you like football, cricket, and badminton. These are the sports you have expressed an interest in.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T13:40:16.257730",
+      "user": "what sports do i like?",
+      "assistant": "Based on your memories, you enjoy playing and watching football, cricket, and badminton. These are the sports you have expressed interest in. If there's anything else you'd like to add or ask about, feel free to let me know!",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T13:40:44.305455",
+      "user": "I like to eat Butter Chicken",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: expressing a food preference | Personal info: preferences | Personal concepts: food preference | Personal entities: Butter Chicken, Paresh | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "5b378fdf-7ea5-4f9a-b790-7d679f2ca726",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.46,
+        "importance_score": 1.0,
+        "processing_time": 5.926822
+      }
+    },
+    {
+      "timestamp": "2025-06-27T13:42:23.434330",
+      "user": "I am Sr Director at Tavant. i have clients in Financials Services and Media",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: The user is sharing information about their professional role and industry focus | Personal info: identity|work | Personal concepts: professional_role | Personal entities: Sr Director, Tavant | Context: urgency: low, importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "d3b22df2-3c51-4bf8-a65a-3a36d31c4d28",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.3,
+        "importance_score": 1.0,
+        "processing_time": 10.440709
+      }
+    },
+    {
+      "timestamp": "2025-06-27T14:01:17.626992",
+      "user": "here is some addtional information about me Paresh Deshpande was honored as a 2021 HousingWire Tech Trendsetter, recognized for his transformative impact on Proptech and Fintech. His thought leadership—delivered through keynote sessions, panels, and public speaking—continues to shape the future of the housing industry.",
+      "assistant": "I don't have that information in your memories yet. However, I do know that you are a Senior Director at Tavant, where you work with clients in the Financial Services and Media industries. If there's anything else you'd like to share or update in your memories, feel free to let me know!",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T14:02:48.426137",
+      "user": "here is some addtional information about me Paresh Deshpande was honored as a 2021 HousingWire Tech Trendsetter, recognized for his transformative impact on Proptech and Fintech. His thought leadership—delivered through keynote sessions, panels, and public speaking—continues to shape the future of the housing industry.",
+      "assistant": "I don't have that information in your memories yet. The memories I have mention that you are a Senior Director at Tavant, with clients in Financial Services and Media, but they don't include details about your recognition as a 2021 HousingWire Tech Trendsetter or your impact on Proptech and Fintech.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T14:03:36.117084",
+      "user": "can you add/ update your memories Paresh Deshpande was honored as a 2021 HousingWire Tech Trendsetter, recognized for his transformative impact on Proptech and Fintech. His thought leadership—delivered through keynote sessions, panels, and public speaking—continues to shape the future of the housing industry.",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: to update or add personal achievements and recognitions | Personal info: identity|work|skills | Personal concepts: thought leadership | Personal entities: Paresh Deshpande | Context: importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "b4cea9fd-6933-46b3-a08e-7c126594d75b",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.8,
+        "importance_score": 1.0,
+        "processing_time": 10.952792
+      }
+    },
+    {
+      "timestamp": "2025-06-27T14:13:38.153068",
+      "user": "add/update your memories Paresh Technology Leadership: Expertise in AI-driven solutions, large-scale automation, data engineering, and cloud modernization",
+      "assistant": "I've learned and stored this information. I've classified this under digital. In essence: Intent: To update or add personal expertise and skills in technology | Personal info: work|skills | Key concepts: Technology Leadership, AI-driven solutions | Personal entities: Paresh | Context: urgency: low, importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "4bb3217d-9f6e-4250-b7cd-5e4c90eb02bf",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "digital",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.19999999999999998,
+        "importance_score": 0.9449999999999998,
+        "processing_time": 10.046106
+      }
+    },
+    {
+      "timestamp": "2025-06-27T14:13:53.772508",
+      "user": "Industry Evangelism: Regular contributor to public forums—webinars, roundtables, and industry events—discussing the convergence of Proptech, Fintech, and digital mortgage innovation",
+      "assistant": "I've learned and stored this information. I've classified this under digital. In essence: Intent: To communicate involvement in industry discussions and contributions | Personal info: work|interests | Key concepts: Industry Evangelism, Convergence | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "821e778a-32a6-4290-813d-016533441d60",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "digital",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 4.08,
+        "importance_score": 1.0,
+        "processing_time": 9.576524
+      }
+    },
+    {
+      "timestamp": "2025-06-27T14:14:10.903713",
+      "user": "Industry Evangelism: Regular contributor to public forums—webinars, roundtables, and industry events—discussing the convergence of Proptech, Fintech, and digital mortgage innovation",
+      "assistant": "I've learned and stored this information. I've classified this under digital. In essence: Intent: To communicate involvement in industry discussions and innovations | Personal info: work|interests|skills | Key concepts: Industry Evangelism, Convergence of Proptech, Fintech, and Digital Mortgage Innovation | Context: urgency: low, importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "d2766717-9924-435c-a000-d5dd96074f2d",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "digital",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 4.08,
+        "importance_score": 1.0,
+        "processing_time": 10.353488
+      }
+    },
+    {
+      "timestamp": "2025-06-27T14:23:37.990262",
+      "user": "profile",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: The user is likely seeking to establish or verify personal identity information. | Personal info: identity | Personal concepts: identity | Personal entities: Paresh | Context: importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "04a9f0a3-a1d1-4a53-8470-323b94257583",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.8,
+        "importance_score": 1.0,
+        "processing_time": 7.545887
+      }
+    },
+    {
+      "timestamp": "2025-06-27T14:24:08.304416",
+      "user": "tell me about Paresh",
+      "assistant": "From your memories, I know that you, Paresh, have a strong interest in sports. You enjoy playing football, cricket, and badminton. Additionally, your full name is Paresh Deshpande. If there's anything more specific you'd like to know or remember, feel free to ask!",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T14:25:41.615298",
+      "user": "what about paresh skills",
+      "assistant": "Based on your memories, Paresh, you have a strong set of skills in technology leadership. You have expertise in AI-driven solutions, large-scale automation, data engineering, and cloud modernization. Additionally, you were recognized as a 2021 HousingWire Tech Trendsetter for your transformative impact on Proptech and Fintech, which highlights your thought leadership in these areas. Your professional role as Sr Director at Tavant involves working with clients in Financial Services and Media, which likely leverages your skills in these domains.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T14:26:13.162703",
+      "user": "you are smart",
+      "assistant": "I've learned and stored this information. In essence: Intent: Compliment or acknowledgment of intelligence. | Personal info: identity | Key concepts: intelligence,  | Personal entities: Paresh | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "ced30221-c2b8-402f-bcda-3af5031cfc1a",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": null,
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.3,
+        "importance_score": 0.7899999999999999,
+        "processing_time": 6.24421
+      }
+    },
+    {
+      "timestamp": "2025-06-27T14:27:13.579433",
+      "user": "can i give you a name?",
+      "assistant": "I don't have that information in your memories yet. If you'd like to give me a name, feel free to share it, and I can remember it for future interactions.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T14:27:54.812774",
+      "user": "Your name is AVA",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: To identify or confirm the name of the user or system | Personal info: identity | Personal concepts: identity | Personal entities: AVA | Context: urgency: low, importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "84bbd639-d56b-49aa-adb5-bdc305eb8cf6",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.25,
+        "importance_score": 0.9550000000000001,
+        "processing_time": 6.56644
+      }
+    },
+    {
+      "timestamp": "2025-06-27T14:28:58.218145",
+      "user": "what is my name ?",
+      "assistant": "Your name is Paresh Deshpande.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T14:30:13.472743",
+      "user": "What is your name?",
+      "assistant": "I don't have that information in your memories yet.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T14:31:27.793229",
+      "user": "add/update your name is \"AVA\"",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: The user intends to update or add their personal name information. | Personal info: identity | Personal concepts: identity_update | Personal entities: name | Context: importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "7dddd6bb-2d6e-4013-a33a-47fe95a16247",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.25,
+        "importance_score": 1.0,
+        "processing_time": 7.549344
+      }
+    },
+    {
+      "timestamp": "2025-06-27T14:32:29.651629",
+      "user": "what is your name?",
+      "assistant": "Based on your memories, your name is Paresh Deshpande. If you were asking about my name, I'm referred to as AVA in your memories.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T14:33:03.356430",
+      "user": "perfect. good job",
+      "assistant": "I've learned and stored this information. I see this relates to your work and professional life. In essence: Intent: to acknowledge and appreciate the completion of a task or job | Personal info: work | Key concepts: positive_feedback,  | Personal entities: Paresh | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "f077a8a7-423b-4d77-bbe7-8382d30e5989",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "work",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 0.8,
+        "importance_score": 0.89,
+        "processing_time": 9.66608
+      }
+    },
+    {
+      "timestamp": "2025-06-27T15:20:43.729016",
+      "user": "what sports do i like?",
+      "assistant": "Based on your memories, you like football, cricket, and badminton. These sports seem to be your personal interests. If there's anything else you'd like to know or explore, feel free to ask!",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T15:21:50.660444",
+      "user": "what is my name?",
+      "assistant": "Your name is Paresh Deshpande, as indicated in several of your memories.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T15:46:05.405880",
+      "user": "what is your name?",
+      "assistant": "Your name is Paresh Deshpande.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T15:54:48.344403",
+      "user": "do you know who is ava?",
+      "assistant": "Based on your memories, Ava seems to be related to the identification or confirmation of a name. Specifically, there is a memory indicating \"Your name is AVA,\" which suggests that Ava might be a name associated with you or perhaps a system you are interacting with. However, beyond this, I don't have additional information about Ava in your memories. If Ava is someone specific you're thinking of, I don't have that information in your memories yet.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T16:17:36.692428",
+      "user": "can you update the memory as your name is Ava",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: To update the memory system with the name 'Ava'. | Personal info: identity | Personal concepts: identity | Personal entities: Ava | Context: importance: high This adds to the 40 memories I have about you.",
+      "memory_id": "d9695aae-3c9c-4b6d-888b-6be7e5015411",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.25,
+        "importance_score": 1.0,
+        "processing_time": 5.684909
+      }
+    },
+    {
+      "timestamp": "2025-06-27T16:18:56.699610",
+      "user": "what is my name?",
+      "assistant": "Your name is Paresh Deshpande.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T16:26:10.206908",
+      "user": "what is your name?",
+      "assistant": "Your name is Paresh Deshpande, according to the memories I have. If you have updated your name to Ava, please let me know, and I can assist with that information.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T16:27:48.059452",
+      "user": "you are right my name is Paresh Deshpande.",
+      "assistant": "Yes, your name is Paresh Deshpande. I have multiple memories that identify you as Paresh Deshpande, including timestamps from June 2025. Additionally, you are a Senior Director at Tavant, working with clients in Financial Services and Media. If you need more details or have other questions, feel free to ask!",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T16:56:58.160142",
+      "user": "what is my name?",
+      "assistant": "Your name is Paresh Deshpande.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T16:57:08.666263",
+      "user": "what sports i like?",
+      "assistant": "Based on your memories, you enjoy football, cricket, and badminton.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T16:57:23.615922",
+      "user": "what i like to eat?",
+      "assistant": "From your memories, I know that you like to eat Butter Chicken. If there are other foods you enjoy, I don't have that information in your memories yet.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T16:58:35.404429",
+      "user": "Along with butter chicken, i also like Tandoori Pizza",
+      "assistant": "I've learned and stored this information. I understand this is personal information about you. In essence: Intent: expressing food preferences | Personal info: preferences | Personal concepts: food preference | Personal entities: butter chicken, tandoori pizza | Context: urgency: low This adds to the 40 memories I have about you.",
+      "memory_id": "9b1d8ed7-62f6-40d7-96c2-c5a8743985b3",
+      "type": "memory_storage",
+      "processing_report": {
+        "success": true,
+        "ontology_domain": "personal",
+        "ai_confidence": 0.85,
+        "hybrid_confidence": 1.46,
+        "importance_score": 1.0,
+        "processing_time": 5.989849
+      }
+    },
+    {
+      "timestamp": "2025-06-27T16:58:44.015094",
+      "user": "what is my name?",
+      "assistant": "Your name is Paresh Deshpande.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T16:58:49.153778",
+      "user": "what i like to eat?",
+      "assistant": "From your memories, I know that you like to eat Butter Chicken. If there are other foods you enjoy, I don't have that information in your memories yet.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T16:59:16.366288",
+      "user": "do i like tandoori pizza?",
+      "assistant": "Yes, you do like Tandoori Pizza. In one of your memories, you mentioned that along with butter chicken, you also enjoy Tandoori Pizza.",
+      "type": "llm_memory_retrieval",
+      "success": true
+    },
+    {
+      "timestamp": "2025-06-27T16:59:41.507400",
+      "user": "what food i like?",
+      "assistant": "From your memories, I know that you like Butter Chicken. If there are other foods you enjoy, I don't have that information in your memories yet.",
       "type": "llm_memory_retrieval",
       "success": true
     }

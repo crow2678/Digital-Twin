@@ -1,0 +1,109 @@
+[
+  {
+    "id": "d176fcb3-b01e-4d78-aede-94eeda94de0d",
+    "title": "Q1 Budget Meeting - Fixed",
+    "content": "This is a test meeting transcript. We discussed the quarterly budget and decided to allocate more resources to the engineering team.",
+    "created_at": "2025-06-28T10:11:34.098143",
+    "user_id": "Paresh",
+    "result": {
+      "my_action_items": [],
+      "others_action_items": [],
+      "decisions_made": [
+        "Allocate more resources to the engineering team."
+      ],
+      "questions_to_ask": [
+        "Who will oversee the allocation of resources to the engineering team?",
+        "What specific resources are being allocated?"
+      ],
+      "next_steps": [
+        "Confirm the allocation details and communicate them to the engineering team."
+      ],
+      "follow_up_emails": [
+        {
+          "to": "Engineering Team Lead",
+          "subject": "Resource Allocation Update",
+          "key_points": [
+            "We have decided to allocate more resources to your team.",
+            "Please confirm the specific resources needed and any support required."
+          ]
+        }
+      ],
+      "calendar_events": [
+        {
+          "title": "Resource Allocation Review",
+          "date": "2023-11-01",
+          "time": "10:00 AM",
+          "duration": "1 hour"
+        }
+      ],
+      "meeting_effectiveness": 6,
+      "missing_attendees": [
+        "Finance Manager",
+        "Project Managers"
+      ],
+      "next_meeting_needed": true
+    },
+    "type": "transcript"
+  },
+  {
+    "id": "1dc28daa-903b-4e0f-bf4d-3b1ca47528ce",
+    "title": "Prep",
+    "content": "Nikhil Prakash\n0 minutes 5 seconds0:05\nNikhil Prakash 0 minutes 5 seconds\nRight. Who else are we waiting on?\n \nJustin Allen\n0 minutes 15 seconds0:15\nJustin Allen 0 minutes 15 seconds\nI think we should be good to get started.\n \nNikhil Prakash\n0 minutes 19 seconds0:19\nNikhil Prakash 0 minutes 19 seconds\nOK, cool.\nNikhil Prakash 0 minutes 22 seconds\nSo uh.\nNikhil Prakash 0 minutes 26 seconds\nDo we have a shorter version that that started easier?\n \nJustin Allen\n0 minutes 31 seconds0:31\nJustin Allen 0 minutes 31 seconds\nMichelle accepted, but.\nJustin Allen 0 minutes 34 seconds\nOK. Oh, there we go.\n \nNikhil Prakash\n0 minutes 37 seconds0:37\nNikhil Prakash 0 minutes 37 seconds\nDo we have a shorter version of the deck that we intend to present? Is that started or not yet?\n \nJustin Allen\n0 minutes 43 seconds0:43\nJustin Allen 0 minutes 43 seconds\nI would say not yet.\n \nNikhil Prakash\n0 minutes 45 seconds0:45\nNikhil Prakash 0 minutes 45 seconds\nOK, cool.\n \nNikhil Prakash\n17 minutes 57 seconds17:57\nNikhil Prakash 17 minutes 57 seconds\nHmm.\n \nMohammad Rashid\n18 minutes 4 seconds18:04\nMohammad Rashid 18 minutes 4 seconds\nUh.\nMohammad Rashid 18 minutes 5 seconds\nBankruptcy, you know that world has those types of things. So he has one. He's developed a kind of a framework for doing that. And then you have two use cases within one for like title, title processing and the other one for warranty processing.\n \nNikhil Prakash\n18 minutes 6 seconds18:06\nNikhil Prakash 18 minutes 6 seconds\nOK.\nNikhil Prakash 18 minutes 10 seconds\nYeah.\n \nMohammad Rashid\n18 minutes 22 seconds18:22\nMohammad Rashid 18 minutes 22 seconds\nIt might be useful to show a little bit of that as well.\n \nNikhil Prakash\n18 minutes 22 seconds18:22\nNikhil Prakash 18 minutes 22 seconds\nMm.\nNikhil Prakash 18 minutes 27 seconds\nOK, yeah, the title one was the one he showed at the AI summit. So like, let's figure out which one.\n \nMohammad Rashid\n18 minutes 32 seconds18:32\nMohammad Rashid 18 minutes 32 seconds\nYes.\n \nNikhil Prakash\n18 minutes 39 seconds18:39\nNikhil Prakash 18 minutes 39 seconds\nIt is more relevant and obviously the voice one is a little bit cooler, but uh, the title also has.\n \nMohammad Rashid\n18 minutes 47 seconds18:47\nMohammad Rashid 18 minutes 47 seconds\nOh yeah, yeah, yeah. Coolness wise that that is, that is definitely one. The other one is more around, you know, stuff that people have to be injected into because you need somebody to read something and make sure that it.\nMohammad Rashid 19 minutes 3 seconds\nAligns with something else, right? And.\n \nNikhil Prakash\n19 minutes 5 seconds19:05\nNikhil Prakash 19 minutes 5 seconds\nYeah.\nNikhil Prakash 19 minutes 11 seconds\nAlright, sounds good.\n \nMohammad Rashid\n19 minutes 12 seconds19:12\nMohammad Rashid 19 minutes 12 seconds\nIn fact, he can. He can probably do one the way he's developed it. The pipeline is he can do one on the spot, meaning you have the title processing, you have priority processing, you could do a claim, you know some complaints processing or something like that or compliance processing for auto and develop it in front.\n \nNikhil Prakash\n19 minutes 28 seconds19:28\nNikhil Prakash 19 minutes 28 seconds\nRight.\n \nMohammad Rashid\n19 minutes 32 seconds19:32\nMohammad Rashid 19 minutes 32 seconds\nOf them. So it just, uh, it's very, very cool actually.\n \nNikhil Prakash\n19 minutes 33 seconds19:33\nNikhil Prakash 19 minutes 33 seconds\nYeah.\n \nPratip Sengupta\n19 minutes 39 seconds19:39\nPratip Sengupta 19 minutes 39 seconds\nActually, if that happens, right, I mean we don't need to cover the, let's say the 25262728, right? I mean, I mean we if you pick up those ideas from here itself and say, hey, let Olav present it and how it's getting done.\nPratip Sengupta 19 minutes 52 seconds\nThat will be a completed putting it on.\n \nMohammad Rashid\n19 minutes 56 seconds19:56\nMohammad Rashid 19 minutes 56 seconds\nMm.\n \nPratip Sengupta\n19 minutes 58 seconds19:58\nPratip Sengupta 19 minutes 58 seconds\nThose are the hard copies to read through, right? I mean what what they have.\n \nNikhil Prakash\n20 minutes 7 seconds20:07\nNikhil Prakash 20 minutes 7 seconds\nYeah, that's a high risk approach though, because just in case there is some issues in the.\nNikhil Prakash 20 minutes 17 seconds\nTechnology and all then.\nNikhil Prakash 20 minutes 25 seconds\nI mean the prebuilt demos I think are more this thing uh relevant and I think more importantly I want the him to also explain how some of this you have to.\n \nPratip Sengupta\n20 minutes 28 seconds20:28\nPratip Sengupta 20 minutes 28 seconds\nRight.\n \nNikhil Prakash\n20 minutes 41 seconds20:41\nNikhil Prakash 20 minutes 41 seconds\nBreak down the problem in a new way where the usually people are not used to and that's what has to change when you're doing an AI transformation.\n \nPratip Sengupta\n20 minutes 57 seconds20:57\nPratip Sengupta 20 minutes 57 seconds\nSo Nikhil, one thing which you kind of be slightly careful about is what is his biggest problem? We have still not got that. I mean, is it that he has a problem with underlying data and getting it and sorting it up and then?\nPratip Sengupta 21 minutes 12 seconds\nWorking on AI transformation or his problem is that he wants has been chartered to improve the improve the reduce the technical debt if required or he has been chartered to reduce the operation operations effort and all so.\n \nNikhil Prakash\n21 minutes 28 seconds21:28\nNikhil Prakash 21 minutes 28 seconds\nMhm.\n \nPratip Sengupta\n21 minutes 28 seconds21:28\nPratip Sengupta 21 minutes 28 seconds\nI mean we should be open to pivot to any of these during the course of conversation and that that I think you will understand. I mean you will be able to handle it. So none of us have very.\n \nNikhil Prakash\n21 minutes 36 seconds21:36\nNikhil Prakash 21 minutes 36 seconds\nYeah.\n \nPratip Sengupta\n21 minutes 44 seconds21:44\nPratip Sengupta 21 minutes 44 seconds\nWhat is in their heads right now? So let me put it differently. Someone should not come back and say, hey, for you to implement even these seven agents, you should have the data in this format and we don't have the data in this format. So that should not really throw us off the.\n \nNikhil Prakash\n21 minutes 46 seconds21:46\nNikhil Prakash 21 minutes 46 seconds\nYeah, that's my reason.\nNikhil Prakash 21 minutes 56 seconds\nYeah.\n \nPratip Sengupta\n21 minutes 59 seconds21:59\nPratip Sengupta 21 minutes 59 seconds\nIt.\n \nNikhil Prakash\n22 minutes 2 seconds22:02\nNikhil Prakash 22 minutes 2 seconds\nAll right. Anything else, gentlemen? Otherwise, let's jump off. I'll create a copy of this deck and start cutting stuff out.\nNikhil Prakash 22 minutes 15 seconds\nAnd then we'll go from there, talk more tomorrow.\n \nJustin Allen\n22 minutes 24 seconds22:24\nJustin Allen 22 minutes 24 seconds\nSounds good.\n \nNikhil Prakash\n22 minutes 26 seconds22:26\nNikhil Prakash 22 minutes 26 seconds\nAlright, thanks everybody.\n \nMohammad Rashid\n22 minutes 28 seconds22:28\nMohammad Rashid 22 minutes 28 seconds\nThank you.\n \nPratip Sengupta\n22 minutes 29 seconds22:29\nPratip Sengupta 22 minutes 29 seconds\nS.\n \nJustin Allen\n22 minutes 29 seconds22:29\nJustin Allen 22 minutes 29 seconds\nThank you.\n \nNikhil Prakash\n22 minutes 31 seconds22:31\nNikhil Prakash 22 minutes 31 seconds\nRight.\nsdsd",
+    "created_at": "2025-06-28T10:13:22.708435",
+    "user_id": "Paresh",
+    "result": {
+      "my_action_items": [
+        "Create a copy of the deck and start cutting stuff out."
+      ],
+      "others_action_items": [
+        "Olav to present and demonstrate the title processing and other relevant use cases.",
+        "Determine the biggest problem faced by the person in charge of AI transformation."
+      ],
+      "decisions_made": [
+        "Prebuilt demos are preferred over live demonstrations due to potential technology issues.",
+        "Focus on explaining how to break down problems in a new way for AI transformation."
+      ],
+      "questions_to_ask": [
+        "What is the biggest problem faced by the person in charge of AI transformation?",
+        "Do we have the data in the required format for implementing the seven agents?"
+      ],
+      "next_steps": [
+        "Finalize the deck with the necessary cuts and prepare for the next meeting.",
+        "Clarify the biggest problem related to AI transformation with the relevant stakeholders."
+      ],
+      "follow_up_emails": [
+        {
+          "to": "Olav",
+          "subject": "Preparation for Title Processing Demonstration",
+          "key_points": [
+            "Confirm your availability for presenting the title processing use case.",
+            "Ensure all necessary materials and demos are prepared in advance."
+          ]
+        },
+        {
+          "to": "AI Transformation Lead",
+          "subject": "Clarification on AI Transformation Challenges",
+          "key_points": [
+            "Understand the main challenges you are facing with AI transformation.",
+            "Discuss any data format issues that might impact the implementation."
+          ]
+        }
+      ],
+      "calendar_events": [
+        {
+          "title": "Deck Review and Finalization",
+          "date": "Tomorrow",
+          "participants": [
+            "Nikhil Prakash"
+          ]
+        }
+      ],
+      "meeting_effectiveness": 6,
+      "missing_attendees": [
+        "Olav"
+      ],
+      "next_meeting_needed": true
+    },
+    "type": "transcript"
+  }
+]

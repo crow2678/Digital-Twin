@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Cockpit - AI-Powered Command Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-bg: #1a1d23;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.15);
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --accent-blue: #4299e1;
+            --accent-green: #48bb78;
+            --accent-orange: #ed8936;
+            --accent-red: #f56565;
+        }
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 50%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .cockpit-header {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-soft);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .cockpit-title {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .smart-section {
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .task-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent-blue);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-card.assigned-to-me {
+            border-left-color: var(--accent-blue);
+        }
+
+        .task-card.assigned-to-others {
+            border-left-color: var(--accent-orange);
+        }
+
+        .task-card.completed {
+            border-left-color: var(--accent-green);
+            opacity: 0.8;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .task-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn-smart {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-smart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .ai-suggestion-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .suggestion-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .ava-chat-widget {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 350px;
+            height: 500px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow-hover);
+            display: none;
+            flex-direction: column;
+            z-index: 1001;
+        }
+
+        .ava-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1rem;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ava-chat {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .ava-input {
+            padding: 1rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .chat-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .email-draft-modal {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .priority-high { border-left-color: var(--accent-red) !important; }
+        .priority-medium { border-left-color: var(--accent-orange) !important; }
+        .priority-low { border-left-color: var(--accent-green) !important; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .ava-chat-widget {
+                width: calc(100vw - 2rem);
+                height: calc(100vh - 4rem);
+                right: 1rem;
+                bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="cockpit-header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="cockpit-title">
+                        <i class="fas fa-rocket me-3"></i>
+                        Digital Cockpit
+                    </h1>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="d-flex align-items-center justify-content-end gap-3">
+                        <span class="text-secondary">Welcome back, <strong>Paresh</strong></span>
+                        <div class="position-relative">
+                            <i class="fas fa-bell fs-5 text-secondary"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-4">
+        <!-- AI Suggestions Panel -->
+        <div class="ai-suggestion-panel glass-card">
+            <div class="section-header">
+                <h3 class="section-title text-white">
+                    <i class="fas fa-brain"></i>
+                    AI Intelligence Center
+                </h3>
+                <button class="btn btn-light btn-sm" onclick="refreshSuggestions()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div id="ai-suggestions">
+                <div class="suggestion-item">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="fas fa-lightbulb mt-1"></i>
+                        <div>
+                            <strong>Smart Suggestion:</strong> Based on your RFP analysis, I recommend scheduling a follow-up meeting with the automation team to discuss implementation timelines.
+                            <div class="mt-2">
+                                <button class="btn btn-light btn-sm me-2" onclick="draftEmail('follow-up-meeting')">
+                                    <i class="fas fa-envelope"></i> Draft Email
+                                </button>
+                                <button class="btn btn-outline-light btn-sm" onclick="addToTasks('Schedule follow-up meeting')">
+                                    <i class="fas fa-plus"></i> Add Task
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="suggestion-item">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="fas fa-chart-line mt-1"></i>
+                        <div>
+                            <strong>Action Needed:</strong> Three high-priority tasks are overdue. Would you like me to draft status update emails to stakeholders?
+                            <div class="mt-2">
+                                <button class="btn btn-light btn-sm me-2" onclick="draftStatusUpdate()">
+                                    <i class="fas fa-paper-plane"></i> Draft Updates
+                                </button>
+                                <button class="btn btn-outline-light btn-sm" onclick="showOverdueTasks()">
+                                    <i class="fas fa-list"></i> View Tasks
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Dashboard -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value text-primary" id="assigned-to-me-count">12</div>
+                <div class="stat-label">Assigned to Me</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value text-warning" id="assigned-to-others-count">8</div>
+                <div class="stat-label">Delegated Tasks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value text-success" id="completed-count">24</div>
+                <div class="stat-label">Completed Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value text-info" id="documents-processed">5</div>
+                <div class="stat-label">Documents Processed</div>
+            </div>
+        </div>
+
+        <!-- Enhanced Document Processing Center -->
+        <div class="row">
+            <div class="col-12">
+                <div class="glass-card smart-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-file-alt"></i>
+                            Document Intelligence Center
+                        </h3>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-smart" onclick="uploadDocument()">
+                                <i class="fas fa-upload"></i> Upload Document
+                            </button>
+                            <button class="btn btn-outline" onclick="refreshDocumentStatus()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Document Upload Area -->
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <div class="upload-area border rounded p-4 text-center" style="border-style: dashed !important; border-color: var(--accent-blue) !important;">
+                                <input type="file" id="documentInput" class="d-none" accept=".pdf,.doc,.docx,.txt" onchange="handleFileSelect(event)">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-secondary mb-3"></i>
+                                <h5>Drop your document here or click to upload</h5>
+                                <p class="text-secondary">Supports PDF, DOC, DOCX, TXT files</p>
+                                <button class="btn btn-smart" onclick="document.getElementById('documentInput').click()">
+                                    Choose File
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="analysis-options">
+                                <h6 class="mb-3">Analysis Options</h6>
+                                <select class="form-select mb-3" id="analysisType">
+                                    <option value="comprehensive">Comprehensive Analysis</option>
+                                    <option value="summary">Quick Summary</option>
+                                    <option value="questions">Generate Questions</option>
+                                    <option value="actionItems">Extract Action Items</option>
+                                </select>
+                                <div class="mb-3">
+                                    <label class="form-label">Priority Level</label>
+                                    <select class="form-select" id="priorityLevel">
+                                        <option value="high">High Priority</option>
+                                        <option value="medium" selected>Medium Priority</option>
+                                        <option value="low">Low Priority</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-smart w-100" id="startAnalysisBtn" disabled>
+                                    <i class="fas fa-play"></i> Start Analysis
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Processing Status -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-secondary mb-3">
+                                <i class="fas fa-cog fa-spin"></i> Processing Queue
+                            </h5>
+                            <div id="processing-queue" style="min-height: 200px;">
+                                <!-- Processing items will be populated -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="text-secondary mb-3">
+                                <i class="fas fa-check-circle"></i> Recently Completed
+                            </h5>
+                            <div id="completed-documents" style="min-height: 200px;">
+                                <!-- Completed documents will be populated -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Smart Task Management -->
+        <div class="row">
+            <!-- Assigned to Me -->
+            <div class="col-lg-4 mb-4">
+                <div class="glass-card smart-section">
+                    <div class="section-header">
+                        <h3 class="section-title text-primary">
+                            <i class="fas fa-user-check"></i>
+                            Assigned to Me
+                        </h3>
+                        <span class="badge bg-primary rounded-pill" id="my-tasks-badge">12</span>
+                    </div>
+                    <div id="my-tasks">
+                        <!-- Tasks will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assigned to Others -->
+            <div class="col-lg-4 mb-4">
+                <div class="glass-card smart-section">
+                    <div class="section-header">
+                        <h3 class="section-title text-warning">
+                            <i class="fas fa-users"></i>
+                            Delegated Tasks
+                        </h3>
+                        <span class="badge bg-warning rounded-pill" id="delegated-tasks-badge">8</span>
+                    </div>
+                    <div id="delegated-tasks">
+                        <!-- Tasks will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed -->
+            <div class="col-lg-4 mb-4">
+                <div class="glass-card smart-section">
+                    <div class="section-header">
+                        <h3 class="section-title text-success">
+                            <i class="fas fa-check-circle"></i>
+                            Completed
+                        </h3>
+                        <span class="badge bg-success rounded-pill" id="completed-tasks-badge">24</span>
+                    </div>
+                    <div id="completed-tasks">
+                        <!-- Tasks will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- AVA Chat Widget -->
+    <div class="ava-chat-widget" id="ava-chat">
+        <div class="ava-header">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fas fa-robot"></i>
+                <strong>AVA Assistant</strong>
+            </div>
+            <button class="btn btn-link text-white p-0" onclick="toggleChat()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="ava-chat" id="chat-messages">
+            <div class="mb-3">
+                <div class="alert alert-light">
+                    <i class="fas fa-robot me-2"></i>
+                    Hi Paresh! I can help you with your tasks, draft emails, and provide suggestions. What would you like to do?
+                </div>
+            </div>
+        </div>
+        <div class="ava-input">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Ask AVA anything..." id="chat-input">
+                <button class="btn btn-smart" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Toggle Button -->
+    <button class="chat-toggle" onclick="toggleChat()" id="chat-toggle">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- Email Draft Modal -->
+    <div class="modal fade" id="emailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content email-draft-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-envelope me-2"></i>
+                        AI-Generated Email Draft
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">To:</label>
+                        <input type="email" class="form-control" id="email-to">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Subject:</label>
+                        <input type="text" class="form-control" id="email-subject">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Message:</label>
+                        <textarea class="form-control" rows="10" id="email-body"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-smart" onclick="regenerateEmail()">
+                        <i class="fas fa-sync-alt"></i> Regenerate
+                    </button>
+                    <button type="button" class="btn btn-smart" onclick="copyEmail()">
+                        <i class="fas fa-copy"></i> Copy to Clipboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/digital_cockpit.js"></script>
+</body>
+</html>

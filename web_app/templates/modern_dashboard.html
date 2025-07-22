@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Twin - Sleek Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Clean white theme with blue accents */
+            --primary-blue: #1877f2;
+            --primary-gradient: linear-gradient(135deg, #1877f2 0%, #166fe5 100%);
+            --secondary-gradient: linear-gradient(135deg, #42b883 0%, #369870 100%);
+            --success-gradient: linear-gradient(135deg, #00d084 0%, #00b36b 100%);
+            --accent-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.15);
+            --facebook-gray: #f0f2f5;
+            --facebook-dark: #1c1e21;
+            --facebook-text: #050505;
+            --text-primary: #1c1e21;
+            --text-secondary: #65676b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f0f2f5;
+        }
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f2f5 0%, #ffffff 50%, #f8f9fa 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--text-primary);
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-button {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            padding: 12px 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .gradient-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+        .nav-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 20px 0;
+        }
+
+        .sidebar-glass {
+            background: var(--bg-primary);
+            border-right: 1px solid var(--glass-border);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-soft);
+            overflow-y: auto;
+        }
+
+        .sidebar-item {
+            padding: 15px 25px;
+            margin: 5px 15px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(24, 119, 242, 0.1);
+            transform: translateX(5px);
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .sidebar-item.active {
+            background: var(--primary-gradient);
+            transform: translateX(5px);
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .stats-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        /* User Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background: var(--bg-primary);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .login-input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 15px 20px;
+            color: var(--text-primary);
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .login-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.3);
+        }
+
+        .facebook-button {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            padding: 15px 30px;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4);
+        }
+
+        .facebook-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(24, 119, 242, 0.6);
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 25px;
+            color: white;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .chat-container {
+            background: var(--bg-primary);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 20px;
+            border-radius: 20px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        .message.user {
+            background: var(--primary-gradient);
+            color: white;
+            margin-left: auto;
+        }
+
+        .message.assistant {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary-blue);
+            background: rgba(24, 119, 242, 0.05);
+            color: var(--text-primary);
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--primary-blue);
+            background: rgba(24, 119, 242, 0.1);
+            color: var(--text-primary);
+        }
+
+        .progress-ring {
+            width: 120px;
+            height: 120px;
+        }
+
+        .progress-ring-circle {
+            stroke: #4facfe;
+            stroke-width: 8;
+            fill: transparent;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.3s ease;
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--success-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1100;
+        }
+
+        .floating-action:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(79, 172, 254, 0.6);
+        }
+
+        .memory-item {
+            background: var(--bg-primary);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-blue);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .performance-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .performance-indicator.excellent { background: #00f2fe; }
+        .performance-indicator.good { background: #4facfe; }
+        .performance-indicator.average { background: #f093fb; }
+        .performance-indicator.poor { background: #f5576c; }
+
+        @media (max-width: 768px) {
+            .sidebar-glass {
+                transform: translateX(-100%);
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .sidebar-glass.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            
+            .gradient-text {
+                background: var(--primary-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 10px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar-glass" id="sidebar">
+        <div class="p-4">
+            <h3 class="gradient-text fw-bold mb-4">
+                <i class="fas fa-brain me-2"></i>AVA Digital Twin
+            </h3>
+        </div>
+        
+        <nav>
+            <a href="#" class="sidebar-item active" onclick="showSection('dashboard')">
+                <i class="fas fa-home me-3"></i>Dashboard
+            </a>
+            <a href="#" class="sidebar-item" onclick="showSection('chat')">
+                <i class="fas fa-comments me-3"></i>AI Chat
+            </a>
+            <a href="#" class="sidebar-item" onclick="showSection('upload')">
+                <i class="fas fa-cloud-upload-alt me-3"></i>Document Upload
+            </a>
+            <a href="#" class="sidebar-item" onclick="showSection('memory')">
+                <i class="fas fa-database me-3"></i>Memory System
+            </a>
+            <a href="#" class="sidebar-item" onclick="showSection('transcripts')">
+                <i class="fas fa-file-audio me-3"></i>Transcripts
+            </a>
+            <a href="#" class="sidebar-item" onclick="showSection('analytics')">
+                <i class="fas fa-chart-line me-3"></i>Analytics
+            </a>
+            <a href="#" class="sidebar-item" onclick="showSection('tasks')">
+                <i class="fas fa-tasks me-3"></i>Smart Tasks
+            </a>
+        </nav>
+        
+        <div class="p-4 mt-auto" style="position: absolute; bottom: 0; width: 100%;">
+            <div class="text-secondary small">
+                <div class="d-flex align-items-center mb-2">
+                    <div class="performance-indicator excellent"></div>
+                    <span>System Status: Optimal</span>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="performance-indicator good"></div>
+                    <span>Memory: Active</span>
+                </div>
+                <div class="user-info" id="sidebarUserInfo" style="background: var(--bg-secondary); color: var(--text-primary);">
+                    <div class="user-avatar" id="sidebarUserAvatar">?</div>
+                    <div>
+                        <div class="fw-bold" id="sidebarUserName">Guest</div>
+                        <small class="opacity-75">Not logged in</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="section-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="text-dark mb-2">Welcome to Your Digital Twin</h1>
+                    <p class="text-secondary">Intelligent productivity platform powered by AI</p>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-5">
+                <div class="col-md-3 mb-4">
+                    <div class="stats-card">
+                        <div class="stats-number gradient-text" id="totalMemories">--</div>
+                        <div class="text-secondary">Total Memories</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stats-card">
+                        <div class="stats-number" style="color: #4facfe;" id="documentsProcessed">--</div>
+                        <div class="text-secondary">Documents Processed</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stats-card">
+                        <div class="stats-number" style="color: #f093fb;" id="conversationsCount">--</div>
+                        <div class="text-secondary">Conversations</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stats-card">
+                        <div class="stats-number" style="color: #00f2fe;" id="responseTime">--ms</div>
+                        <div class="text-secondary">Avg Response Time</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row">
+                <div class="col-md-8 mb-4">
+                    <div class="glass-card p-4">
+                        <h5 class="text-dark mb-4">
+                            <i class="fas fa-zap me-2"></i>Quick Actions
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <button class="btn gradient-button w-100" onclick="showSection('chat')">
+                                    <i class="fas fa-comments me-2"></i>Start AI Conversation
+                                </button>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <button class="btn gradient-button w-100" onclick="showSection('upload')">
+                                    <i class="fas fa-upload me-2"></i>Upload Document
+                                </button>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <button class="btn gradient-button w-100" onclick="showSection('transcripts')">
+                                    <i class="fas fa-microphone me-2"></i>Upload Transcript
+                                </button>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <button class="btn gradient-button w-100" onclick="showSection('tasks')">
+                                    <i class="fas fa-tasks me-2"></i>Smart Tasks
+                                </button>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <button class="btn gradient-button w-100" onclick="refreshSystemStatus()">
+                                    <i class="fas fa-sync-alt me-2"></i>Refresh Status
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="glass-card p-4 h-100">
+                        <h5 class="text-dark mb-4">
+                            <i class="fas fa-bell me-2"></i>Smart Nudges
+                        </h5>
+                        <div id="smartNudges">
+                            <div class="text-center text-secondary py-4">
+                                <i class="fas fa-lightbulb fa-2x mb-3"></i>
+                                <p>Upload documents to get AI-powered task recommendations</p>
+                            </div>
+                        </div>
+                        <button class="btn gradient-button btn-sm w-100 mt-3" onclick="showSection('tasks')">
+                            <i class="fas fa-tasks me-2"></i>View All Tasks
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Section -->
+        <div id="chatSection" class="section-content" style="display: none;">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-dark mb-4">
+                        <i class="fas fa-comments me-2"></i>AI Conversation
+                    </h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message assistant">
+                                <div class="fw-bold mb-1">AVA</div>
+                                <div>Hello! I'm AVA, your personal AI assistant. I have access to all your memories and can help you with productivity tasks, document analysis, and more. How can I assist you today?</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="messageInput" placeholder="Ask me anything..." onkeypress="handleEnterPress(event)">
+                                <button class="btn gradient-button" onclick="sendMessage()">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Document Upload Section -->
+        <div id="uploadSection" class="section-content" style="display: none;">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-white mb-4">
+                        <i class="fas fa-cloud-upload-alt me-2"></i>Document Upload & Analysis
+                    </h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-8 mb-4">
+                    <div class="glass-card p-4">
+                        <div class="upload-zone" id="uploadZone" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)" ondragleave="dragLeaveHandler(event)">
+                            <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                            <h5>Drop files here or click to upload</h5>
+                            <p class="text-white-50">Supports PDF, DOCX, TXT files</p>
+                            <input type="file" id="fileInput" class="d-none" accept=".pdf,.docx,.txt" onchange="handleFileSelection(this.files)">
+                            <button class="btn gradient-button mt-3" onclick="document.getElementById('fileInput').click()">
+                                <i class="fas fa-plus me-2"></i>Select Files
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="glass-card p-4">
+                        <h5 class="text-white mb-3">Analysis Options</h5>
+                        <select class="form-select mb-3" id="analysisType">
+                            <option value="comprehensive">Comprehensive Analysis</option>
+                            <option value="summary">Quick Summary</option>
+                            <option value="questions">Generate Questions</option>
+                            <option value="actionItems">Extract Action Items</option>
+                        </select>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-white">Priority Level</label>
+                            <select class="form-select" id="priorityLevel">
+                                <option value="normal">Normal</option>
+                                <option value="high">High Priority</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="glass-card p-4" style="height: 600px;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="text-dark mb-0">Processing Queue & Completed Documents</h5>
+                            <span class="badge bg-info" id="documentsCount">0</span>
+                        </div>
+                        <div id="processingQueue" style="height: 520px; overflow-y: auto;">
+                            <div class="text-center text-secondary py-4">
+                                <i class="fas fa-inbox fa-2x mb-3"></i>
+                                <p>No documents in queue</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transcripts Section -->
+        <div id="transcriptsSection" class="section-content" style="display: none;">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-white mb-4">
+                        <i class="fas fa-file-audio me-2"></i>Transcript Processing
+                    </h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="glass-card p-4">
+                        <h5 class="text-white mb-3">Upload Transcript</h5>
+                        <div class="upload-zone" id="transcriptUploadZone" ondrop="dropTranscriptHandler(event)" ondragover="dragOverHandler(event)" ondragleave="dragLeaveHandler(event)">
+                            <i class="fas fa-file-audio fa-3x mb-3"></i>
+                            <h6>Drop transcript files here</h6>
+                            <p class="text-white-50 small">Supports TXT, DOCX, PDF formats</p>
+                            <input type="file" id="transcriptInput" class="d-none" accept=".txt,.docx,.pdf" onchange="handleTranscriptSelection(this.files)">
+                            <button class="btn gradient-button mt-3" onclick="document.getElementById('transcriptInput').click()">
+                                <i class="fas fa-plus me-2"></i>Select Transcript
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="glass-card p-4">
+                        <h5 class="text-white mb-3">Paste Transcript Text</h5>
+                        <textarea class="form-control mb-3" id="transcriptText" rows="8" placeholder="Paste your meeting transcript here..."></textarea>
+                        <div class="mb-3">
+                            <input type="text" class="form-control mb-2" id="meetingTitle" placeholder="Meeting title (optional)">
+                            <input type="datetime-local" class="form-control" id="meetingDate">
+                        </div>
+                        <button class="btn gradient-button w-100" onclick="processTranscriptText()">
+                            <i class="fas fa-brain me-2"></i>Process Transcript
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="glass-card p-4">
+                        <h5 class="text-white mb-3">Recent Transcripts</h5>
+                        <div id="recentTranscripts">
+                            <div class="text-center text-white-50 py-4">
+                                <i class="fas fa-history fa-2x mb-3"></i>
+                                <p>No transcripts processed yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory Section -->
+        <div id="memorySection" class="section-content" style="display: none;">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-white mb-4">
+                        <i class="fas fa-database me-2"></i>Memory System
+                    </h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-8 mb-4">
+                    <div class="glass-card p-4">
+                        <h5 class="text-white mb-3">Search Memories</h5>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="memorySearch" placeholder="Search your memories...">
+                            <button class="btn gradient-button" onclick="searchMemories()">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        
+                        <div id="memoryResults">
+                            <div class="text-center text-white-50 py-4">
+                                <i class="fas fa-brain fa-2x mb-3"></i>
+                                <p>Enter a search term to explore your memories</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="glass-card p-4">
+                        <h5 class="text-white mb-3">Memory Categories</h5>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-light" onclick="filterMemories('personal')">
+                                <i class="fas fa-user me-2"></i>Personal
+                            </button>
+                            <button class="btn btn-outline-light" onclick="filterMemories('work')">
+                                <i class="fas fa-briefcase me-2"></i>Work
+                            </button>
+                            <button class="btn btn-outline-light" onclick="filterMemories('documents')">
+                                <i class="fas fa-file-alt me-2"></i>Documents
+                            </button>
+                            <button class="btn btn-outline-light" onclick="filterMemories('meetings')">
+                                <i class="fas fa-calendar me-2"></i>Meetings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div id="analyticsSection" class="section-content" style="display: none;">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-white mb-4">
+                        <i class="fas fa-chart-line me-2"></i>Analytics Dashboard
+                    </h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="glass-card p-4">
+                        <h5 class="text-white mb-3">Performance Metrics</h5>
+                        <div id="analyticsContent">
+                            <div class="text-center text-white-50 py-5">
+                                <i class="fas fa-chart-bar fa-3x mb-3"></i>
+                                <p>Analytics dashboard loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Smart Tasks Section -->
+        <div id="tasksSection" class="section-content" style="display: none;">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-dark mb-4">
+                        <i class="fas fa-tasks me-2"></i>Smart Task Management
+                    </h2>
+                    <p class="text-secondary mb-4">AI-generated tasks from your document analysis with intelligent tracking and nudges</p>
+                </div>
+            </div>
+            
+            <!-- Smart Summary Card -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="glass-card p-4" id="smartSummaryCard">
+                        <h5 class="text-dark mb-3">
+                            <i class="fas fa-brain me-2"></i>Smart Summary & Recommendations
+                        </h5>
+                        <div id="smartSummaryContent">
+                            <div class="text-center text-secondary py-4">
+                                <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                                <p>Loading intelligent insights...</p>
+                            </div>
+                        </div>
+                        <button class="btn gradient-button mt-3" onclick="refreshSmartSummary()">
+                            <i class="fas fa-sync-alt me-2"></i>Refresh Summary
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Task Lists -->
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="glass-card p-4" style="height: 600px;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="text-dark mb-0">
+                                <i class="fas fa-clock me-2"></i>Pending Tasks
+                            </h5>
+                            <span class="badge bg-warning" id="pendingCount">0</span>
+                        </div>
+                        <div id="pendingTasksList" style="height: 520px; overflow-y: auto;">
+                            <div class="text-center text-secondary py-4">
+                                <i class="fas fa-inbox fa-2x mb-3"></i>
+                                <p>No pending tasks</p>
+                                <small>Upload documents to automatically generate tasks</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="glass-card p-4" style="height: 600px;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="text-dark mb-0">
+                                <i class="fas fa-check-circle me-2"></i>Completed Tasks
+                            </h5>
+                            <span class="badge bg-success" id="completedCount">0</span>
+                        </div>
+                        <div id="completedTasksList" style="height: 520px; overflow-y: auto;">
+                            <div class="text-center text-secondary py-4">
+                                <i class="fas fa-trophy fa-2x mb-3"></i>
+                                <p>No completed tasks yet</p>
+                                <small>Complete tasks to see your progress here</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Task Details Modal -->
+            <div class="modal fade" id="taskDetailsModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content" style="background: var(--bg-primary); border: 1px solid var(--glass-border);">
+                        <div class="modal-header" style="border-bottom: 1px solid var(--glass-border);">
+                            <h5 class="modal-title text-dark">Task Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body" id="taskDetailsContent">
+                            <!-- Task details will be populated here -->
+                        </div>
+                        <div class="modal-footer" style="border-top: 1px solid var(--glass-border);">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn gradient-button" id="completeTaskBtn" onclick="completeSelectedTask()">
+                                <i class="fas fa-check me-2"></i>Mark Complete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="floating-action" onclick="showSection('chat')" title="Quick Chat">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <!-- User Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-card">
+            <div class="mb-4">
+                <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+                <h3 class="gradient-text fw-bold">Welcome to AVA</h3>
+                <p class="text-secondary">Enter your user ID to access your personal AI assistant</p>
+            </div>
+            
+            <form onsubmit="loginUser(event)">
+                <input type="text" class="login-input" id="userIdInput" placeholder="Enter your User ID (e.g., Paresh)" required>
+                <button type="submit" class="facebook-button">
+                    <i class="fas fa-sign-in-alt me-2"></i>Connect to AVA
+                </button>
+            </form>
+            
+            <div class="mt-4">
+                <small class="text-secondary">
+                    Your personal AI that remembers everything about you
+                </small>
+            </div>
+            
+            <!-- Quick Login Options -->
+            <div class="mt-4">
+                <small class="text-secondary d-block mb-2">Quick Login:</small>
+                <div class="d-flex gap-2 flex-wrap justify-content-center">
+                    <button class="btn btn-sm btn-outline-primary" onclick="quickLogin('Paresh')">Paresh</button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="quickLogin('John')">John</button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="quickLogin('Demo')">Demo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="btn btn-primary d-md-none" id="menuToggle" style="position: fixed; top: 20px; left: 20px; z-index: 1101;">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentSection = 'dashboard';
+        let isProcessing = false;
+        let currentUserId = null;
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            const savedUserId = localStorage.getItem('digitalTwinUserId');
+            if (savedUserId) {
+                loginUser(null, savedUserId);
+            } else {
+                showLoginModal();
+            }
+            
+            // Set current date for meeting date input
+            const now = new Date();
+            if (document.getElementById('meetingDate')) {
+                document.getElementById('meetingDate').value = now.toISOString().slice(0, 16);
+            }
+            
+            // Mobile menu toggle
+            document.getElementById('menuToggle').addEventListener('click', toggleMobileMenu);
+        });
+
+        // User Authentication Functions
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function hideLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function loginUser(event, userId = null) {
+            if (event) {
+                event.preventDefault();
+                userId = document.getElementById('userIdInput').value.trim();
+            }
+
+            if (!userId) {
+                showNotification('error', 'Please enter a valid User ID');
+                return;
+            }
+
+            // Set current user
+            currentUserId = userId;
+            localStorage.setItem('digitalTwinUserId', userId);
+
+            // Update UI with user info
+            updateUserInterface(userId);
+
+            // Hide login modal
+            hideLoginModal();
+
+            // Initialize dashboard with user context
+            loadDashboardStats();
+            updateSystemHealth();
+            updateProcessingQueue();
+
+            showNotification('success', `Welcome back, ${userId}! Your digital twin is ready.`);
+        }
+
+        function quickLogin(userId) {
+            document.getElementById('userIdInput').value = userId;
+            loginUser(null, userId);
+        }
+
+        function logoutUser() {
+            currentUserId = null;
+            localStorage.removeItem('digitalTwinUserId');
+            updateUserInterface(null);
+            showLoginModal();
+            showNotification('info', 'You have been logged out');
+        }
+
+        function updateUserInterface(userId) {
+            const elements = {
+                sidebarUserName: document.getElementById('sidebarUserName'),
+                sidebarUserAvatar: document.getElementById('sidebarUserAvatar'),
+                sidebarUserInfo: document.getElementById('sidebarUserInfo')
+            };
+
+            if (userId) {
+                elements.sidebarUserName.textContent = userId;
+                elements.sidebarUserAvatar.textContent = userId.charAt(0).toUpperCase();
+                elements.sidebarUserInfo.querySelector('small').textContent = 'Digital Twin Active';
+                
+                // Add logout functionality
+                elements.sidebarUserInfo.style.cursor = 'pointer';
+                elements.sidebarUserInfo.onclick = () => {
+                    if (confirm('Do you want to logout?')) {
+                        logoutUser();
+                    }
+                };
+            } else {
+                elements.sidebarUserName.textContent = 'Guest';
+                elements.sidebarUserAvatar.textContent = '?';
+                elements.sidebarUserInfo.querySelector('small').textContent = 'Not logged in';
+                elements.sidebarUserInfo.style.cursor = 'default';
+                elements.sidebarUserInfo.onclick = null;
+            }
+        }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + 'Section').style.display = 'block';
+            
+            // Update sidebar active state
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            currentSection = sectionName;
+            
+            // Load section-specific data
+            switch(sectionName) {
+                case 'memory':
+                    loadMemoryData();
+                    break;
+                case 'analytics':
+                    loadAnalytics();
+                    break;
+                case 'transcripts':
+                    loadRecentTranscripts();
+                    break;
+            }
+            
+            // Hide mobile menu on selection
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.remove('show');
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+
+        // Chat functionality
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            if (!currentUserId) {
+                showNotification('warning', 'Please login first to chat with your digital twin');
+                return;
+            }
+            
+            addMessage('user', message);
+            input.value = '';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Send to AI with user ID
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    message: message,
+                    user_id: currentUserId 
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideTypingIndicator();
+                addMessage('assistant', data.response);
+            })
+            .catch(error => {
+                hideTypingIndicator();
+                addMessage('assistant', 'Sorry, I encountered an error. Please try again.');
+                console.error('Chat error:', error);
+            });
+        }
+
+        function handleEnterPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function addMessage(sender, content) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            if (sender === 'assistant') {
+                messageDiv.innerHTML = `
+                    <div class="fw-bold mb-1">AVA</div>
+                    <div>${content}</div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="fw-bold mb-1">You</div>
+                    <div>${content}</div>
+                `;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="fw-bold mb-1">AVA</div>
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // File upload functionality
+        function dragOverHandler(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.add('dragover');
+        }
+
+        function dragLeaveHandler(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.remove('dragover');
+        }
+
+        function dropHandler(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.remove('dragover');
+            
+            if (ev.dataTransfer.items) {
+                const files = Array.from(ev.dataTransfer.items)
+                    .filter(item => item.kind === 'file')
+                    .map(item => item.getAsFile());
+                handleFileSelection(files);
+            }
+        }
+
+        function dropTranscriptHandler(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.remove('dragover');
+            
+            if (ev.dataTransfer.items) {
+                const files = Array.from(ev.dataTransfer.items)
+                    .filter(item => item.kind === 'file')
+                    .map(item => item.getAsFile());
+                handleTranscriptSelection(files);
+            }
+        }
+
+        function handleFileSelection(files) {
+            if (files.length > 0) {
+                const analysisType = document.getElementById('analysisType').value;
+                const priority = document.getElementById('priorityLevel').value;
+                uploadAndAnalyze(files[0], analysisType, priority);
+            }
+        }
+
+        function handleTranscriptSelection(files) {
+            if (files.length > 0) {
+                uploadTranscript(files[0]);
+            }
+        }
+
+        function uploadAndAnalyze(file, analysisType, priority) {
+            if (!currentUserId) {
+                showNotification('warning', 'Please login first to upload documents');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('action', analysisType);
+            formData.append('priority', priority);
+            formData.append('user_id', currentUserId);
+            
+            showProcessingItem(file.name, 'document');
+            
+            fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showNotification('success', 'Document uploaded successfully');
+                    updateProcessingQueue();
+                } else {
+                    showNotification('error', 'Failed to process document');
+                }
+            })
+            .catch(error => {
+                showNotification('error', 'Failed to upload document');
+                console.error('Upload error:', error);
+            });
+        }
+
+        function uploadTranscript(file) {
+            console.log('uploadTranscript() called with file:', file.name, 'size:', file.size);
+            
+            if (!currentUserId) {
+                console.warn('User not logged in for file upload');
+                showNotification('warning', 'Please login first to upload transcripts');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('type', 'transcript');
+            
+            console.log('Uploading transcript file:', file.name);
+            showProcessingItem(file.name, 'transcript');
+            
+            fetch('/api/transcript/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log('Upload response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Upload result:', data);
+                showNotification('success', 'Transcript processed successfully');
+                loadRecentTranscripts();
+            })
+            .catch(error => {
+                console.error('Transcript upload error:', error);
+                showNotification('error', 'Failed to process transcript: ' + error.message);
+            });
+        }
+
+        function processTranscriptText() {
+            console.log('processTranscriptText() called');
+            const text = document.getElementById('transcriptText').value.trim();
+            const title = document.getElementById('meetingTitle').value.trim();
+            const date = document.getElementById('meetingDate').value;
+            
+            console.log('Transcript data:', { text: text.length + ' chars', title, date, currentUserId });
+            
+            if (!text) {
+                console.warn('No transcript text provided');
+                showNotification('warning', 'Please enter transcript text');
+                return;
+            }
+            
+            if (!currentUserId) {
+                console.warn('User not logged in');
+                showNotification('warning', 'Please login first to process transcripts');
+                return;
+            }
+            
+            const data = {
+                transcript: text,
+                title: title || 'Untitled Meeting',
+                date: date || new Date().toISOString(),
+                user_id: currentUserId
+            };
+            
+            console.log('Sending transcript data to server:', data);
+            showProcessingItem(data.title, 'transcript');
+            
+            fetch('/api/transcript/process', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                console.log('Server response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log('Transcript processing result:', result);
+                showNotification('success', 'Transcript processed successfully');
+                document.getElementById('transcriptText').value = '';
+                document.getElementById('meetingTitle').value = '';
+                loadRecentTranscripts();
+            })
+            .catch(error => {
+                console.error('Transcript processing error:', error);
+                showNotification('error', 'Failed to process transcript: ' + error.message);
+            });
+        }
+
+        function showProcessingItem(name, type) {
+            const queue = document.getElementById('processingQueue');
+            const item = document.createElement('div');
+            item.className = 'glass-card p-3 mb-2';
+            item.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-white">
+                        <i class="fas fa-${type === 'transcript' ? 'file-audio' : 'file-alt'} me-2"></i>
+                        ${name}
+                    </div>
+                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                </div>
+            `;
+            
+            if (queue.children.length === 1 && queue.children[0].querySelector('.fa-inbox')) {
+                queue.innerHTML = '';
+            }
+            
+            queue.appendChild(item);
+        }
+
+        // Memory system functions
+        function searchMemories() {
+            const query = document.getElementById('memorySearch').value.trim();
+            if (!query) return;
+            
+            if (!currentUserId) {
+                showNotification('warning', 'Please login first to search your memories');
+                return;
+            }
+            
+            const resultsContainer = document.getElementById('memoryResults');
+            resultsContainer.innerHTML = '<div class="text-center text-white-50 py-4"><div class="spinner-border mb-3"></div><p>Searching memories...</p></div>';
+            
+            fetch('/api/memory/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    query: query,
+                    user_id: currentUserId 
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayMemoryResults(data.memories);
+            })
+            .catch(error => {
+                resultsContainer.innerHTML = '<div class="text-center text-white-50 py-4"><p>Error searching memories</p></div>';
+                console.error('Memory search error:', error);
+            });
+        }
+
+        function displayMemoryResults(memories) {
+            const resultsContainer = document.getElementById('memoryResults');
+            
+            if (memories.length === 0) {
+                resultsContainer.innerHTML = '<div class="text-center text-white-50 py-4"><p>No memories found</p></div>';
+                return;
+            }
+            
+            resultsContainer.innerHTML = memories.map(memory => `
+                <div class="memory-item">
+                    <div class="fw-bold mb-1">${memory.title || 'Memory'}</div>
+                    <div class="small text-white-50 mb-2">${new Date(memory.timestamp).toLocaleDateString()}</div>
+                    <div>${memory.content}</div>
+                </div>
+            `).join('');
+        }
+
+        function filterMemories(category) {
+            // Implementation for filtering memories by category
+            console.log('Filtering memories by:', category);
+        }
+
+        // Dashboard stats
+        function loadDashboardStats() {
+            fetch('/api/stats')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('totalMemories').textContent = data.total_memories || '--';
+                    document.getElementById('documentsProcessed').textContent = data.documents_processed || '--';
+                    document.getElementById('conversationsCount').textContent = data.conversations || '--';
+                    document.getElementById('responseTime').textContent = (data.avg_response_time || '--') + 'ms';
+                })
+                .catch(error => {
+                    console.error('Stats loading error:', error);
+                });
+        }
+
+        function updateSystemHealth() {
+            // Health circle was replaced with smart nudges, so this function is now a no-op
+            // Just update any health indicators if they exist
+            const healthScore = document.getElementById('healthScore');
+            if (healthScore) {
+                healthScore.textContent = '98%';
+            }
+        }
+
+        function refreshSystemStatus() {
+            showNotification('info', 'Refreshing system status...');
+            loadDashboardStats();
+            updateSystemHealth();
+            setTimeout(() => {
+                showNotification('success', 'System status updated');
+            }, 1000);
+        }
+
+        // Utility functions
+        function showNotification(type, message) {
+            // Simple notification system
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info'} position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 1200; min-width: 300px;';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function loadMemoryData() {
+            // Load memory system data
+            console.log('Loading memory data...');
+        }
+
+        function loadAnalytics() {
+            // Load analytics dashboard
+            console.log('Loading analytics...');
+        }
+
+        function loadRecentTranscripts() {
+            console.log('Loading recent transcripts...');
+            console.log('Current user ID:', currentUserId);
+            
+            const url = '/api/transcripts?user_id=' + (currentUserId || 'default_user');
+            console.log('Fetching from URL:', url);
+            
+            fetch(url)
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Received data:', data);
+                    const container = document.getElementById('recentTranscripts');
+                    console.log('Container element:', container);
+                    
+                    if (data.transcripts && data.transcripts.length > 0) {
+                        console.log('Found', data.transcripts.length, 'transcripts');
+                        const transcriptsHtml = data.transcripts.map(transcript => `
+                            <div class="card bg-dark border-secondary mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title text-white">${transcript.title}</h6>
+                                    <p class="card-text text-white-50 small">${transcript.content}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock me-1"></i>
+                                            ${new Date(transcript.created_at).toLocaleString()}
+                                        </small>
+                                        <span class="badge bg-primary">${transcript.type}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('');
+                        
+                        console.log('Setting HTML to container');
+                        container.innerHTML = transcriptsHtml;
+                        console.log('HTML set successfully');
+                    } else {
+                        console.log('No transcripts found, showing empty state');
+                        container.innerHTML = `
+                            <div class="text-center text-white-50 py-4">
+                                <i class="fas fa-history fa-2x mb-3"></i>
+                                <p>No transcripts processed yet</p>
+                                <small>Upload or paste transcripts to see them here</small>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading recent transcripts:', error);
+                    showNotification('error', 'Failed to load recent transcripts');
+                });
+        }
+
+        function updateProcessingQueue() {
+            fetch('/api/processing-status')
+                .then(response => response.json())
+                .then(data => {
+                    const queue = document.getElementById('processingQueue');
+                    
+                    if (data.tasks && data.tasks.length > 0) {
+                        // Sort tasks by creation date (newest first)
+                        const sortedTasks = data.tasks.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                        
+                        // Update document count badge
+                        document.getElementById('documentsCount').textContent = sortedTasks.length;
+                        
+                        queue.innerHTML = sortedTasks.map(task => {
+                            const uploadDate = new Date(task.created_at).toLocaleDateString();
+                            const uploadTime = new Date(task.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                            const cleanFilename = task.original_filename || task.filename;
+                            
+                            return `
+                            <div class="card mb-2 border-0 shadow-sm ${task.status === 'completed' ? 'border-start border-success border-3' : ''}">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div class="flex-grow-1">
+                                            <h6 class="card-title mb-1" style="font-size: 0.95rem;">
+                                                <i class="fas fa-file-alt me-2 text-primary"></i>
+                                                ${cleanFilename}
+                                            </h6>
+                                            <small class="text-muted">
+                                                <i class="fas fa-clock me-1"></i>
+                                                Uploaded: ${uploadDate} at ${uploadTime}
+                                            </small>
+                                        </div>
+                                        <div class="text-end">
+                                            ${task.status === 'processing' ? 
+                                                `<div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                                 <span class="badge bg-primary">${task.progress}%</span>` :
+                                              task.status === 'completed' ? 
+                                                `<span class="badge bg-success mb-1">COMPLETED</span><br>
+                                                 <button class="btn btn-sm btn-outline-primary" onclick="showTaskResult('${task.task_id}')">
+                                                    <i class="fas fa-eye"></i> View Results
+                                                 </button>` :
+                                              task.status === 'error' ? 
+                                                `<span class="badge bg-danger">ERROR</span>` :
+                                                `<span class="badge bg-secondary">PENDING</span>`
+                                            }
+                                        </div>
+                                    </div>
+                                    ${task.error_message ? `<div class="text-danger small mt-1"><i class="fas fa-exclamation-triangle me-1"></i>${task.error_message}</div>` : ''}
+                                    ${task.status === 'completed' && task.result ? `
+                                        <div class="mt-2 pt-2 border-top">
+                                            <div class="row text-center">
+                                                <div class="col-4">
+                                                    <small class="text-success">
+                                                        <i class="fas fa-tasks me-1"></i>
+                                                        ${task.result.smart_tasks_created || task.result.action_items?.length || 0} Tasks Created
+                                                    </small>
+                                                </div>
+                                                <div class="col-4">
+                                                    <small class="text-info">
+                                                        <i class="fas fa-list me-1"></i>
+                                                        ${task.result.key_points?.length || 0} Key Points
+                                                    </small>
+                                                </div>
+                                                <div class="col-4">
+                                                    <small class="text-warning">
+                                                        <i class="fas fa-question me-1"></i>
+                                                        ${task.result.questions?.length || 0} Questions
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                        }).join('');
+                    } else {
+                        document.getElementById('documentsCount').textContent = '0';
+                        queue.innerHTML = `
+                            <div class="text-center text-secondary py-4">
+                                <i class="fas fa-inbox fa-2x mb-3"></i>
+                                <p>No documents in queue</p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to update processing queue:', error);
+                });
+        }
+
+        // Auto-update processing queue every 2 seconds
+        setInterval(updateProcessingQueue, 2000);
+
+        function showTaskResult(taskId) {
+            fetch(`/api/task/${taskId}`)
+                .then(response => response.json())
+                .then(task => {
+                    const modal = document.createElement('div');
+                    modal.className = 'modal fade';
+                    modal.id = 'taskResultModal';
+                    modal.innerHTML = `
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        <i class="fas fa-file-alt me-2"></i>
+                                        Analysis Results: ${task.filename}
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ${task.result ? `
+                                        <!-- Document Summary Section -->
+                                        <div class="mb-4">
+                                            <h5 class="text-primary mb-3">
+                                                <i class="fas fa-file-text me-2"></i>Document Summary
+                                            </h5>
+                                            <div class="p-3 bg-light rounded">
+                                                ${task.result.summary || 'No summary available'}
+                                            </div>
+                                        </div>
+
+                                        <!-- Key Points Section -->
+                                        ${task.result.key_points && task.result.key_points.length > 0 ? `
+                                            <div class="mb-4">
+                                                <h5 class="text-primary mb-3">
+                                                    <i class="fas fa-bullseye me-2"></i>Key Points
+                                                </h5>
+                                                <ul class="list-group list-group-flush">
+                                                    ${task.result.key_points.map(point => 
+                                                        `<li class="list-group-item border-0 ps-0">
+                                                            <i class="fas fa-check-circle text-success me-2"></i>
+                                                            ${point}
+                                                        </li>`
+                                                    ).join('')}
+                                                </ul>
+                                            </div>
+                                        ` : ''}
+
+                                        <!-- Action Items Section -->
+                                        ${task.result.action_items && task.result.action_items.length > 0 ? `
+                                            <div class="mb-4">
+                                                <h5 class="text-primary mb-3">
+                                                    <i class="fas fa-tasks me-2"></i>Action Items
+                                                </h5>
+                                                <div class="row">
+                                                    ${task.result.action_items.map(action => `
+                                                        <div class="col-12 mb-3">
+                                                            <div class="card border-0 shadow-sm">
+                                                                <div class="card-body p-3">
+                                                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                                                        <span class="badge bg-${action.priority === 'high' ? 'danger' : action.priority === 'medium' ? 'warning' : 'secondary'} me-2">
+                                                                            ${action.priority}
+                                                                        </span>
+                                                                        <small class="text-muted">
+                                                                            Assigned to: ${action.assigned_to}
+                                                                        </small>
+                                                                    </div>
+                                                                    <p class="mb-0">${action.task}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                        ` : ''}
+
+                                        <!-- Generated Questions Section -->
+                                        ${task.result.questions && task.result.questions.length > 0 ? `
+                                            <div class="mb-4">
+                                                <h5 class="text-primary mb-3">
+                                                    <i class="fas fa-question-circle me-2"></i>Generated Questions
+                                                </h5>
+                                                <div class="list-group list-group-flush">
+                                                    ${task.result.questions.map(question => 
+                                                        `<div class="list-group-item border-0 ps-0">
+                                                            <i class="fas fa-question text-info me-2"></i>
+                                                            ${question}
+                                                        </div>`
+                                                    ).join('')}
+                                                </div>
+                                            </div>
+                                        ` : ''}
+
+                                        <!-- Document Metrics -->
+                                        <div class="mt-4 pt-3 border-top">
+                                            <div class="row text-center">
+                                                <div class="col-4">
+                                                    <div class="fw-bold text-primary">${task.result.word_count || 0}</div>
+                                                    <small class="text-muted">Words</small>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="fw-bold text-success">${task.result.char_count || 0}</div>
+                                                    <small class="text-muted">Characters</small>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="fw-bold text-info">${task.result.analysis_type || 'Basic'}</div>
+                                                    <small class="text-muted">Analysis Type</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ` : '<p class="text-muted">No detailed results available</p>'}
+                                    
+                                    <div class="mt-3">
+                                        <small class="text-secondary">
+                                            <i class="fas fa-clock me-1"></i>
+                                            Completed: ${task.completed_at ? new Date(task.completed_at).toLocaleString() : 'Unknown'}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(modal);
+                    const bootstrapModal = new bootstrap.Modal(modal);
+                    bootstrapModal.show();
+                    
+                    // Remove modal from DOM when hidden
+                    modal.addEventListener('hidden.bs.modal', () => {
+                        modal.remove();
+                    });
+                })
+                .catch(error => {
+                    showNotification('error', 'Failed to load task results');
+                    console.error('Task result error:', error);
+                });
+        }
+
+        // === SMART TASK MANAGEMENT ===
+
+        let selectedTaskId = null;
+
+        function loadSmartTasks() {
+            if (!currentUserId) return;
+            
+            fetch(`/api/tasks?user_id=${currentUserId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayTasks(data.tasks);
+                    } else {
+                        console.error('Failed to load tasks:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading tasks:', error);
+                });
+        }
+
+        function displayTasks(tasks) {
+            const pendingContainer = document.getElementById('pendingTasksList');
+            const completedContainer = document.getElementById('completedTasksList');
+
+            // Sort tasks by creation date (newest first)
+            const sortedTasks = tasks.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+            
+            const pendingTasks = sortedTasks.filter(task => task.status === 'pending');
+            const completedTasks = sortedTasks.filter(task => task.status === 'completed');
+
+            // Update count badges
+            document.getElementById('pendingCount').textContent = pendingTasks.length;
+            document.getElementById('completedCount').textContent = completedTasks.length;
+
+            // Display pending tasks
+            if (pendingTasks.length === 0) {
+                pendingContainer.innerHTML = `
+                    <div class="text-center text-secondary py-4">
+                        <i class="fas fa-inbox fa-2x mb-3"></i>
+                        <p>No pending tasks</p>
+                        <small>Upload documents to automatically generate tasks</small>
+                    </div>
+                `;
+            } else {
+                pendingContainer.innerHTML = pendingTasks.map(task => createTaskCard(task)).join('');
+            }
+
+            // Display completed tasks
+            if (completedTasks.length === 0) {
+                completedContainer.innerHTML = `
+                    <div class="text-center text-secondary py-4">
+                        <i class="fas fa-trophy fa-2x mb-3"></i>
+                        <p>No completed tasks yet</p>
+                        <small>Complete tasks to see your progress here</small>
+                    </div>
+                `;
+            } else {
+                completedContainer.innerHTML = completedTasks.map(task => createTaskCard(task)).join('');
+            }
+        }
+
+        function createTaskCard(task) {
+            const isOverdue = new Date(task.due_date) < new Date() && task.status === 'pending';
+            const dueDate = new Date(task.due_date).toLocaleDateString();
+            const createdDate = new Date(task.created_date).toLocaleDateString();
+            
+            const priorityColors = {
+                'high': 'danger',
+                'medium': 'warning', 
+                'low': 'secondary'
+            };
+
+            // Clean up title by removing brackets if present
+            const cleanTitle = task.title.replace(/^\[|\]$/g, '');
+            
+            // Extract document name from source_document
+            const docName = task.source_document.replace(/^.*_/, '').replace(/\.(docx|txt|pdf)$/, '');
+
+            return `
+                <div class="card mb-2 border-0 shadow-sm" style="cursor: pointer;" onclick="showTaskDetails('${task.id}')">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <span class="badge bg-${priorityColors[task.priority]} me-2">${task.priority.toUpperCase()}</span>
+                                ${isOverdue ? '<span class="badge bg-danger">OVERDUE</span>' : ''}
+                                ${task.status === 'completed' ? '<span class="badge bg-success">COMPLETED</span>' : ''}
+                            </div>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>${createdDate}
+                            </small>
+                        </div>
+                        <h6 class="card-title mb-2" style="font-size: 0.95rem; line-height: 1.3;">${cleanTitle}</h6>
+                        <div class="mb-2">
+                            <small class="text-info">
+                                <i class="fas fa-file me-1"></i>From: ${docName}
+                            </small>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>Due: ${dueDate}
+                            </small>
+                            <small class="text-muted">
+                                <i class="fas fa-user me-1"></i>${task.assigned_to}
+                            </small>
+                        </div>
+                        ${task.completion_date ? `
+                            <div class="mt-2">
+                                <small class="text-success">
+                                    <i class="fas fa-check-circle me-1"></i>Completed: ${new Date(task.completion_date).toLocaleDateString()}
+                                </small>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function showTaskDetails(taskId) {
+            selectedTaskId = taskId;
+            
+            fetch(`/api/tasks?user_id=${currentUserId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const task = data.tasks.find(t => t.id === taskId);
+                        if (task) {
+                            displayTaskDetails(task);
+                            const modal = new bootstrap.Modal(document.getElementById('taskDetailsModal'));
+                            modal.show();
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading task details:', error);
+                });
+        }
+
+        function displayTaskDetails(task) {
+            const content = document.getElementById('taskDetailsContent');
+            const isOverdue = new Date(task.due_date) < new Date() && task.status === 'pending';
+            
+            content.innerHTML = `
+                <div class="row">
+                    <div class="col-12">
+                        <h5>${task.title}</h5>
+                        <p class="text-muted">${task.description}</p>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Priority:</strong> 
+                                <span class="badge bg-${task.priority === 'high' ? 'danger' : task.priority === 'medium' ? 'warning' : 'secondary'}">
+                                    ${task.priority}
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Status:</strong> 
+                                <span class="badge bg-${task.status === 'completed' ? 'success' : isOverdue ? 'danger' : 'primary'}">
+                                    ${task.status === 'completed' ? 'Completed' : isOverdue ? 'Overdue' : 'Pending'}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Assigned to:</strong> ${task.assigned_to}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Due Date:</strong> ${new Date(task.due_date).toLocaleDateString()}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Created:</strong> ${new Date(task.created_date).toLocaleDateString()}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Source:</strong> ${task.source_document}
+                            </div>
+                        </div>
+                        
+                        ${task.completion_date ? `
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Completed on ${new Date(task.completion_date).toLocaleDateString()}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            // Show/hide complete button based on status
+            const completeBtn = document.getElementById('completeTaskBtn');
+            if (task.status === 'completed') {
+                completeBtn.style.display = 'none';
+            } else {
+                completeBtn.style.display = 'inline-block';
+            }
+        }
+
+        function completeSelectedTask() {
+            if (!selectedTaskId) return;
+            
+            fetch(`/api/tasks/${selectedTaskId}/complete?user_id=${currentUserId}`, {
+                method: 'POST'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('success', data.message || 'Task completed successfully!');
+                        // Hide modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('taskDetailsModal'));
+                        modal.hide();
+                        // Refresh tasks
+                        loadSmartTasks();
+                        refreshSmartSummary();
+                    } else {
+                        showNotification('error', data.message || 'Failed to complete task');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error completing task:', error);
+                    showNotification('error', 'Failed to complete task');
+                });
+        }
+
+        function refreshSmartSummary() {
+            if (!currentUserId) return;
+            
+            const summaryContent = document.getElementById('smartSummaryContent');
+            summaryContent.innerHTML = `
+                <div class="text-center text-secondary py-4">
+                    <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                    <p>Loading intelligent insights...</p>
+                </div>
+            `;
+            
+            fetch(`/api/smart-summary?user_id=${currentUserId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displaySmartSummary(data.summary);
+                    } else {
+                        console.error('Failed to load smart summary:', data.error);
+                        summaryContent.innerHTML = `
+                            <div class="text-center text-secondary py-4">
+                                <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                                <p>Failed to load summary</p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading smart summary:', error);
+                    summaryContent.innerHTML = `
+                        <div class="text-center text-secondary py-4">
+                            <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                            <p>Error loading summary</p>
+                        </div>
+                    `;
+                });
+        }
+
+        function displaySmartSummary(summary) {
+            const summaryContent = document.getElementById('smartSummaryContent');
+            
+            if (summary.total_tasks === 0) {
+                summaryContent.innerHTML = `
+                    <div class="text-center text-secondary py-4">
+                        <i class="fas fa-lightbulb fa-2x mb-3"></i>
+                        <p>No tasks yet. Upload documents to get started!</p>
+                        <button class="btn gradient-button" onclick="showSection('upload')">
+                            <i class="fas fa-upload me-2"></i>Upload Document
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            let content = `
+                <div class="row mb-4">
+                    <div class="col-md-3 text-center">
+                        <div class="h3 text-primary">${summary.total_tasks}</div>
+                        <small class="text-muted">Total Tasks</small>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="h3 text-warning">${summary.pending}</div>
+                        <small class="text-muted">Pending</small>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="h3 text-success">${summary.completed}</div>
+                        <small class="text-muted">Completed</small>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="h3 text-danger">${summary.overdue}</div>
+                        <small class="text-muted">Overdue</small>
+                    </div>
+                </div>
+            `;
+            
+            if (summary.recommendations && summary.recommendations.length > 0) {
+                content += '<div class="mb-3"><h6 class="text-dark">AI Recommendations:</h6>';
+                summary.recommendations.forEach(rec => {
+                    const iconClass = rec.type === 'urgent' ? 'fa-exclamation-triangle text-danger' :
+                                    rec.type === 'warning' ? 'fa-clock text-warning' :
+                                    rec.type === 'success' ? 'fa-check-circle text-success' : 'fa-info-circle text-info';
+                    
+                    content += `
+                        <div class="alert alert-${rec.type === 'urgent' ? 'danger' : rec.type === 'warning' ? 'warning' : rec.type === 'success' ? 'success' : 'info'} py-2">
+                            <i class="fas ${iconClass} me-2"></i>
+                            <strong>${rec.message}</strong><br>
+                            <small>${rec.action}</small>
+                        </div>
+                    `;
+                });
+                content += '</div>';
+            }
+            
+            if (summary.next_steps && summary.next_steps.length > 0) {
+                content += '<div><h6 class="text-dark">Next Steps:</h6><ul>';
+                summary.next_steps.forEach(step => {
+                    content += `<li>${step}</li>`;
+                });
+                content += '</ul></div>';
+            }
+            
+            summaryContent.innerHTML = content;
+        }
+
+        // Load smart nudges for dashboard
+        function loadSmartNudges() {
+            if (!currentUserId) return;
+            
+            fetch(`/api/smart-summary?user_id=${currentUserId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displaySmartNudges(data.summary);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading smart nudges:', error);
+                });
+        }
+
+        function displaySmartNudges(summary) {
+            const nudgesContainer = document.getElementById('smartNudges');
+            
+            if (!summary || summary.total_tasks === 0) {
+                nudgesContainer.innerHTML = `
+                    <div class="text-center text-secondary py-4">
+                        <i class="fas fa-lightbulb fa-2x mb-3"></i>
+                        <p>Upload documents to get AI-powered task recommendations</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let nudgesHtml = '';
+            
+            // Show urgent nudges first
+            if (summary.overdue > 0) {
+                nudgesHtml += `
+                    <div class="alert alert-danger py-2 mb-2">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>${summary.overdue} overdue task${summary.overdue > 1 ? 's' : ''}</strong>
+                        <br><small>Immediate attention needed!</small>
+                    </div>
+                `;
+            }
+
+            if (summary.due_soon > 0) {
+                nudgesHtml += `
+                    <div class="alert alert-warning py-2 mb-2">
+                        <i class="fas fa-clock me-2"></i>
+                        <strong>${summary.due_soon} task${summary.due_soon > 1 ? 's' : ''} due soon</strong>
+                        <br><small>Complete within 2 days</small>
+                    </div>
+                `;
+            }
+
+            // Show positive nudges
+            if (summary.completed > 0 && summary.overdue === 0) {
+                nudgesHtml += `
+                    <div class="alert alert-success py-2 mb-2">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong>Great progress!</strong>
+                        <br><small>${summary.completed} task${summary.completed > 1 ? 's' : ''} completed</small>
+                    </div>
+                `;
+            }
+
+            // Show pending tasks info
+            if (summary.pending > 0 && summary.overdue === 0 && summary.due_soon === 0) {
+                nudgesHtml += `
+                    <div class="alert alert-info py-2 mb-2">
+                        <i class="fas fa-tasks me-2"></i>
+                        <strong>${summary.pending} pending task${summary.pending > 1 ? 's' : ''}</strong>
+                        <br><small>Ready to work on</small>
+                    </div>
+                `;
+            }
+
+            if (!nudgesHtml) {
+                nudgesHtml = `
+                    <div class="text-center text-success py-4">
+                        <i class="fas fa-trophy fa-2x mb-3"></i>
+                        <p>All caught up! Great work!</p>
+                    </div>
+                `;
+            }
+
+            nudgesContainer.innerHTML = nudgesHtml;
+        }
+
+        // Auto-refresh nudges every 30 seconds
+        function startNudgeRefresh() {
+            if (currentUserId) {
+                loadSmartNudges();
+                setInterval(() => {
+                    if (currentSection === 'dashboard') {
+                        loadSmartNudges();
+                    }
+                }, 30000);
+            }
+        }
+
+        // Update the showSection function to load tasks when tasks section is shown
+        const originalShowSection = showSection;
+        showSection = function(sectionName) {
+            originalShowSection(sectionName);
+            if (sectionName === 'tasks') {
+                loadSmartTasks();
+                refreshSmartSummary();
+            } else if (sectionName === 'dashboard') {
+                loadSmartNudges();
+            }
+        };
+
+        // Update the loginUser function to start nudge refresh
+        const originalLoginUser = loginUser;
+        loginUser = function(event, userId = null) {
+            originalLoginUser(event, userId);
+            // Start nudge refresh after login
+            setTimeout(startNudgeRefresh, 1000);
+        };
+    </script>
+</body>
+</html>
